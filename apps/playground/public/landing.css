@@ -501,6 +501,114 @@ img, svg { display: block; }
   font: 400 14.5px/1.7 var(--font); color: var(--muted); max-width: 60ch;
 }
 
+/* ── Why each plan ───────────────────────────────────── */
+.lwhy {
+  background: var(--bg-alt); padding: 96px 28px;
+  border-top: 1px solid var(--border);
+}
+.lwhy-inner { max-width: 1060px; margin: 0 auto; }
+.lwhy-head {
+  text-align: center; margin-bottom: 56px;
+}
+.lwhy-head h2 {
+  font: 700 38px/1.15 var(--font); letter-spacing: -.022em; color: var(--ink);
+  margin: 14px 0 14px;
+}
+.lwhy-head p {
+  font: 400 17px/1.6 var(--font); color: var(--muted);
+  max-width: 540px; margin: 0 auto;
+}
+
+.lwhy-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+}
+.lwhy-card {
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg); padding: 32px 32px 28px;
+  display: flex; flex-direction: column; gap: 0;
+  transition: box-shadow .18s, transform .18s;
+}
+.lwhy-card:hover { box-shadow: var(--lift-shadow); transform: translateY(-2px); }
+
+.lwhy-card-indie {
+  border-color: #15803d;
+  box-shadow: 0 0 0 1px #15803d, 0 8px 28px rgba(21,128,61,.09);
+}
+.lwhy-card-indie:hover { box-shadow: 0 0 0 1px #15803d, 0 16px 44px rgba(21,128,61,.15); }
+
+.lwhy-card-pro {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 1px var(--blue), 0 8px 28px rgba(13,68,232,.1);
+}
+.lwhy-card-pro:hover { box-shadow: 0 0 0 1px var(--blue), 0 16px 44px rgba(13,68,232,.17); }
+
+.lwhy-card-top {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18px;
+}
+.lwhy-plan-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font: 700 12px/1 var(--font); letter-spacing: .07em; text-transform: uppercase;
+  color: var(--muted); background: var(--bg-alt);
+  border: 1px solid var(--border); padding: 4px 10px; border-radius: 99px;
+}
+.lwhy-tag-paid {
+  color: var(--blue); background: var(--blue-light); border-color: var(--blue-mid);
+}
+.lwhy-card-indie .lwhy-plan-tag { color: #15803d; background: #f0fdf4; border-color: #bbf7d0; }
+.lwhy-popular {
+  display: inline-block; background: var(--blue); color: #fff;
+  font: 600 10px/1 var(--font); letter-spacing: .04em; text-transform: uppercase;
+  padding: 2px 7px; border-radius: 99px; margin-left: 2px;
+}
+.lwhy-price-hint {
+  font: 700 20px/1 var(--font); color: var(--ink); letter-spacing: -.02em;
+}
+
+.lwhy-card-title {
+  font: 600 18px/1.35 var(--font); color: var(--ink); margin-bottom: 12px;
+}
+.lwhy-card-body {
+  font: 400 14.5px/1.7 var(--font); color: var(--muted);
+  margin-bottom: 22px; flex: 1;
+}
+.lwhy-points {
+  list-style: none; display: flex; flex-direction: column; gap: 9px;
+  padding: 18px 0; border-top: 1px solid var(--border);
+  margin-bottom: 22px;
+}
+.lwhy-points li {
+  font: 400 13.5px/1.4 var(--font); color: var(--ink-2);
+  display: flex; align-items: flex-start; gap: 9px;
+}
+.lwhy-points li::before {
+  content: "";
+  width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; margin-top: 1px;
+  background: var(--blue-light) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8l2.5 2.5L12 5.5' stroke='%230d44e8' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E") center/cover;
+}
+.lwhy-card-indie .lwhy-points li::before {
+  background-color: #f0fdf4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8l2.5 2.5L12 5.5' stroke='%2315803d' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+}
+
+.lwhy-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 11px 18px; border-radius: var(--radius-sm); font: 600 14px/1 var(--font);
+  border: 1.5px solid var(--border); background: var(--bg); color: var(--ink);
+  transition: border-color .14s, color .14s, background .14s; align-self: flex-start;
+}
+.lwhy-link:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); text-decoration: none; }
+.lwhy-link-indie {
+  background: #15803d; border-color: #15803d; color: #fff;
+  box-shadow: 0 2px 8px rgba(21,128,61,.22);
+}
+.lwhy-link-indie:hover { background: #166534; border-color: #166534; color: #fff; }
+.lwhy-link-pro {
+  background: var(--blue); border-color: var(--blue); color: #fff;
+  box-shadow: 0 2px 8px rgba(13,68,232,.25);
+}
+.lwhy-link-pro:hover { background: var(--blue-hover); border-color: var(--blue-hover); color: #fff; }
+
 /* ── CTA banner ───────────────────────────────────────── */
 .lcta { background: var(--bg); border-top: 1px solid var(--border); padding: 80px 28px; text-align: center; }
 .lcta h2 { font: 700 38px/1.2 var(--font); letter-spacing: -.022em; color: var(--ink); margin-bottom: 12px; }
@@ -581,6 +689,7 @@ img, svg { display: block; }
   .lpr-grid-4 { grid-template-columns: 1fr 1fr; }
   .lpr-alt-row { grid-template-columns: 1fr; }
   .lpd-inner { grid-template-columns: 220px 1fr; gap: 40px; }
+  .lwhy-grid { grid-template-columns: 1fr 1fr; }
   .lfooter-top { grid-template-columns: 1fr repeat(4, auto); }
 }
 @media (max-width: 760px) {
@@ -589,7 +698,9 @@ img, svg { display: block; }
   .lh-sub { font-size: 16px; }
   .lnist-grid { grid-template-columns: 1fr; }
   .lnist { padding: 56px 20px; }
-  .lf, .lw, .lpr, .lmatrix, .lpd { padding: 64px 20px; }
+  .lf, .lw, .lpr, .lmatrix, .lpd, .lwhy { padding: 64px 20px; }
+  .lwhy-grid { grid-template-columns: 1fr; }
+  .lwhy-head h2 { font-size: 28px; }
   .lh-mockup-body { grid-template-columns: 1fr; }
   .lh-sidebar { display: none; }
   .ln-links { display: none; }

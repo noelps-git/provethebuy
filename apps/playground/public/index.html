@@ -491,157 +491,81 @@
   </div>
 </section>
 
-<!-- ═══════════════════ PER-PLAN DEEP DIVES ═══════════════ -->
+<!-- ════════════════════ WHY EACH PLAN ════════════════════ -->
+<section class="lwhy">
+  <div class="lwhy-inner">
+    <div class="lwhy-head">
+      <span class="lf-label">Find your fit</span>
+      <h2>Pick the plan that matches where you are.</h2>
+      <p>Every plan shares the same verifier and evidence ledger. The difference is what happens when a dispute lands — and how much of that you want to handle yourself.</p>
+    </div>
 
-<!-- Free -->
-<section class="lpd" id="plan-free">
-  <div class="lpd-inner">
-    <div class="lpd-meta">
-      <div class="lpd-tag">Cloud Free</div>
-      <h2>Making Free worth signing up.</h2>
-      <p class="lpd-pitch">Free has one job: show a merchant that agent orders are a real issue for their store. Then, when the first dispute arrives, the upgrade should be obvious.</p>
-    </div>
-    <div class="lpd-features">
-      <div class="lpd-item">
-        <div class="lpd-item-title">A traffic report in five minutes</div>
-        <div class="lpd-item-body">Paste one line of code or upload a log. See which AI agents visited, how many reached checkout, and how many were signed. Most merchants have never seen this data about their own store — it's the "huh, this is real" moment.</div>
-      </div>
-      <div class="lpd-item">
-        <div class="lpd-item-title">Agent-order flag on every Stripe dispute</div>
-        <div class="lpd-item-body">Free connects to Stripe read-only. When a dispute arrives, it shows whether the order was placed by an agent and whether a record exists. It doesn't build the pack — that's Indie — but it tells you what you're dealing with immediately.</div>
-      </div>
-      <div class="lpd-item">
-        <div class="lpd-item-title">A sample evidence pack</div>
-        <div class="lpd-item-body">One example pack built from your own most recent agent order, so you see exactly what Indie would hand you when a real dispute arrives. The best upgrade moment is seeing the pack with your own data.</div>
-      </div>
-      <div class="lpd-item">
-        <div class="lpd-item-title">Share-ready numbers</div>
-        <div class="lpd-item-body">A one-line summary — "216 AI-agent requests hit my store this week, 51 on checkout" — that's easy to paste into a Slack, email to your boss, or use to justify the $9 upgrade.</div>
-      </div>
-    </div>
-  </div>
-</section>
+    <div class="lwhy-grid">
 
-<!-- Indie -->
-<section class="lpd lpd-alt" id="plan-indie">
-  <div class="lpd-inner">
-    <div class="lpd-meta">
-      <div class="lpd-tag lpd-tag-paid">Indie · $9 / mo</div>
-      <h2>Making Indie worth $9.</h2>
-      <p class="lpd-pitch">For $9 a month, every agent-order dispute arrives with a verdict, a readable proof, and a deadline you won't miss. A single dispute won pays for the plan for years.</p>
-    </div>
-    <div class="lpd-features">
-      <div class="lpd-item">
-        <div class="lpd-item-title">Fight-or-refund advice on every dispute</div>
-        <div class="lpd-item-body">A score like "Strong case: signature verified, mandate covers this exact cart, no earlier disputes from this agent" — or the opposite: "Weak case: no mandate. Refunding now saves you the dispute fee." In some regions Stripe charges a fee just to contest a dispute, so knowing when not to fight saves real money. Small merchants have nobody to make this call for them.</div>
+      <!-- Free -->
+      <div class="lwhy-card" id="plan-free">
+        <div class="lwhy-card-top">
+          <span class="lwhy-plan-tag">Free</span>
+          <span class="lwhy-price-hint">$0</span>
+        </div>
+        <h3 class="lwhy-card-title">You're not sure if AI agents are buying from your store yet.</h3>
+        <p class="lwhy-card-body">Start here. In five minutes you'll see exactly which agents hit your checkout and whether any of those orders were signed. Most merchants are surprised by what shows up. When the first dispute arrives, you'll know immediately if it was agent-placed — and you'll know exactly what Indie would have done for you.</p>
+        <ul class="lwhy-points">
+          <li>Traffic report: agents, checkout hits, signed %</li>
+          <li>Agent-order flag when a Stripe dispute arrives</li>
+          <li>One sample evidence pack built from your own data</li>
+        </ul>
+        <a class="lwhy-link" href="/app.html">Open Playground →</a>
       </div>
-      <div class="lpd-item">
-        <div class="lpd-item-title">Authorisation certificate (human-readable PDF)</div>
-        <div class="lpd-item-body">Turns the cryptographic proof into one page a card issuer's analyst can read in 30 seconds: "Shopper's card issuer confirmed this person. The person authorised ShopAssist to spend up to $300 at Northwind Coffee until 19 Oct. The agent placed this exact order, signed at 07:12 UTC." Analysts can't read JWTs, but they can read this. It is the single most useful thing in the pack.</div>
-      </div>
-      <div class="lpd-item">
-        <div class="lpd-item-title">Review and submit in one click</div>
-        <div class="lpd-item-body">Indie connects to Stripe: you review the pack, press Submit, and the evidence is filed into the right Stripe fields automatically. Pro keeps the version where nobody has to press anything — but for Indie, one deliberate click is the right model.</div>
-      </div>
-      <div class="lpd-item">
-        <div class="lpd-item-title">Deadline alerts at 7 d, 3 d, and 1 d</div>
-        <div class="lpd-item-body">Missing the response deadline is the most common way small merchants lose disputes they could have won. Three email reminders make that impossible.</div>
-      </div>
-      <div class="lpd-item">
-        <div class="lpd-item-title">Shopper confirmation page (50 / mo)</div>
-        <div class="lpd-item-body">When the verifier asks the shopper to confirm a step-up order, ProveTheBuy hosts the confirmation page. The agent sends the shopper the link; the shopper approves the specific order in their own words. That approval is the strongest evidence you can have — stronger than any signature.</div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- Pro -->
-<section class="lpd" id="plan-pro">
-  <div class="lpd-inner">
-    <div class="lpd-meta">
-      <div class="lpd-tag lpd-tag-paid">Pro · $49 / mo</div>
-      <h2>Making Pro worth $49.</h2>
-      <p class="lpd-pitch">Agent-order disputes are answered automatically. You get a monthly report of what you won back — and the cheapest disputes are the ones that never happen.</p>
-    </div>
-    <div class="lpd-features">
-      <div class="lpd-item">
-        <div class="lpd-item-title">Disputes handled hands-free</div>
-        <div class="lpd-item-body">When a Stripe dispute arrives, the evidence pack is built, scored, and either submitted or flagged "refund instead" — all before anyone looks at it. The merchant gets one email saying what happened. No queue to work through.</div>
+      <!-- Indie -->
+      <div class="lwhy-card lwhy-card-indie" id="plan-indie">
+        <div class="lwhy-card-top">
+          <span class="lwhy-plan-tag lwhy-tag-paid">Indie</span>
+          <span class="lwhy-price-hint">$9 / mo</span>
+        </div>
+        <h3 class="lwhy-card-title">You're a solo founder or small team running one store.</h3>
+        <p class="lwhy-card-body">You don't have a risk team. When a dispute arrives it lands in your inbox, you deal with it yourself, and you're never quite sure if it's worth fighting. Indie solves exactly this: every dispute gets a clear fight-or-refund verdict, a one-page PDF an analyst can actually read, and one-click Stripe submission. A single dispute won pays for the plan for years.</p>
+        <ul class="lwhy-points">
+          <li>Fight-or-refund score on every dispute</li>
+          <li>Human-readable authorisation certificate (PDF)</li>
+          <li>Deadline alerts so you never miss the window</li>
+        </ul>
+        <a class="lwhy-link lwhy-link-indie" href="https://dodo.pe/provethebuy-indie" target="_blank" rel="noopener">Get Indie →</a>
       </div>
-      <div class="lpd-item">
-        <div class="lpd-item-title">Rules for when to fight</div>
-        <div class="lpd-item-body">Always fight above $50 with a strong score. Always refund below $15. Send anything in between to a person. Set it once and it applies to every dispute going forward.</div>
-      </div>
-      <div class="lpd-item">
-        <div class="lpd-item-title">Stopping disputes before they happen</div>
-        <div class="lpd-item-body">Enforce mode with a dry-run against the last 30 days shows exactly which orders would have been stopped. Orders outside the mandate, or from agents with a bad record, get the shopper-confirmation step before payment. The cheapest dispute is the one that never arrives.</div>
-      </div>
-      <div class="lpd-item">
-        <div class="lpd-item-title">Win-rate reporting</div>
-        <div class="lpd-item-body">Win rate by reason code, by agent, and by month — plus money recovered. This is the number a risk lead takes to their boss to justify the spend.</div>
-      </div>
-      <div class="lpd-item">
-        <div class="lpd-item-title">Alerts where the team already works</div>
-        <div class="lpd-item-body">Slack or email for a spike in blocked requests, a new unsigned agent hitting checkout, or a dispute that needs a human. The right people know before it becomes a problem.</div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- Scale -->
-<section class="lpd lpd-alt" id="plan-scale">
-  <div class="lpd-inner">
-    <div class="lpd-meta">
-      <div class="lpd-tag lpd-tag-paid">Scale · $199 / mo</div>
-      <h2>Making Scale worth $199.</h2>
-      <p class="lpd-pitch">The strongest evidence available for agent orders. Records your auditors will accept. Early warning from every other store on the network.</p>
-    </div>
-    <div class="lpd-features">
-      <div class="lpd-item">
-        <div class="lpd-item-title">Reputation shared across merchants</div>
-        <div class="lpd-item-body">An agent key that misbehaved at other ProveTheBuy stores is flagged on its very first order with you — before it causes a dispute at your store. No single merchant can build this signal alone. It compounds with every customer added to the network.</div>
+      <!-- Pro -->
+      <div class="lwhy-card lwhy-card-pro" id="plan-pro">
+        <div class="lwhy-card-top">
+          <span class="lwhy-plan-tag lwhy-tag-pro">Pro <span class="lwhy-popular">Most popular</span></span>
+          <span class="lwhy-price-hint">$49 / mo</span>
+        </div>
+        <h3 class="lwhy-card-title">Your store is growing and disputes are becoming a queue you don't want to manage.</h3>
+        <p class="lwhy-card-body">Pro handles disputes before you see them. The pack is built, scored, and either filed or flagged "refund instead" automatically — you get one email telling you what happened. Enforce mode means the riskiest orders never complete without a shopper confirmation, so many disputes never arrive at all. The monthly win-rate report is the number you share with your team.</p>
+        <ul class="lwhy-points">
+          <li>Fully automatic dispute handling</li>
+          <li>Enforce mode stops bad orders at checkout</li>
+          <li>Win-rate report by reason code and agent</li>
+        </ul>
+        <a class="lwhy-link lwhy-link-pro" href="https://dodo.pe/provethebuy-pro" target="_blank" rel="noopener">Get Pro →</a>
       </div>
-      <div class="lpd-item">
-        <div class="lpd-item-title">Past-order matching</div>
-        <div class="lpd-item-body">Earlier undisputed orders from the same shopper and agent key are attached to the pack automatically, in the style of Visa's Compelling Evidence 3.0. Sell this as stronger evidence — not guaranteed CE 3.0 compliance — until real issuer acceptance is proven. Once you have outcomes, it becomes a compelling sales story in its own right.</div>
-      </div>
-      <div class="lpd-item">
-        <div class="lpd-item-title">Evidence that holds up to audit</div>
-        <div class="lpd-item-body">The ledger's fingerprint is published externally every day. Records come with an audit export (CSV and signed JSON) and a chain-of-custody statement built for legal and finance review — not just chargeback teams.</div>
-      </div>
-      <div class="lpd-item">
-        <div class="lpd-item-title">Pre-arbitration support</div>
-        <div class="lpd-item-body">When an issuer rejects the first response, ProveTheBuy builds the second-round pack with a full re-verification and the extended history. Most merchants never get a second shot — Scale merchants always do.</div>
-      </div>
-      <div class="lpd-item">
-        <div class="lpd-item-title">SSO, roles, and a named contact</div>
-        <div class="lpd-item-body">Google Workspace and Okta SSO, viewer/analyst/admin roles, and an access log. Up to 10 stores each with their own policy, plus a single cross-store view. A named support contact with a shared Slack channel and protocol-change notices from Visa and Mastercard.</div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- Pay when you win -->
-<section class="lpd" id="plan-win">
-  <div class="lpd-inner">
-    <div class="lpd-meta">
-      <div class="lpd-tag">Pay when you win</div>
-      <h2>Making 10% the obvious choice.</h2>
-      <p class="lpd-pitch">No monthly bill. No risk. You pay only when a ProveTheBuy pack wins a dispute back for you — nothing on losses, refunds, or disputes you handled yourself.</p>
-    </div>
-    <div class="lpd-features">
-      <div class="lpd-item">
-        <div class="lpd-item-title">All Pro features, with no subscription</div>
-        <div class="lpd-item-body">Full automatic dispute handling, enforce mode, agent reputation, win-rate reporting, and 1,000 shopper confirmations per month — every Pro feature included from day one, no card required to start.</div>
+      <!-- Scale -->
+      <div class="lwhy-card" id="plan-scale">
+        <div class="lwhy-card-top">
+          <span class="lwhy-plan-tag lwhy-tag-paid">Scale</span>
+          <span class="lwhy-price-hint">$199 / mo</span>
+        </div>
+        <h3 class="lwhy-card-title">You run multiple stores, answer to auditors, or need the network advantage.</h3>
+        <p class="lwhy-card-body">The evidence available at Scale isn't just stronger — it's a different category. An agent flagged at any other Scale store is stepped up on its very first order with you. Earlier undisputed orders are attached to every chargeback pack. Your ledger is anchored externally every day, and when an issuer rejects your first response, ProveTheBuy builds the second-round pack automatically. Most merchants never get a second shot.</p>
+        <ul class="lwhy-points">
+          <li>Cross-merchant agent reputation from day one</li>
+          <li>Audit-grade export and chain-of-custody statement</li>
+          <li>Pre-arbitration second-round pack, automatically</li>
+        </ul>
+        <a class="lwhy-link" href="https://dodo.pe/provethebuy-scale" target="_blank" rel="noopener">Get Scale →</a>
       </div>
-      <div class="lpd-item">
-        <div class="lpd-item-title">The clearest comparison in the market</div>
-        <div class="lpd-item-body">Chargeflow takes 25% of what it recovers. Stripe Smart Disputes takes 30%. At 10%, ProveTheBuy is the obvious choice for agent-order disputes — and unlike those products, it also prevents disputes from arriving in the first place.</div>
-      </div>
-      <div class="lpd-item">
-        <div class="lpd-item-title">A built-in switch to Pro</div>
-        <div class="lpd-item-body">Once monthly 10% fees exceed $49 for two consecutive months, we prompt you to move to Pro. You keep the better deal, we keep the relationship. No hidden pressure — just a prompt at the moment the math changes.</div>
-      </div>
+
     </div>
   </div>
 </section>
