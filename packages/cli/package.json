@@ -1,0 +1,30 @@
+{
+  "name": "@provethebuy/cli",
+  "version": "0.1.0",
+  "description": "ProveTheBuy CLI: count AI-agent traffic in your logs, verify and sign agent requests, check evidence ledgers.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": {
+    "provethebuy": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "samples",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18.17"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node -e \"require('fs').chmodSync('dist/cli.js',0o755)\"",
+    "test": "node --test test/cli.test.mjs"
+  },
+  "dependencies": {
+    "@provethebuy/verify": "0.1.0",
+    "yaml": "^2.9.1"
+  },
+  "exports": {
+    "./traffic": "./dist/traffic.js",
+    "./package.json": "./package.json"
+  }
+}

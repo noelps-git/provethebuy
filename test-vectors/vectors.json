@@ -1,0 +1,307 @@
+{
+  "version": 1,
+  "generated_at": "2026-10-13T06:47:16.000Z",
+  "now": 1791874036,
+  "merchant_id": "acct_vectors_merchant",
+  "note": "Verify each request at time `now` with the directories below. Body-object signatures use RFC 8785 canonical JSON pending Visa issue #23.",
+  "directories": {
+    "agents": {
+      "keys": [
+        {
+          "kty": "OKP",
+          "kid": "vector-agent-k1",
+          "alg": "EdDSA",
+          "use": "sig",
+          "crv": "Ed25519",
+          "x": "Q0z7eI3UTLM7ebjIf6NpuylBnTqOZu_9fXo1OEyaJ_Y"
+        }
+      ]
+    },
+    "issuers": {
+      "keys": [
+        {
+          "kty": "OKP",
+          "kid": "vector-issuer-k1",
+          "alg": "EdDSA",
+          "use": "sig",
+          "crv": "Ed25519",
+          "x": "N69reZHxPR4v800oqLmWko8V0CA2mK5jYzwKJAaVB5E"
+        }
+      ]
+    }
+  },
+  "merchant_jwk": {
+    "kty": "OKP",
+    "kid": "vector-merchant-k1",
+    "alg": "EdDSA",
+    "use": "sig",
+    "crv": "Ed25519",
+    "x": "zs2Mye4A8dpxhcF3cia1uINVL0f4VnLuOQwynuKGTcU"
+  },
+  "vectors": [
+    {
+      "name": "tap-payer-valid",
+      "description": "Paying agent with a Verifiable Intent mandate and a shared payment token inside its limits.",
+      "request": {
+        "method": "POST",
+        "url": "https://shop.example/checkout",
+        "headers": {
+          "host": "shop.example",
+          "content-type": "application/json",
+          "signature-input": "sig1=(\"@authority\" \"@path\");created=1791874031;expires=1791874511;keyid=\"vector-agent-k1\";alg=\"ed25519\";nonce=\"vector-nonce-1fafg7pk\";tag=\"agent-payer-auth\"",
+          "signature": "sig1=:52Vf+hx3uE8d6J6/Y0ImzIpPNE5ASHBG0K+Cwiy25unYQtmIDniPyw/Cb1+PL30XGz160T5LbteCephCrQ3OBA==:"
+        },
+        "body": "{\"order\":{\"id\":\"ord_v1\",\"merchant_id\":\"acct_vectors_merchant\",\"currency\":\"usd\",\"total\":4999,\"items\":[{\"sku\":\"beans-1kg\",\"qty\":1,\"unit_amount\":4999}]},\"mandate\":{\"type\":\"verifiable-intent\",\"l1\":\"eyJhbGciOiJFZERTQSIsInR5cCI6InNkK2p3dCIsImtpZCI6InZlY3Rvci1pc3N1ZXItazEifQ.eyJfc2RfYWxnIjoic2hhLTI1NiIsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUiLCJpYXQiOjE3OTE4NzQwMzYsImV4cCI6MTgyMzQxMDAzNiwiY25mIjp7Imp3ayI6eyJrdHkiOiJPS1AiLCJraWQiOiJ2ZWN0b3ItdXNlci1rMSIsImFsZyI6IkVkRFNBIiwidXNlIjoic2lnIiwiY3J2IjoiRWQyNTUxOSIsIngiOiI5REQxX2owN0pvSmp3b2drcFpmWVc4NHhMVDJjbmpPektKdTdDTE03OUpVIn19LCJfc2QiOlsiUjN4bjJ5RWtnNkN5bGVGNEZ1U2RJcmtadWhYOHJQN1VPcElGTFNYOGZRVSIsImJlZ25uWHQ1VVpCV0l0ZUFMZUZvdGNJNC1sTFl6ZUhRWmVHYktXdU9Ja0kiXX0.SMvtNNZ984_85ZmOfF5iDZCLuag8PELc28i8QHNQgVxzqr1r445OzxqROWKXQgrHhCl1xsNmXz9zK_UN7WLODg~WyJyd1ZiVDdXQ3ZyWGxMZVFfIiwic3ViIiwiY2FyZGhvbGRlci0xMjMiXQ~WyJYSlJyUWoyYi1yWW9zNkpnIiwiY2FyZF9sYXN0NCIsIjQyNDIiXQ~\",\"l2\":\"eyJhbGciOiJFZERTQSIsInR5cCI6InNkK2p3dCIsImtpZCI6InZlY3Rvci11c2VyLWsxIn0.eyJfc2RfYWxnIjoic2hhLTI1NiIsImlhdCI6MTc5MTg3NDAzNiwiZXhwIjoxNzkyNDc4ODM2LCJtb2RlIjoiYXV0b25vbW91cyIsInByZXYiOiIzejlfb0dxYU9vOFdPS2hVSEtkRFBETVNrLVhEMU5pcnpOb3VDaG1EQ2FvIiwiY29uc3RyYWludHMiOnsiYWxsb3dlZF9tZXJjaGFudHMiOlsiYWNjdF92ZWN0b3JzX21lcmNoYW50Il0sIm1heF9hbW91bnQiOnsiYW1vdW50IjoxMDAwMCwiY3VycmVuY3kiOiJ1c2QifX0sImNuZiI6eyJqd2siOnsia3R5IjoiT0tQIiwia2lkIjoidmVjdG9yLWFnZW50LWsxIiwiYWxnIjoiRWREU0EiLCJ1c2UiOiJzaWciLCJjcnYiOiJFZDI1NTE5IiwieCI6IlEwejdlSTNVVExNN2ViaklmNk5wdXlsQm5UcU9adV85ZlhvMU9FeWFKX1kifX0sIl9zZCI6WyJHZGxlNHBrUTJQSEpVeE10dU9aUEcwb3JwbWV2dHVPSmNjZ3A5UHJKSDkwIl19.qKenPSpEfkGmSQrdGnO5CTuu8SLHmQ0vJ0KrSatchnxHRMh1RBiE-S5bUWgkdUX97VerDY5QrMZPz6sIJhS4BQ~WyJ4RUVtOG80V1FxZzVZZTREIiwicHJvbXB0X3BsYXliYWNrIiwiQnV5IHRoZSBpdGVtcyBpbiBteSBzYXZlZCBsaXN0IHdoZW4gdGhleSBhcmUgaW4gc3RvY2siXQ~\",\"l3\":\"eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6InZlY3Rvci1hZ2VudC1rMSJ9.eyJpYXQiOjE3OTE4NzQwMzYsImV4cCI6MTc5MTg3NDMzNiwicHJldiI6Ik1SYlIzVS1TRmVCNnpHYlBqaXhENWVZaFFsMi1waktLeThoXzdpZGVRZXciLCJtZXJjaGFudCI6ImFjY3RfdmVjdG9yc19tZXJjaGFudCIsInRyYW5zYWN0aW9uX2lkIjoiOXJydFIzbndfQll3SnY1YlViNWluc0VaaklRMXBwOV8yMG5PU2g2WGxNdyIsInRvdGFsIjp7ImFtb3VudCI6NDk5OSwiY3VycmVuY3kiOiJ1c2QifSwibGluZV9pdGVtcyI6W3sic2t1IjoiYmVhbnMtMWtnIiwicXR5IjoxfV19.e5rHomWBnxZV58G3ld6MPHwwkAXFEnNFBE23eE8xEHQGL-irNl21i39tzEmoV2MgYzDXICaxikXQOP4ya_FdCA\"},\"payment\":{\"type\":\"stripe-spt\",\"token\":\"spt_vector\",\"allowance\":{\"max_amount\":10000,\"currency\":\"usd\",\"merchant_id\":\"acct_vectors_merchant\",\"expires_at\":1791877636}}}"
+      },
+      "expect": {
+        "decision": "allow"
+      }
+    },
+    {
+      "name": "tap-browser-valid",
+      "description": "Browsing agent fetching a product page.",
+      "request": {
+        "method": "GET",
+        "url": "https://shop.example/products/beans-1kg",
+        "headers": {
+          "host": "shop.example",
+          "signature-input": "sig1=(\"@authority\" \"@path\");created=1791874031;expires=1791874511;keyid=\"vector-agent-k1\";alg=\"ed25519\";nonce=\"vector-nonce-1696kpl6\";tag=\"agent-browser-auth\"",
+          "signature": "sig1=:zxR6tJvxhAryoFN3ZdBA6nZ/lYJpvz5rSJiGiPl6wtX36mKAB8odJO+SBvqJKKBe3g2USfWJ1lFEXqUnXqrGAA==:"
+        }
+      },
+      "expect": {
+        "decision": "allow"
+      }
+    },
+    {
+      "name": "tap-expired",
+      "description": "Signature window ended an hour ago.",
+      "request": {
+        "method": "POST",
+        "url": "https://shop.example/checkout",
+        "headers": {
+          "host": "shop.example",
+          "content-type": "application/json",
+          "signature-input": "sig1=(\"@authority\" \"@path\");created=1791870136;expires=1791870436;keyid=\"vector-agent-k1\";alg=\"ed25519\";nonce=\"vector-expired\";tag=\"agent-payer-auth\"",
+          "signature": "sig1=:JsWJF+tWANQykVn058nER0zu4cTFORSRSU8swAOMbAnQgj9gg0/Rd2/kb/WHcIZJu0oA4o0r744Ch5z60JhjDg==:"
+        },
+        "body": "{\"order\":{\"id\":\"ord_v1\",\"merchant_id\":\"acct_vectors_merchant\",\"currency\":\"usd\",\"total\":4999,\"items\":[{\"sku\":\"beans-1kg\",\"qty\":1,\"unit_amount\":4999}]}}"
+      },
+      "expect": {
+        "decision": "block",
+        "failed": "window"
+      }
+    },
+    {
+      "name": "tap-window-too-long",
+      "description": "expires - created is 1 hour, above the 8-minute limit.",
+      "request": {
+        "method": "POST",
+        "url": "https://shop.example/checkout",
+        "headers": {
+          "host": "shop.example",
+          "content-type": "application/json",
+          "signature-input": "sig1=(\"@authority\" \"@path\");created=1791874031;expires=1791877631;keyid=\"vector-agent-k1\";alg=\"ed25519\";nonce=\"vector-long\";tag=\"agent-payer-auth\"",
+          "signature": "sig1=:1tF1vxt40rvjsjDzPLnGkFzASgw0tsDDN3WQAzE5g9zkTa6lGght9p2ueX4daiQVk9lTT/NPhEBW+jDEEXHABA==:"
+        },
+        "body": "{\"order\":{\"id\":\"ord_v1\",\"merchant_id\":\"acct_vectors_merchant\",\"currency\":\"usd\",\"total\":4999,\"items\":[{\"sku\":\"beans-1kg\",\"qty\":1,\"unit_amount\":4999}]}}"
+      },
+      "expect": {
+        "decision": "block",
+        "failed": "window"
+      }
+    },
+    {
+      "name": "tap-tampered-path",
+      "description": "Signed for /checkout, replayed against /admin/refund.",
+      "request": {
+        "method": "POST",
+        "url": "https://shop.example/admin/refund",
+        "headers": {
+          "host": "shop.example",
+          "content-type": "application/json",
+          "signature-input": "sig1=(\"@authority\" \"@path\");created=1791874031;expires=1791874511;keyid=\"vector-agent-k1\";alg=\"ed25519\";nonce=\"vector-tampered\";tag=\"agent-payer-auth\"",
+          "signature": "sig1=:zkubQl1nACtwBvIckmV6S9R6CQZjSDPFVwE3pXjoJVRfvon1Gd+TOrHMr/Tdl4qL2EN//NQS2nazlBAVVRHtBg==:"
+        },
+        "body": "{\"order\":{\"id\":\"ord_v1\",\"merchant_id\":\"acct_vectors_merchant\",\"currency\":\"usd\",\"total\":4999,\"items\":[{\"sku\":\"beans-1kg\",\"qty\":1,\"unit_amount\":4999}]},\"mandate\":{\"type\":\"verifiable-intent\",\"l1\":\"eyJhbGciOiJFZERTQSIsInR5cCI6InNkK2p3dCIsImtpZCI6InZlY3Rvci1pc3N1ZXItazEifQ.eyJfc2RfYWxnIjoic2hhLTI1NiIsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUiLCJpYXQiOjE3OTE4NzQwMzYsImV4cCI6MTgyMzQxMDAzNiwiY25mIjp7Imp3ayI6eyJrdHkiOiJPS1AiLCJraWQiOiJ2ZWN0b3ItdXNlci1rMSIsImFsZyI6IkVkRFNBIiwidXNlIjoic2lnIiwiY3J2IjoiRWQyNTUxOSIsIngiOiI5REQxX2owN0pvSmp3b2drcFpmWVc4NHhMVDJjbmpPektKdTdDTE03OUpVIn19LCJfc2QiOlsiUjN4bjJ5RWtnNkN5bGVGNEZ1U2RJcmtadWhYOHJQN1VPcElGTFNYOGZRVSIsImJlZ25uWHQ1VVpCV0l0ZUFMZUZvdGNJNC1sTFl6ZUhRWmVHYktXdU9Ja0kiXX0.SMvtNNZ984_85ZmOfF5iDZCLuag8PELc28i8QHNQgVxzqr1r445OzxqROWKXQgrHhCl1xsNmXz9zK_UN7WLODg~WyJyd1ZiVDdXQ3ZyWGxMZVFfIiwic3ViIiwiY2FyZGhvbGRlci0xMjMiXQ~WyJYSlJyUWoyYi1yWW9zNkpnIiwiY2FyZF9sYXN0NCIsIjQyNDIiXQ~\",\"l2\":\"eyJhbGciOiJFZERTQSIsInR5cCI6InNkK2p3dCIsImtpZCI6InZlY3Rvci11c2VyLWsxIn0.eyJfc2RfYWxnIjoic2hhLTI1NiIsImlhdCI6MTc5MTg3NDAzNiwiZXhwIjoxNzkyNDc4ODM2LCJtb2RlIjoiYXV0b25vbW91cyIsInByZXYiOiIzejlfb0dxYU9vOFdPS2hVSEtkRFBETVNrLVhEMU5pcnpOb3VDaG1EQ2FvIiwiY29uc3RyYWludHMiOnsiYWxsb3dlZF9tZXJjaGFudHMiOlsiYWNjdF92ZWN0b3JzX21lcmNoYW50Il0sIm1heF9hbW91bnQiOnsiYW1vdW50IjoxMDAwMCwiY3VycmVuY3kiOiJ1c2QifX0sImNuZiI6eyJqd2siOnsia3R5IjoiT0tQIiwia2lkIjoidmVjdG9yLWFnZW50LWsxIiwiYWxnIjoiRWREU0EiLCJ1c2UiOiJzaWciLCJjcnYiOiJFZDI1NTE5IiwieCI6IlEwejdlSTNVVExNN2ViaklmNk5wdXlsQm5UcU9adV85ZlhvMU9FeWFKX1kifX0sIl9zZCI6WyJHZGxlNHBrUTJQSEpVeE10dU9aUEcwb3JwbWV2dHVPSmNjZ3A5UHJKSDkwIl19.qKenPSpEfkGmSQrdGnO5CTuu8SLHmQ0vJ0KrSatchnxHRMh1RBiE-S5bUWgkdUX97VerDY5QrMZPz6sIJhS4BQ~WyJ4RUVtOG80V1FxZzVZZTREIiwicHJvbXB0X3BsYXliYWNrIiwiQnV5IHRoZSBpdGVtcyBpbiBteSBzYXZlZCBsaXN0IHdoZW4gdGhleSBhcmUgaW4gc3RvY2siXQ~\",\"l3\":\"eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6InZlY3Rvci1hZ2VudC1rMSJ9.eyJpYXQiOjE3OTE4NzQwMzYsImV4cCI6MTc5MTg3NDMzNiwicHJldiI6Ik1SYlIzVS1TRmVCNnpHYlBqaXhENWVZaFFsMi1waktLeThoXzdpZGVRZXciLCJtZXJjaGFudCI6ImFjY3RfdmVjdG9yc19tZXJjaGFudCIsInRyYW5zYWN0aW9uX2lkIjoiOXJydFIzbndfQll3SnY1YlViNWluc0VaaklRMXBwOV8yMG5PU2g2WGxNdyIsInRvdGFsIjp7ImFtb3VudCI6NDk5OSwiY3VycmVuY3kiOiJ1c2QifSwibGluZV9pdGVtcyI6W3sic2t1IjoiYmVhbnMtMWtnIiwicXR5IjoxfV19.e5rHomWBnxZV58G3ld6MPHwwkAXFEnNFBE23eE8xEHQGL-irNl21i39tzEmoV2MgYzDXICaxikXQOP4ya_FdCA\"},\"payment\":{\"type\":\"stripe-spt\",\"token\":\"spt_vector\",\"allowance\":{\"max_amount\":10000,\"currency\":\"usd\",\"merchant_id\":\"acct_vectors_merchant\",\"expires_at\":1791877636}}}"
+      },
+      "expect": {
+        "decision": "block",
+        "failed": "signature_valid"
+      }
+    },
+    {
+      "name": "tap-unknown-key",
+      "description": "Signed by a key that is not in the directory.",
+      "request": {
+        "method": "POST",
+        "url": "https://shop.example/checkout",
+        "headers": {
+          "host": "shop.example",
+          "content-type": "application/json",
+          "signature-input": "sig1=(\"@authority\" \"@path\");created=1791874031;expires=1791874511;keyid=\"unknown-agent-k1\";alg=\"ed25519\";nonce=\"vector-stranger\";tag=\"agent-payer-auth\"",
+          "signature": "sig1=:ux2yH5qFjW/7VPUmZKQk1Mfzcm1HIpAk92DnxdGxxjBXahjzyUdkQMwEe5KiFFfhPCS+gtptaPHUzYlMQ8C5AQ==:"
+        },
+        "body": "{\"order\":{\"id\":\"ord_v1\",\"merchant_id\":\"acct_vectors_merchant\",\"currency\":\"usd\",\"total\":4999,\"items\":[{\"sku\":\"beans-1kg\",\"qty\":1,\"unit_amount\":4999}]}}"
+      },
+      "expect": {
+        "decision": "block",
+        "failed": "key_found"
+      }
+    },
+    {
+      "name": "tap-replay",
+      "description": "The same signed request sent twice. The second must be blocked.",
+      "request": {
+        "method": "POST",
+        "url": "https://shop.example/checkout",
+        "headers": {
+          "host": "shop.example",
+          "content-type": "application/json",
+          "signature-input": "sig1=(\"@authority\" \"@path\");created=1791874031;expires=1791874511;keyid=\"vector-agent-k1\";alg=\"ed25519\";nonce=\"vector-replay\";tag=\"agent-payer-auth\"",
+          "signature": "sig1=:KCilwqvW28B5MdLfFc7U6kFL4QI4f9iq973YRTIEzbp6sy+k7jrMrBOkDUf7OjG353kewTi+QCrB9xpROwK4CQ==:"
+        },
+        "body": "{\"order\":{\"id\":\"ord_v1\",\"merchant_id\":\"acct_vectors_merchant\",\"currency\":\"usd\",\"total\":4999,\"items\":[{\"sku\":\"beans-1kg\",\"qty\":1,\"unit_amount\":4999}]},\"mandate\":{\"type\":\"verifiable-intent\",\"l1\":\"eyJhbGciOiJFZERTQSIsInR5cCI6InNkK2p3dCIsImtpZCI6InZlY3Rvci1pc3N1ZXItazEifQ.eyJfc2RfYWxnIjoic2hhLTI1NiIsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUiLCJpYXQiOjE3OTE4NzQwMzYsImV4cCI6MTgyMzQxMDAzNiwiY25mIjp7Imp3ayI6eyJrdHkiOiJPS1AiLCJraWQiOiJ2ZWN0b3ItdXNlci1rMSIsImFsZyI6IkVkRFNBIiwidXNlIjoic2lnIiwiY3J2IjoiRWQyNTUxOSIsIngiOiI5REQxX2owN0pvSmp3b2drcFpmWVc4NHhMVDJjbmpPektKdTdDTE03OUpVIn19LCJfc2QiOlsiUjN4bjJ5RWtnNkN5bGVGNEZ1U2RJcmtadWhYOHJQN1VPcElGTFNYOGZRVSIsImJlZ25uWHQ1VVpCV0l0ZUFMZUZvdGNJNC1sTFl6ZUhRWmVHYktXdU9Ja0kiXX0.SMvtNNZ984_85ZmOfF5iDZCLuag8PELc28i8QHNQgVxzqr1r445OzxqROWKXQgrHhCl1xsNmXz9zK_UN7WLODg~WyJyd1ZiVDdXQ3ZyWGxMZVFfIiwic3ViIiwiY2FyZGhvbGRlci0xMjMiXQ~WyJYSlJyUWoyYi1yWW9zNkpnIiwiY2FyZF9sYXN0NCIsIjQyNDIiXQ~\",\"l2\":\"eyJhbGciOiJFZERTQSIsInR5cCI6InNkK2p3dCIsImtpZCI6InZlY3Rvci11c2VyLWsxIn0.eyJfc2RfYWxnIjoic2hhLTI1NiIsImlhdCI6MTc5MTg3NDAzNiwiZXhwIjoxNzkyNDc4ODM2LCJtb2RlIjoiYXV0b25vbW91cyIsInByZXYiOiIzejlfb0dxYU9vOFdPS2hVSEtkRFBETVNrLVhEMU5pcnpOb3VDaG1EQ2FvIiwiY29uc3RyYWludHMiOnsiYWxsb3dlZF9tZXJjaGFudHMiOlsiYWNjdF92ZWN0b3JzX21lcmNoYW50Il0sIm1heF9hbW91bnQiOnsiYW1vdW50IjoxMDAwMCwiY3VycmVuY3kiOiJ1c2QifX0sImNuZiI6eyJqd2siOnsia3R5IjoiT0tQIiwia2lkIjoidmVjdG9yLWFnZW50LWsxIiwiYWxnIjoiRWREU0EiLCJ1c2UiOiJzaWciLCJjcnYiOiJFZDI1NTE5IiwieCI6IlEwejdlSTNVVExNN2ViaklmNk5wdXlsQm5UcU9adV85ZlhvMU9FeWFKX1kifX0sIl9zZCI6WyJHZGxlNHBrUTJQSEpVeE10dU9aUEcwb3JwbWV2dHVPSmNjZ3A5UHJKSDkwIl19.qKenPSpEfkGmSQrdGnO5CTuu8SLHmQ0vJ0KrSatchnxHRMh1RBiE-S5bUWgkdUX97VerDY5QrMZPz6sIJhS4BQ~WyJ4RUVtOG80V1FxZzVZZTREIiwicHJvbXB0X3BsYXliYWNrIiwiQnV5IHRoZSBpdGVtcyBpbiBteSBzYXZlZCBsaXN0IHdoZW4gdGhleSBhcmUgaW4gc3RvY2siXQ~\",\"l3\":\"eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6InZlY3Rvci1hZ2VudC1rMSJ9.eyJpYXQiOjE3OTE4NzQwMzYsImV4cCI6MTc5MTg3NDMzNiwicHJldiI6Ik1SYlIzVS1TRmVCNnpHYlBqaXhENWVZaFFsMi1waktLeThoXzdpZGVRZXciLCJtZXJjaGFudCI6ImFjY3RfdmVjdG9yc19tZXJjaGFudCIsInRyYW5zYWN0aW9uX2lkIjoiOXJydFIzbndfQll3SnY1YlViNWluc0VaaklRMXBwOV8yMG5PU2g2WGxNdyIsInRvdGFsIjp7ImFtb3VudCI6NDk5OSwiY3VycmVuY3kiOiJ1c2QifSwibGluZV9pdGVtcyI6W3sic2t1IjoiYmVhbnMtMWtnIiwicXR5IjoxfV19.e5rHomWBnxZV58G3ld6MPHwwkAXFEnNFBE23eE8xEHQGL-irNl21i39tzEmoV2MgYzDXICaxikXQOP4ya_FdCA\"},\"payment\":{\"type\":\"stripe-spt\",\"token\":\"spt_vector\",\"allowance\":{\"max_amount\":10000,\"currency\":\"usd\",\"merchant_id\":\"acct_vectors_merchant\",\"expires_at\":1791877636}}}"
+      },
+      "expect": {
+        "decision": "allow",
+        "second": {
+          "decision": "block",
+          "failed": "nonce_unused"
+        }
+      },
+      "sendTwice": true
+    },
+    {
+      "name": "tap-body-object-bound",
+      "description": "Consumer recognition object signed with the agent key and carrying the header nonce.",
+      "request": {
+        "method": "POST",
+        "url": "https://shop.example/checkout",
+        "headers": {
+          "host": "shop.example",
+          "content-type": "application/json",
+          "signature-input": "sig1=(\"@authority\" \"@path\");created=1791874031;expires=1791874511;keyid=\"vector-agent-k1\";alg=\"ed25519\";nonce=\"vector-body-nonce\";tag=\"agent-payer-auth\"",
+          "signature": "sig1=:J5pZ0gt+FcSVmlw6rxL5FWFHUKOWrvPg43NtGWquaOO2KU64OPqU6IhAKfFoHlY9baMQjWUiIKAEfp67ZRTQCg==:"
+        },
+        "body": "{\"order\":{\"id\":\"ord_v1\",\"merchant_id\":\"acct_vectors_merchant\",\"currency\":\"usd\",\"total\":4999,\"items\":[{\"sku\":\"beans-1kg\",\"qty\":1,\"unit_amount\":4999}]},\"mandate\":{\"type\":\"verifiable-intent\",\"l1\":\"eyJhbGciOiJFZERTQSIsInR5cCI6InNkK2p3dCIsImtpZCI6InZlY3Rvci1pc3N1ZXItazEifQ.eyJfc2RfYWxnIjoic2hhLTI1NiIsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUiLCJpYXQiOjE3OTE4NzQwMzYsImV4cCI6MTgyMzQxMDAzNiwiY25mIjp7Imp3ayI6eyJrdHkiOiJPS1AiLCJraWQiOiJ2ZWN0b3ItdXNlci1rMSIsImFsZyI6IkVkRFNBIiwidXNlIjoic2lnIiwiY3J2IjoiRWQyNTUxOSIsIngiOiI5REQxX2owN0pvSmp3b2drcFpmWVc4NHhMVDJjbmpPektKdTdDTE03OUpVIn19LCJfc2QiOlsiUjN4bjJ5RWtnNkN5bGVGNEZ1U2RJcmtadWhYOHJQN1VPcElGTFNYOGZRVSIsImJlZ25uWHQ1VVpCV0l0ZUFMZUZvdGNJNC1sTFl6ZUhRWmVHYktXdU9Ja0kiXX0.SMvtNNZ984_85ZmOfF5iDZCLuag8PELc28i8QHNQgVxzqr1r445OzxqROWKXQgrHhCl1xsNmXz9zK_UN7WLODg~WyJyd1ZiVDdXQ3ZyWGxMZVFfIiwic3ViIiwiY2FyZGhvbGRlci0xMjMiXQ~WyJYSlJyUWoyYi1yWW9zNkpnIiwiY2FyZF9sYXN0NCIsIjQyNDIiXQ~\",\"l2\":\"eyJhbGciOiJFZERTQSIsInR5cCI6InNkK2p3dCIsImtpZCI6InZlY3Rvci11c2VyLWsxIn0.eyJfc2RfYWxnIjoic2hhLTI1NiIsImlhdCI6MTc5MTg3NDAzNiwiZXhwIjoxNzkyNDc4ODM2LCJtb2RlIjoiYXV0b25vbW91cyIsInByZXYiOiIzejlfb0dxYU9vOFdPS2hVSEtkRFBETVNrLVhEMU5pcnpOb3VDaG1EQ2FvIiwiY29uc3RyYWludHMiOnsiYWxsb3dlZF9tZXJjaGFudHMiOlsiYWNjdF92ZWN0b3JzX21lcmNoYW50Il0sIm1heF9hbW91bnQiOnsiYW1vdW50IjoxMDAwMCwiY3VycmVuY3kiOiJ1c2QifX0sImNuZiI6eyJqd2siOnsia3R5IjoiT0tQIiwia2lkIjoidmVjdG9yLWFnZW50LWsxIiwiYWxnIjoiRWREU0EiLCJ1c2UiOiJzaWciLCJjcnYiOiJFZDI1NTE5IiwieCI6IlEwejdlSTNVVExNN2ViaklmNk5wdXlsQm5UcU9adV85ZlhvMU9FeWFKX1kifX0sIl9zZCI6WyJHZGxlNHBrUTJQSEpVeE10dU9aUEcwb3JwbWV2dHVPSmNjZ3A5UHJKSDkwIl19.qKenPSpEfkGmSQrdGnO5CTuu8SLHmQ0vJ0KrSatchnxHRMh1RBiE-S5bUWgkdUX97VerDY5QrMZPz6sIJhS4BQ~WyJ4RUVtOG80V1FxZzVZZTREIiwicHJvbXB0X3BsYXliYWNrIiwiQnV5IHRoZSBpdGVtcyBpbiBteSBzYXZlZCBsaXN0IHdoZW4gdGhleSBhcmUgaW4gc3RvY2siXQ~\",\"l3\":\"eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6InZlY3Rvci1hZ2VudC1rMSJ9.eyJpYXQiOjE3OTE4NzQwMzYsImV4cCI6MTc5MTg3NDMzNiwicHJldiI6Ik1SYlIzVS1TRmVCNnpHYlBqaXhENWVZaFFsMi1waktLeThoXzdpZGVRZXciLCJtZXJjaGFudCI6ImFjY3RfdmVjdG9yc19tZXJjaGFudCIsInRyYW5zYWN0aW9uX2lkIjoiOXJydFIzbndfQll3SnY1YlViNWluc0VaaklRMXBwOV8yMG5PU2g2WGxNdyIsInRvdGFsIjp7ImFtb3VudCI6NDk5OSwiY3VycmVuY3kiOiJ1c2QifSwibGluZV9pdGVtcyI6W3sic2t1IjoiYmVhbnMtMWtnIiwicXR5IjoxfV19.e5rHomWBnxZV58G3ld6MPHwwkAXFEnNFBE23eE8xEHQGL-irNl21i39tzEmoV2MgYzDXICaxikXQOP4ya_FdCA\"},\"payment\":{\"type\":\"stripe-spt\",\"token\":\"spt_vector\",\"allowance\":{\"max_amount\":10000,\"currency\":\"usd\",\"merchant_id\":\"acct_vectors_merchant\",\"expires_at\":1791877636}},\"consumer_recognition\":{\"nonce\":\"vector-body-nonce\",\"kid\":\"vector-agent-k1\",\"alg\":\"ed25519\",\"country\":\"US\",\"signature\":\"wKTVP2vU7sb7TqiHIBp3/W++mOIMwlfb5VYgCrFUn+VylZuHv+5nR1YCKvQZbK0hcfUPSN80qlJhfgiMX/VACw==\"}}"
+      },
+      "expect": {
+        "decision": "allow"
+      }
+    },
+    {
+      "name": "tap-body-object-wrong-nonce",
+      "description": "Consumer recognition object carries a different nonce than the header.",
+      "request": {
+        "method": "POST",
+        "url": "https://shop.example/checkout",
+        "headers": {
+          "host": "shop.example",
+          "content-type": "application/json",
+          "signature-input": "sig1=(\"@authority\" \"@path\");created=1791874031;expires=1791874511;keyid=\"vector-agent-k1\";alg=\"ed25519\";nonce=\"vector-body-bad\";tag=\"agent-payer-auth\"",
+          "signature": "sig1=:QHOLo3zb9L/u4OjS8PrGGtdpXu/0hpWwglOf0sCenIg+ziFe2tO/hjeSjvGzG2VnrlPVE2/X5AvnlUz8HIvDAw==:"
+        },
+        "body": "{\"order\":{\"id\":\"ord_v1\",\"merchant_id\":\"acct_vectors_merchant\",\"currency\":\"usd\",\"total\":4999,\"items\":[{\"sku\":\"beans-1kg\",\"qty\":1,\"unit_amount\":4999}]},\"mandate\":{\"type\":\"verifiable-intent\",\"l1\":\"eyJhbGciOiJFZERTQSIsInR5cCI6InNkK2p3dCIsImtpZCI6InZlY3Rvci1pc3N1ZXItazEifQ.eyJfc2RfYWxnIjoic2hhLTI1NiIsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUiLCJpYXQiOjE3OTE4NzQwMzYsImV4cCI6MTgyMzQxMDAzNiwiY25mIjp7Imp3ayI6eyJrdHkiOiJPS1AiLCJraWQiOiJ2ZWN0b3ItdXNlci1rMSIsImFsZyI6IkVkRFNBIiwidXNlIjoic2lnIiwiY3J2IjoiRWQyNTUxOSIsIngiOiI5REQxX2owN0pvSmp3b2drcFpmWVc4NHhMVDJjbmpPektKdTdDTE03OUpVIn19LCJfc2QiOlsiUjN4bjJ5RWtnNkN5bGVGNEZ1U2RJcmtadWhYOHJQN1VPcElGTFNYOGZRVSIsImJlZ25uWHQ1VVpCV0l0ZUFMZUZvdGNJNC1sTFl6ZUhRWmVHYktXdU9Ja0kiXX0.SMvtNNZ984_85ZmOfF5iDZCLuag8PELc28i8QHNQgVxzqr1r445OzxqROWKXQgrHhCl1xsNmXz9zK_UN7WLODg~WyJyd1ZiVDdXQ3ZyWGxMZVFfIiwic3ViIiwiY2FyZGhvbGRlci0xMjMiXQ~WyJYSlJyUWoyYi1yWW9zNkpnIiwiY2FyZF9sYXN0NCIsIjQyNDIiXQ~\",\"l2\":\"eyJhbGciOiJFZERTQSIsInR5cCI6InNkK2p3dCIsImtpZCI6InZlY3Rvci11c2VyLWsxIn0.eyJfc2RfYWxnIjoic2hhLTI1NiIsImlhdCI6MTc5MTg3NDAzNiwiZXhwIjoxNzkyNDc4ODM2LCJtb2RlIjoiYXV0b25vbW91cyIsInByZXYiOiIzejlfb0dxYU9vOFdPS2hVSEtkRFBETVNrLVhEMU5pcnpOb3VDaG1EQ2FvIiwiY29uc3RyYWludHMiOnsiYWxsb3dlZF9tZXJjaGFudHMiOlsiYWNjdF92ZWN0b3JzX21lcmNoYW50Il0sIm1heF9hbW91bnQiOnsiYW1vdW50IjoxMDAwMCwiY3VycmVuY3kiOiJ1c2QifX0sImNuZiI6eyJqd2siOnsia3R5IjoiT0tQIiwia2lkIjoidmVjdG9yLWFnZW50LWsxIiwiYWxnIjoiRWREU0EiLCJ1c2UiOiJzaWciLCJjcnYiOiJFZDI1NTE5IiwieCI6IlEwejdlSTNVVExNN2ViaklmNk5wdXlsQm5UcU9adV85ZlhvMU9FeWFKX1kifX0sIl9zZCI6WyJHZGxlNHBrUTJQSEpVeE10dU9aUEcwb3JwbWV2dHVPSmNjZ3A5UHJKSDkwIl19.qKenPSpEfkGmSQrdGnO5CTuu8SLHmQ0vJ0KrSatchnxHRMh1RBiE-S5bUWgkdUX97VerDY5QrMZPz6sIJhS4BQ~WyJ4RUVtOG80V1FxZzVZZTREIiwicHJvbXB0X3BsYXliYWNrIiwiQnV5IHRoZSBpdGVtcyBpbiBteSBzYXZlZCBsaXN0IHdoZW4gdGhleSBhcmUgaW4gc3RvY2siXQ~\",\"l3\":\"eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6InZlY3Rvci1hZ2VudC1rMSJ9.eyJpYXQiOjE3OTE4NzQwMzYsImV4cCI6MTc5MTg3NDMzNiwicHJldiI6Ik1SYlIzVS1TRmVCNnpHYlBqaXhENWVZaFFsMi1waktLeThoXzdpZGVRZXciLCJtZXJjaGFudCI6ImFjY3RfdmVjdG9yc19tZXJjaGFudCIsInRyYW5zYWN0aW9uX2lkIjoiOXJydFIzbndfQll3SnY1YlViNWluc0VaaklRMXBwOV8yMG5PU2g2WGxNdyIsInRvdGFsIjp7ImFtb3VudCI6NDk5OSwiY3VycmVuY3kiOiJ1c2QifSwibGluZV9pdGVtcyI6W3sic2t1IjoiYmVhbnMtMWtnIiwicXR5IjoxfV19.e5rHomWBnxZV58G3ld6MPHwwkAXFEnNFBE23eE8xEHQGL-irNl21i39tzEmoV2MgYzDXICaxikXQOP4ya_FdCA\"},\"payment\":{\"type\":\"stripe-spt\",\"token\":\"spt_vector\",\"allowance\":{\"max_amount\":10000,\"currency\":\"usd\",\"merchant_id\":\"acct_vectors_merchant\",\"expires_at\":1791877636}},\"consumer_recognition\":{\"nonce\":\"other\",\"kid\":\"vector-agent-k1\",\"alg\":\"ed25519\",\"signature\":\"7ZrfPbyPmFkOpPKt/poi8BUu/FYblOMBX5eJ9RNjPCsmO5vHkqn4jKIH8WHBlL+wDXIBoYpC8Wc83ZWzzw9wCA==\"}}"
+      },
+      "expect": {
+        "decision": "block",
+        "failed": "body_consumer_recognition"
+      }
+    },
+    {
+      "name": "vi-no-mandate",
+      "description": "Paying agent with no mandate.",
+      "request": {
+        "method": "POST",
+        "url": "https://shop.example/checkout",
+        "headers": {
+          "host": "shop.example",
+          "content-type": "application/json",
+          "signature-input": "sig1=(\"@authority\" \"@path\");created=1791874031;expires=1791874511;keyid=\"vector-agent-k1\";alg=\"ed25519\";nonce=\"vector-nonce-lxmn55c7\";tag=\"agent-payer-auth\"",
+          "signature": "sig1=:Uh0N/ApSXD317p62rrXQr3X6UtdRLChnmNf9l5lRLJy/6bJsPYtUUnNi8iLaHjyQRZUhIqFWI9rgigRqw65lBA==:"
+        },
+        "body": "{\"order\":{\"id\":\"ord_v1\",\"merchant_id\":\"acct_vectors_merchant\",\"currency\":\"usd\",\"total\":4999,\"items\":[{\"sku\":\"beans-1kg\",\"qty\":1,\"unit_amount\":4999}]},\"payment\":{\"type\":\"stripe-spt\",\"token\":\"spt_vector\",\"allowance\":{\"max_amount\":10000,\"currency\":\"usd\",\"merchant_id\":\"acct_vectors_merchant\",\"expires_at\":1791877636}}}"
+      },
+      "expect": {
+        "decision": "step_up",
+        "failed": "mandate_present"
+      }
+    },
+    {
+      "name": "vi-over-cap",
+      "description": "Order total above the mandate's max amount.",
+      "request": {
+        "method": "POST",
+        "url": "https://shop.example/checkout",
+        "headers": {
+          "host": "shop.example",
+          "content-type": "application/json",
+          "signature-input": "sig1=(\"@authority\" \"@path\");created=1791874031;expires=1791874511;keyid=\"vector-agent-k1\";alg=\"ed25519\";nonce=\"vector-nonce-z0zbp1b7\";tag=\"agent-payer-auth\"",
+          "signature": "sig1=:PTZv1xgjVArAsLmcZAk52YwkZMTwCnTDV366oxIGgKn53zEvNk44YCAtnZpjKZWY7GXnbl+i5bq8g3T/6MxMAA==:"
+        },
+        "body": "{\"order\":{\"id\":\"ord_v2\",\"merchant_id\":\"acct_vectors_merchant\",\"currency\":\"usd\",\"total\":15000,\"items\":[{\"sku\":\"beans-1kg\",\"qty\":3,\"unit_amount\":5000}]},\"mandate\":{\"type\":\"verifiable-intent\",\"l1\":\"eyJhbGciOiJFZERTQSIsInR5cCI6InNkK2p3dCIsImtpZCI6InZlY3Rvci1pc3N1ZXItazEifQ.eyJfc2RfYWxnIjoic2hhLTI1NiIsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUiLCJpYXQiOjE3OTE4NzQwMzYsImV4cCI6MTgyMzQxMDAzNiwiY25mIjp7Imp3ayI6eyJrdHkiOiJPS1AiLCJraWQiOiJ2ZWN0b3ItdXNlci1rMSIsImFsZyI6IkVkRFNBIiwidXNlIjoic2lnIiwiY3J2IjoiRWQyNTUxOSIsIngiOiI5REQxX2owN0pvSmp3b2drcFpmWVc4NHhMVDJjbmpPektKdTdDTE03OUpVIn19LCJfc2QiOlsiUjN4bjJ5RWtnNkN5bGVGNEZ1U2RJcmtadWhYOHJQN1VPcElGTFNYOGZRVSIsImJlZ25uWHQ1VVpCV0l0ZUFMZUZvdGNJNC1sTFl6ZUhRWmVHYktXdU9Ja0kiXX0.SMvtNNZ984_85ZmOfF5iDZCLuag8PELc28i8QHNQgVxzqr1r445OzxqROWKXQgrHhCl1xsNmXz9zK_UN7WLODg~WyJyd1ZiVDdXQ3ZyWGxMZVFfIiwic3ViIiwiY2FyZGhvbGRlci0xMjMiXQ~WyJYSlJyUWoyYi1yWW9zNkpnIiwiY2FyZF9sYXN0NCIsIjQyNDIiXQ~\",\"l2\":\"eyJhbGciOiJFZERTQSIsInR5cCI6InNkK2p3dCIsImtpZCI6InZlY3Rvci11c2VyLWsxIn0.eyJfc2RfYWxnIjoic2hhLTI1NiIsImlhdCI6MTc5MTg3NDAzNiwiZXhwIjoxNzkyNDc4ODM2LCJtb2RlIjoiYXV0b25vbW91cyIsInByZXYiOiIzejlfb0dxYU9vOFdPS2hVSEtkRFBETVNrLVhEMU5pcnpOb3VDaG1EQ2FvIiwiY29uc3RyYWludHMiOnsiYWxsb3dlZF9tZXJjaGFudHMiOlsiYWNjdF92ZWN0b3JzX21lcmNoYW50Il0sIm1heF9hbW91bnQiOnsiYW1vdW50IjoxMDAwMCwiY3VycmVuY3kiOiJ1c2QifX0sImNuZiI6eyJqd2siOnsia3R5IjoiT0tQIiwia2lkIjoidmVjdG9yLWFnZW50LWsxIiwiYWxnIjoiRWREU0EiLCJ1c2UiOiJzaWciLCJjcnYiOiJFZDI1NTE5IiwieCI6IlEwejdlSTNVVExNN2ViaklmNk5wdXlsQm5UcU9adV85ZlhvMU9FeWFKX1kifX0sIl9zZCI6WyJHZGxlNHBrUTJQSEpVeE10dU9aUEcwb3JwbWV2dHVPSmNjZ3A5UHJKSDkwIl19.qKenPSpEfkGmSQrdGnO5CTuu8SLHmQ0vJ0KrSatchnxHRMh1RBiE-S5bUWgkdUX97VerDY5QrMZPz6sIJhS4BQ~WyJ4RUVtOG80V1FxZzVZZTREIiwicHJvbXB0X3BsYXliYWNrIiwiQnV5IHRoZSBpdGVtcyBpbiBteSBzYXZlZCBsaXN0IHdoZW4gdGhleSBhcmUgaW4gc3RvY2siXQ~\",\"l3\":\"eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6InZlY3Rvci1hZ2VudC1rMSJ9.eyJpYXQiOjE3OTE4NzQwMzYsImV4cCI6MTc5MTg3NDMzNiwicHJldiI6Ik1SYlIzVS1TRmVCNnpHYlBqaXhENWVZaFFsMi1waktLeThoXzdpZGVRZXciLCJtZXJjaGFudCI6ImFjY3RfdmVjdG9yc19tZXJjaGFudCIsInRyYW5zYWN0aW9uX2lkIjoicDF0ZWlNNVd0bU43cXM1WExWbEM3TlVpRms2X0hTNFc0eWdHVEVxdkQ0ZyIsInRvdGFsIjp7ImFtb3VudCI6MTUwMDAsImN1cnJlbmN5IjoidXNkIn0sImxpbmVfaXRlbXMiOlt7InNrdSI6ImJlYW5zLTFrZyIsInF0eSI6M31dfQ.X_oD3Pbvq_orYl7N0bqJZ4Y9UT_QGrKsFiDZ7WzDtE7c6jFANaSc1dnbWxXYPo1IGGdlkmBIo0COtkn9pE3oDA\"},\"payment\":{\"type\":\"stripe-spt\",\"token\":\"spt_vector\",\"allowance\":{\"max_amount\":20000,\"currency\":\"usd\",\"merchant_id\":\"acct_vectors_merchant\",\"expires_at\":1791877636}}}"
+      },
+      "expect": {
+        "decision": "step_up",
+        "failed": "order_within_mandate"
+      }
+    },
+    {
+      "name": "vi-wrong-checkout",
+      "description": "Agent presents a different checkout (transaction_id) than the order.",
+      "request": {
+        "method": "POST",
+        "url": "https://shop.example/checkout",
+        "headers": {
+          "host": "shop.example",
+          "content-type": "application/json",
+          "signature-input": "sig1=(\"@authority\" \"@path\");created=1791874031;expires=1791874511;keyid=\"vector-agent-k1\";alg=\"ed25519\";nonce=\"vector-nonce-chp4s5ht\";tag=\"agent-payer-auth\"",
+          "signature": "sig1=:Nthrc1VXdKkK16qFV5qjZiAKhv3pvEyOVBdL7c6TPF82cMnfyvUDSx15JwbtmJrttTlMMakolvYwXTfFEDuRDQ==:"
+        },
+        "body": "{\"order\":{\"id\":\"ord_v1\",\"merchant_id\":\"acct_vectors_merchant\",\"currency\":\"usd\",\"total\":4999,\"items\":[{\"sku\":\"beans-1kg\",\"qty\":1,\"unit_amount\":4999}]},\"mandate\":{\"type\":\"verifiable-intent\",\"l1\":\"eyJhbGciOiJFZERTQSIsInR5cCI6InNkK2p3dCIsImtpZCI6InZlY3Rvci1pc3N1ZXItazEifQ.eyJfc2RfYWxnIjoic2hhLTI1NiIsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUiLCJpYXQiOjE3OTE4NzQwMzYsImV4cCI6MTgyMzQxMDAzNiwiY25mIjp7Imp3ayI6eyJrdHkiOiJPS1AiLCJraWQiOiJ2ZWN0b3ItdXNlci1rMSIsImFsZyI6IkVkRFNBIiwidXNlIjoic2lnIiwiY3J2IjoiRWQyNTUxOSIsIngiOiI5REQxX2owN0pvSmp3b2drcFpmWVc4NHhMVDJjbmpPektKdTdDTE03OUpVIn19LCJfc2QiOlsiUjN4bjJ5RWtnNkN5bGVGNEZ1U2RJcmtadWhYOHJQN1VPcElGTFNYOGZRVSIsImJlZ25uWHQ1VVpCV0l0ZUFMZUZvdGNJNC1sTFl6ZUhRWmVHYktXdU9Ja0kiXX0.SMvtNNZ984_85ZmOfF5iDZCLuag8PELc28i8QHNQgVxzqr1r445OzxqROWKXQgrHhCl1xsNmXz9zK_UN7WLODg~WyJyd1ZiVDdXQ3ZyWGxMZVFfIiwic3ViIiwiY2FyZGhvbGRlci0xMjMiXQ~WyJYSlJyUWoyYi1yWW9zNkpnIiwiY2FyZF9sYXN0NCIsIjQyNDIiXQ~\",\"l2\":\"eyJhbGciOiJFZERTQSIsInR5cCI6InNkK2p3dCIsImtpZCI6InZlY3Rvci11c2VyLWsxIn0.eyJfc2RfYWxnIjoic2hhLTI1NiIsImlhdCI6MTc5MTg3NDAzNiwiZXhwIjoxNzkyNDc4ODM2LCJtb2RlIjoiYXV0b25vbW91cyIsInByZXYiOiIzejlfb0dxYU9vOFdPS2hVSEtkRFBETVNrLVhEMU5pcnpOb3VDaG1EQ2FvIiwiY29uc3RyYWludHMiOnsiYWxsb3dlZF9tZXJjaGFudHMiOlsiYWNjdF92ZWN0b3JzX21lcmNoYW50Il0sIm1heF9hbW91bnQiOnsiYW1vdW50IjoxMDAwMCwiY3VycmVuY3kiOiJ1c2QifX0sImNuZiI6eyJqd2siOnsia3R5IjoiT0tQIiwia2lkIjoidmVjdG9yLWFnZW50LWsxIiwiYWxnIjoiRWREU0EiLCJ1c2UiOiJzaWciLCJjcnYiOiJFZDI1NTE5IiwieCI6IlEwejdlSTNVVExNN2ViaklmNk5wdXlsQm5UcU9adV85ZlhvMU9FeWFKX1kifX0sIl9zZCI6WyJHZGxlNHBrUTJQSEpVeE10dU9aUEcwb3JwbWV2dHVPSmNjZ3A5UHJKSDkwIl19.qKenPSpEfkGmSQrdGnO5CTuu8SLHmQ0vJ0KrSatchnxHRMh1RBiE-S5bUWgkdUX97VerDY5QrMZPz6sIJhS4BQ~WyJ4RUVtOG80V1FxZzVZZTREIiwicHJvbXB0X3BsYXliYWNrIiwiQnV5IHRoZSBpdGVtcyBpbiBteSBzYXZlZCBsaXN0IHdoZW4gdGhleSBhcmUgaW4gc3RvY2siXQ~\",\"l3\":\"eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6InZlY3Rvci1hZ2VudC1rMSJ9.eyJpYXQiOjE3OTE4NzQwMzYsImV4cCI6MTc5MTg3NDMzNiwicHJldiI6Ik1SYlIzVS1TRmVCNnpHYlBqaXhENWVZaFFsMi1waktLeThoXzdpZGVRZXciLCJtZXJjaGFudCI6ImFjY3RfdmVjdG9yc19tZXJjaGFudCIsInRyYW5zYWN0aW9uX2lkIjoibm90LXRoaXMtb3JkZXIiLCJ0b3RhbCI6eyJhbW91bnQiOjQ5OTksImN1cnJlbmN5IjoidXNkIn0sImxpbmVfaXRlbXMiOlt7InNrdSI6ImJlYW5zLTFrZyIsInF0eSI6MX1dfQ.YwDwzbAtMC0IVbcd1Ju5PXciPaWEnWVrsGj7yYJ4lhKH7VkESEELsJZQHBOkSIX65-8ARlIkBKD7gzJylhf7Dg\"},\"payment\":{\"type\":\"stripe-spt\",\"token\":\"spt_vector\",\"allowance\":{\"max_amount\":10000,\"currency\":\"usd\",\"merchant_id\":\"acct_vectors_merchant\",\"expires_at\":1791877636}}}"
+      },
+      "expect": {
+        "decision": "step_up",
+        "failed": "order_within_mandate"
+      }
+    },
+    {
+      "name": "spt-over-limit",
+      "description": "Order total above the shared payment token cap.",
+      "request": {
+        "method": "POST",
+        "url": "https://shop.example/checkout",
+        "headers": {
+          "host": "shop.example",
+          "content-type": "application/json",
+          "signature-input": "sig1=(\"@authority\" \"@path\");created=1791874031;expires=1791874511;keyid=\"vector-agent-k1\";alg=\"ed25519\";nonce=\"vector-nonce-p28fmxno\";tag=\"agent-payer-auth\"",
+          "signature": "sig1=:HOC0P522pO8sfB3poU0qpKHJ+lN//WB9tfW5OvFRqhqEmvpV6DDODWKqp80TXlnlgp18rQjJ6OglOABBQpL/Dg==:"
+        },
+        "body": "{\"order\":{\"id\":\"ord_v1\",\"merchant_id\":\"acct_vectors_merchant\",\"currency\":\"usd\",\"total\":4999,\"items\":[{\"sku\":\"beans-1kg\",\"qty\":1,\"unit_amount\":4999}]},\"mandate\":{\"type\":\"verifiable-intent\",\"l1\":\"eyJhbGciOiJFZERTQSIsInR5cCI6InNkK2p3dCIsImtpZCI6InZlY3Rvci1pc3N1ZXItazEifQ.eyJfc2RfYWxnIjoic2hhLTI1NiIsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUiLCJpYXQiOjE3OTE4NzQwMzYsImV4cCI6MTgyMzQxMDAzNiwiY25mIjp7Imp3ayI6eyJrdHkiOiJPS1AiLCJraWQiOiJ2ZWN0b3ItdXNlci1rMSIsImFsZyI6IkVkRFNBIiwidXNlIjoic2lnIiwiY3J2IjoiRWQyNTUxOSIsIngiOiI5REQxX2owN0pvSmp3b2drcFpmWVc4NHhMVDJjbmpPektKdTdDTE03OUpVIn19LCJfc2QiOlsiUjN4bjJ5RWtnNkN5bGVGNEZ1U2RJcmtadWhYOHJQN1VPcElGTFNYOGZRVSIsImJlZ25uWHQ1VVpCV0l0ZUFMZUZvdGNJNC1sTFl6ZUhRWmVHYktXdU9Ja0kiXX0.SMvtNNZ984_85ZmOfF5iDZCLuag8PELc28i8QHNQgVxzqr1r445OzxqROWKXQgrHhCl1xsNmXz9zK_UN7WLODg~WyJyd1ZiVDdXQ3ZyWGxMZVFfIiwic3ViIiwiY2FyZGhvbGRlci0xMjMiXQ~WyJYSlJyUWoyYi1yWW9zNkpnIiwiY2FyZF9sYXN0NCIsIjQyNDIiXQ~\",\"l2\":\"eyJhbGciOiJFZERTQSIsInR5cCI6InNkK2p3dCIsImtpZCI6InZlY3Rvci11c2VyLWsxIn0.eyJfc2RfYWxnIjoic2hhLTI1NiIsImlhdCI6MTc5MTg3NDAzNiwiZXhwIjoxNzkyNDc4ODM2LCJtb2RlIjoiYXV0b25vbW91cyIsInByZXYiOiIzejlfb0dxYU9vOFdPS2hVSEtkRFBETVNrLVhEMU5pcnpOb3VDaG1EQ2FvIiwiY29uc3RyYWludHMiOnsiYWxsb3dlZF9tZXJjaGFudHMiOlsiYWNjdF92ZWN0b3JzX21lcmNoYW50Il0sIm1heF9hbW91bnQiOnsiYW1vdW50IjoxMDAwMCwiY3VycmVuY3kiOiJ1c2QifX0sImNuZiI6eyJqd2siOnsia3R5IjoiT0tQIiwia2lkIjoidmVjdG9yLWFnZW50LWsxIiwiYWxnIjoiRWREU0EiLCJ1c2UiOiJzaWciLCJjcnYiOiJFZDI1NTE5IiwieCI6IlEwejdlSTNVVExNN2ViaklmNk5wdXlsQm5UcU9adV85ZlhvMU9FeWFKX1kifX0sIl9zZCI6WyJHZGxlNHBrUTJQSEpVeE10dU9aUEcwb3JwbWV2dHVPSmNjZ3A5UHJKSDkwIl19.qKenPSpEfkGmSQrdGnO5CTuu8SLHmQ0vJ0KrSatchnxHRMh1RBiE-S5bUWgkdUX97VerDY5QrMZPz6sIJhS4BQ~WyJ4RUVtOG80V1FxZzVZZTREIiwicHJvbXB0X3BsYXliYWNrIiwiQnV5IHRoZSBpdGVtcyBpbiBteSBzYXZlZCBsaXN0IHdoZW4gdGhleSBhcmUgaW4gc3RvY2siXQ~\",\"l3\":\"eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6InZlY3Rvci1hZ2VudC1rMSJ9.eyJpYXQiOjE3OTE4NzQwMzYsImV4cCI6MTc5MTg3NDMzNiwicHJldiI6Ik1SYlIzVS1TRmVCNnpHYlBqaXhENWVZaFFsMi1waktLeThoXzdpZGVRZXciLCJtZXJjaGFudCI6ImFjY3RfdmVjdG9yc19tZXJjaGFudCIsInRyYW5zYWN0aW9uX2lkIjoiOXJydFIzbndfQll3SnY1YlViNWluc0VaaklRMXBwOV8yMG5PU2g2WGxNdyIsInRvdGFsIjp7ImFtb3VudCI6NDk5OSwiY3VycmVuY3kiOiJ1c2QifSwibGluZV9pdGVtcyI6W3sic2t1IjoiYmVhbnMtMWtnIiwicXR5IjoxfV19.e5rHomWBnxZV58G3ld6MPHwwkAXFEnNFBE23eE8xEHQGL-irNl21i39tzEmoV2MgYzDXICaxikXQOP4ya_FdCA\"},\"payment\":{\"type\":\"stripe-spt\",\"token\":\"spt_vector\",\"allowance\":{\"max_amount\":1000,\"currency\":\"usd\",\"merchant_id\":\"acct_vectors_merchant\",\"expires_at\":1791877636}}}"
+      },
+      "expect": {
+        "decision": "block",
+        "failed": "token_limits"
+      }
+    },
+    {
+      "name": "ap2-cart-valid",
+      "description": "AP2 cart mandate signed by merchant and user, matching the order.",
+      "request": {
+        "method": "POST",
+        "url": "https://shop.example/checkout",
+        "headers": {
+          "host": "shop.example",
+          "content-type": "application/json",
+          "signature-input": "sig1=(\"@authority\" \"@path\");created=1791874031;expires=1791874511;keyid=\"vector-agent-k1\";alg=\"ed25519\";nonce=\"vector-nonce-lsjxw4g3\";tag=\"agent-payer-auth\"",
+          "signature": "sig1=:Kk70OehzA0YcitrPIgJy1AjAvUpi1voQAxOvgtpCjC2UeukMAfhwb49KUOLraiaX9+X9TRYZFA4KcUg4SZi9Dw==:"
+        },
+        "body": "{\"order\":{\"id\":\"ord_v1\",\"merchant_id\":\"acct_vectors_merchant\",\"currency\":\"usd\",\"total\":4999,\"items\":[{\"sku\":\"beans-1kg\",\"qty\":1,\"unit_amount\":4999}]},\"mandate\":{\"type\":\"ap2-cart\",\"merchant_signature\":\"eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6InZlY3Rvci1tZXJjaGFudC1rMSJ9.eyJjYXJ0X2lkIjoib3JkX3YxIiwibWVyY2hhbnRfaWQiOiJhY2N0X3ZlY3RvcnNfbWVyY2hhbnQiLCJjdXJyZW5jeSI6InVzZCIsInRvdGFsIjo0OTk5LCJpdGVtcyI6W3sic2t1IjoiYmVhbnMtMWtnIiwicXR5IjoxLCJ1bml0X2Ftb3VudCI6NDk5OX1dLCJleHBpcmVzX2F0IjoiMjAyNi0xMC0xM1QwNzowMjoxNi4xMzRaIn0.xyxnscop8fPnteKiFElG3moOPNmmMNBo06mS2mmaVZOXW0Eo0ZkrRUkRq6zML4mqwDVcgjg5iXETIRYO-NZVCg\",\"user_signature\":\"eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6InZlY3Rvci11c2VyLWsxIn0.eyJjYXJ0X2lkIjoib3JkX3YxIiwibWVyY2hhbnRfaWQiOiJhY2N0X3ZlY3RvcnNfbWVyY2hhbnQiLCJjdXJyZW5jeSI6InVzZCIsInRvdGFsIjo0OTk5LCJpdGVtcyI6W3sic2t1IjoiYmVhbnMtMWtnIiwicXR5IjoxLCJ1bml0X2Ftb3VudCI6NDk5OX1dLCJleHBpcmVzX2F0IjoiMjAyNi0xMC0xM1QwNzowMjoxNi4xMzRaIn0.zPc9TeuhOsc1s2m9b3VKtL4Ep6Pxpmk7fI16ur6X0rMD22P-_XRk1C3LMPT06D2KC-d31WX3CzeCJZLVZZ6OBw\",\"user_jwk\":{\"kty\":\"OKP\",\"kid\":\"vector-user-k1\",\"alg\":\"EdDSA\",\"use\":\"sig\",\"crv\":\"Ed25519\",\"x\":\"9DD1_j07JoJjwogkpZfYW84xLT2cnjOzKJu7CLM79JU\"}},\"payment\":{\"type\":\"stripe-spt\",\"token\":\"spt_vector\",\"allowance\":{\"max_amount\":10000,\"currency\":\"usd\",\"merchant_id\":\"acct_vectors_merchant\",\"expires_at\":1791877636}}}"
+      },
+      "expect": {
+        "decision": "allow"
+      }
+    }
+  ]
+}

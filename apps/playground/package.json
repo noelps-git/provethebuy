@@ -1,0 +1,15 @@
+{
+  "name": "@provethebuy/playground",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Local web app to try ProveTheBuy: playground, agent traffic, request inspector, policy editor, dispute queue and agent directory.",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "dependencies": {
+    "@provethebuy/verify": "0.1.0",
+    "@provethebuy/cli": "0.1.0",
+    "yaml": "^2.9.1"
+  }
+}

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.demo/
+.data/
+evidence.jsonl
+*.log
+!packages/cli/samples/*.log
+.DS_Store
+.env
+.vercel

@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "outputDirectory": "apps/playground/public",
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api/index.mjs" }
+  ]
+}

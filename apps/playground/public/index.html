@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ProveTheBuy playground</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Serif:wght@500;600&display=swap">
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="rail" aria-label="Main">
+      <a class="brand" href="#/playground" aria-label="ProveTheBuy home">
+        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="3" width="22" height="26" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 10h12M10 15h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M11 21.5l3 3 7-7" fill="none" stroke="var(--teal)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span><strong>ProveTheBuy</strong><small>Local playground</small></span>
+      </a>
+      <nav>
+        <a href="#/playground" data-route="playground"><svg viewBox="0 0 20 20"><path d="M4 4l12 6-12 6z"/></svg>Playground</a>
+        <a href="#/traffic" data-route="traffic"><svg viewBox="0 0 20 20"><path d="M3 16V9M8 16V4M13 16v-6M18 16V7"/></svg>Agent traffic</a>
+        <a href="#/requests" data-route="requests"><svg viewBox="0 0 20 20"><path d="M3 5h14M3 10h14M3 15h9"/></svg>Requests</a>
+        <a href="#/policy" data-route="policy"><svg viewBox="0 0 20 20"><path d="M6 3h8l3 3v11H6zM14 3v3h3M9 10h5M9 13h5"/></svg>Policy</a>
+        <a href="#/disputes" data-route="disputes"><svg viewBox="0 0 20 20"><path d="M10 3l7 3v4c0 4-3 6.5-7 7.5C6 16.5 3 14 3 10V6z"/></svg>Disputes <span class="count" id="nav-disputes" hidden></span></a>
+        <a href="#/agents" data-route="agents"><svg viewBox="0 0 20 20"><circle cx="10" cy="7" r="3.2"/><path d="M4 17c.8-3 3.2-4.5 6-4.5s5.2 1.5 6 4.5"/></svg>Agents</a>
+        <a href="#/pricing" data-route="pricing"><svg viewBox="0 0 20 20"><path d="M10 2l2.4 5L18 8l-4 3.8.9 5.2L10 14.5 5.1 17l.9-5.2L2 8l5.6-1z"/></svg>Pricing</a>
+      </nav>
+      <div class="rail-foot">
+        <div class="merchant" id="merchant"></div>
+        <div class="mode" id="mode"></div>
+        <div class="ledger" id="ledger"></div>
+        <button class="link" id="reset" type="button">Reset demo data</button>
+      </div>
+    </aside>
+    <main id="view" tabindex="-1"></main>
+  </div>
+  <div class="drawer" id="drawer" hidden>
+    <div class="drawer-scrim" data-close></div>
+    <section class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+      <header><h2 id="drawer-title"></h2><button class="icon" data-close aria-label="Close">×</button></header>
+      <div class="drawer-body" id="drawer-body"></div>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js" type="module"></script>
+</body>
+</html>

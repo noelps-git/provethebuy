@@ -1,0 +1,29 @@
+{
+  "name": "provethebuy-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Open-source verification and dispute evidence for orders placed by AI agents.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "workspaces": [
+    "packages/verify",
+    "packages/cli",
+    "apps/playground",
+    "examples/express-checkout"
+  ],
+  "engines": {
+    "node": ">=18.17"
+  },
+  "scripts": {
+    "build": "npm run build -w @provethebuy/verify && npm run build -w @provethebuy/cli",
+    "test": "npm run build && npm test -w @provethebuy/verify && npm test -w @provethebuy/cli && node scripts/check-vectors.mjs",
+    "demo": "npm run build && npm start -w @provethebuy/playground",
+    "vectors": "npm run build && node scripts/generate-vectors.mjs",
+    "example": "npm run build && npm start -w provethebuy-example-express",
+    "agent": "npm run agent -w provethebuy-example-express"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "^5.9.3"
+  }
+}

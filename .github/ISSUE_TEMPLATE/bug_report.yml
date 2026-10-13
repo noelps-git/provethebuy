@@ -1,0 +1,25 @@
+name: Bug report
+description: A request is decided wrongly, or something crashes
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What did the verifier decide, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: request
+    attributes:
+      label: The request
+      description: The signed request as JSON (remove anything private), or the CLI command you ran.
+      render: json
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: "@provethebuy/verify 0.1.0, Node 20.11"
+  - type: markdown
+    attributes:
+      value: "Found a security problem? Please don't file it here. See SECURITY.md."

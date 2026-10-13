@@ -1,0 +1,15 @@
+{
+  "name": "provethebuy-example-express",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A checkout endpoint protected by ProveTheBuy, plus a script that plays a shopping agent.",
+  "scripts": {
+    "start": "node server.mjs",
+    "agent": "node agent.mjs"
+  },
+  "dependencies": {
+    "@provethebuy/verify": "0.1.0",
+    "express": "^5.2.1"
+  }
+}
