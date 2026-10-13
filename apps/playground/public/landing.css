@@ -301,6 +301,10 @@ img, svg { display: block; }
 .lf-bar.allow { background: #15803d; opacity: .75; }
 .lf-bar.block { background: #dc2626; opacity: .7; }
 
+/* NIST highlight in protocol strip */
+.lp-logo-nist { color: var(--blue) !important; opacity: 1 !important; }
+.lp-logo-nist svg { opacity: .8 !important; }
+
 /* ── How it works ─────────────────────────────────────── */
 .lw { background: var(--bg-alt); padding: 96px 28px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .lw-inner { max-width: 1180px; margin: 0 auto; }
@@ -396,9 +400,45 @@ img, svg { display: block; }
   padding: 4px 9px; letter-spacing: .04em; text-transform: uppercase;
 }
 
+/* ── NIST standards section ───────────────────────────── */
+.lnist {
+  background: var(--bg-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  padding: 80px 28px;
+}
+.lnist-inner { max-width: 1180px; margin: 0 auto; }
+.lnist-label {
+  display: block; font: 600 12px/1 var(--font); letter-spacing: .08em;
+  text-transform: uppercase; color: var(--blue); margin-bottom: 36px;
+}
+.lnist-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+}
+.lnist-card {
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 22px 22px 20px;
+  display: flex; flex-direction: column; gap: 6px;
+  transition: box-shadow .16s, border-color .16s;
+}
+.lnist-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,.08); border-color: var(--blue-mid); }
+.lnist-card-tag {
+  font: 700 12px/1 var(--font); color: var(--blue); letter-spacing: .04em;
+  text-transform: uppercase; margin-bottom: 4px;
+}
+.lnist-card-name { font: 600 14px/1.3 var(--font); color: var(--ink); margin-bottom: 6px; }
+.lnist-card-body { font: 400 13px/1.6 var(--font); color: var(--muted); flex: 1; }
+.lnist-algos {
+  display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px;
+}
+.lnist-algos span {
+  font: 600 11px/1 var(--font); font-family: 'Courier New', monospace;
+  background: var(--blue-light); color: var(--blue);
+  padding: 3px 8px; border-radius: 4px;
+}
+
 /* ── Responsive ───────────────────────────────────────── */
 @media (max-width: 1020px) {
   .lh h1 { font-size: 42px; }
+  .lnist-grid { grid-template-columns: 1fr 1fr; }
   .lf-grid { grid-template-columns: 1fr; }
   .lf-card { border-right: 0; }
   .lf-card:nth-child(n) { border-bottom: 1px solid var(--border); }
@@ -411,6 +451,8 @@ img, svg { display: block; }
   .lh { padding: 60px 20px 52px; }
   .lh h1 { font-size: 32px; }
   .lh-sub { font-size: 16px; }
+  .lnist-grid { grid-template-columns: 1fr; }
+  .lnist { padding: 56px 20px; }
   .lf, .lw, .lpr { padding: 64px 20px; }
   .lh-mockup-body { grid-template-columns: 1fr; }
   .lh-sidebar { display: none; }

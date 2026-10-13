@@ -39,13 +39,13 @@
 <!-- ═══════════════════════ HERO ═══════════════════════ -->
 <section class="lh">
   <div class="lh-inner">
-    <div class="lh-eyebrow">Now in public beta · Visa TAP + Mastercard Agent Pay</div>
+    <div class="lh-eyebrow">FIPS 186-5 · Visa TAP · Mastercard Agent Pay</div>
 
     <h1>Prove every AI-agent payment.<br>Win every dispute.</h1>
 
     <p class="lh-sub">
-      The only open-source toolkit that cryptographically verifies every AI-agent checkout
-      and assembles the chargeback evidence pack — automatically.
+      The only open-source toolkit built on NIST-approved cryptography that verifies
+      every AI-agent checkout and assembles the chargeback evidence pack — automatically.
     </p>
 
     <div class="lh-actions">
@@ -111,7 +111,7 @@
 <!-- ═══════════════════ PROTOCOL STRIP ════════════════ -->
 <div class="lp">
   <div class="lp-inner">
-    <span class="lp-label">Compatible with</span>
+    <span class="lp-label">Built on</span>
     <div class="lp-logos">
       <span class="lp-logo">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -121,13 +121,17 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
         Mastercard Agent Pay
       </span>
-      <span class="lp-logo">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
-        HTTP Signatures RFC 9421
+      <span class="lp-logo lp-logo-nist">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        NIST FIPS 186-5
+      </span>
+      <span class="lp-logo lp-logo-nist">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M3 12h1M20 12h1M12 3v1M12 20v1M5.6 5.6l.7.7M17.7 17.7l.7.7M5.6 18.4l.7-.7M17.7 6.3l.7-.7"/></svg>
+        NIST FIPS 180-4
       </span>
       <span class="lp-logo">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-        JWS · AP2 · Verifiable Intent
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+        RFC 9421 HTTP Signatures
       </span>
     </div>
   </div>
@@ -147,24 +151,24 @@
       <!-- Card 1: Verify -->
       <div class="lf-card">
         <div class="lf-card-meta">
-          <h3>Verify every agent checkout</h3>
-          <p>Cryptographic HTTP Signature checks against live agent directories. Replays, spoofed keys, and out-of-mandate orders are caught before they settle.</p>
+          <h3>NIST-approved cryptographic verification</h3>
+          <p>Every agent checkout is checked with Ed25519 or ECDSA P-256 signatures (NIST FIPS 186-5, SP 800-186) and SHA-256 hashing (FIPS 180-4) via RFC 9421 HTTP Signatures. Replays, spoofed keys, and out-of-mandate orders are caught before they settle — in under 5 ms.</p>
         </div>
         <div class="lf-screen">
           <div class="lf-screen-bar">
             <div class="lf-screen-dots"><i></i><i></i><i></i></div>
-            <span class="lf-screen-title">Verification receipt</span>
+            <span class="lf-screen-title">Verification receipt · Ed25519 · FIPS 186-5</span>
           </div>
           <div class="lf-receipt">
             <div class="lf-receipt-verdict">
               <b>Allow</b>
-              <span class="lf-badge-allow">visa-tap · mandate verified</span>
+              <span class="lf-badge-allow">visa-tap · EdDSA · mandate verified</span>
             </div>
-            <div class="lf-receipt-row"><div class="lf-receipt-dot"></div><span class="lf-receipt-name">Agent signature present</span><span class="lf-receipt-pass">Pass</span></div>
-            <div class="lf-receipt-row"><div class="lf-receipt-dot"></div><span class="lf-receipt-name">Signature matches key</span><span class="lf-receipt-pass">Pass</span></div>
-            <div class="lf-receipt-row"><div class="lf-receipt-dot"></div><span class="lf-receipt-name">Not a replay</span><span class="lf-receipt-pass">Pass</span></div>
-            <div class="lf-receipt-row"><div class="lf-receipt-dot"></div><span class="lf-receipt-name">Merchant match</span><span class="lf-receipt-pass">Pass</span></div>
-            <div class="lf-receipt-row"><div class="lf-receipt-dot"></div><span class="lf-receipt-name">Order inside mandate</span><span class="lf-receipt-pass">Pass</span></div>
+            <div class="lf-receipt-row"><div class="lf-receipt-dot"></div><span class="lf-receipt-name">HTTP Signature present (RFC 9421)</span><span class="lf-receipt-pass">Pass</span></div>
+            <div class="lf-receipt-row"><div class="lf-receipt-dot"></div><span class="lf-receipt-name">Ed25519 signature valid (FIPS 186-5)</span><span class="lf-receipt-pass">Pass</span></div>
+            <div class="lf-receipt-row"><div class="lf-receipt-dot"></div><span class="lf-receipt-name">SHA-256 nonce unused (FIPS 180-4)</span><span class="lf-receipt-pass">Pass</span></div>
+            <div class="lf-receipt-row"><div class="lf-receipt-dot"></div><span class="lf-receipt-name">Key in Visa directory (SP 800-186)</span><span class="lf-receipt-pass">Pass</span></div>
+            <div class="lf-receipt-row"><div class="lf-receipt-dot"></div><span class="lf-receipt-name">Order within mandate limits</span><span class="lf-receipt-pass">Pass</span></div>
           </div>
         </div>
       </div>
@@ -206,8 +210,8 @@
       <!-- Card 3: Disputes -->
       <div class="lf-card">
         <div class="lf-card-meta">
-          <h3>Dispute evidence, assembled automatically</h3>
-          <p>When a chargeback arrives, ProveTheBuy re-verifies at the key snapshot from order time and builds the full evidence pack — ready to submit.</p>
+          <h3>Tamper-evident evidence chain</h3>
+          <p>Every verification is written to a SHA-256 hash chain (FIPS 180-4). When a chargeback arrives, ProveTheBuy re-verifies using the public-key snapshot locked at order time — an unbroken cryptographic chain of custody no card network can dismiss.</p>
         </div>
         <div class="lf-screen">
           <div class="lf-screen-bar">
@@ -224,8 +228,8 @@
               <div class="lf-section-body">Order <code>pi_pg_m3x9k</code> placed by Visa TAP agent. Signature verified at order time against directory snapshot. Mandate confirms shopper authorisation.</div>
             </div>
             <div class="lf-section">
-              <div class="lf-section-title">Cryptographic proof</div>
-              <div class="lf-section-body">Record <code>rec_7fGx2q</code> · SHA-256 <code>a3f9…c821</code><br>Key snapshot locked · chain-of-custody intact</div>
+              <div class="lf-section-title">Cryptographic proof · FIPS 180-4</div>
+              <div class="lf-section-body">Record <code>rec_7fGx2q</code> · SHA-256 <code>a3f9…c821</code><br>Ed25519 key snapshot (FIPS 186-5) · RFC 8785 canonical hash · chain intact</div>
             </div>
           </div>
         </div>
@@ -286,7 +290,7 @@
       <div class="lw-step">
         <div class="lw-step-n">Step 02</div>
         <h3>ProveTheBuy verifies it instantly</h3>
-        <p>Your store passes the request to the verifier. It checks the signature against the live directory key, validates the mandate, detects replays, and applies your policy in under 5 ms.</p>
+        <p>The verifier checks the Ed25519 or ECDSA P-256 HTTP Signature (NIST FIPS 186-5) against the live directory key, validates the SHA-256 nonce (FIPS 180-4), confirms the mandate, and applies your policy — in under 5 ms.</p>
       </div>
       <div class="lw-step">
         <div class="lw-step-n">Step 03</div>
@@ -296,6 +300,47 @@
     </div>
   </div>
 </section>
+
+<!-- ══════════════════════ NIST STANDARDS ═════════════ -->
+<div class="lnist">
+  <div class="lnist-inner">
+    <span class="lnist-label">Cryptographic foundations</span>
+    <div class="lnist-grid">
+      <div class="lnist-card">
+        <div class="lnist-card-tag">NIST FIPS 186-5</div>
+        <div class="lnist-card-name">Digital Signature Standard</div>
+        <div class="lnist-card-body">Covers Ed25519 (EdDSA), ECDSA P-256, and RSA-PSS — the three signature schemes used by Visa TAP, Mastercard Agent Pay, and Web Bot Auth. FIPS 186-5 (2023) was the first federal standard to include EdDSA.</div>
+        <div class="lnist-algos">
+          <span>Ed25519</span><span>ECDSA P-256</span><span>RSA-PSS</span>
+        </div>
+      </div>
+      <div class="lnist-card">
+        <div class="lnist-card-tag">NIST FIPS 180-4</div>
+        <div class="lnist-card-name">Secure Hash Standard (SHA-2)</div>
+        <div class="lnist-card-body">SHA-256 is used for nonce hashing, JWK public-key snapshots, order canonicalisation (RFC 8785), SD-JWT disclosure digests, and every link in the tamper-evident evidence ledger chain.</div>
+        <div class="lnist-algos">
+          <span>SHA-256</span><span>RFC 8785 JCS</span><span>SD-JWT</span>
+        </div>
+      </div>
+      <div class="lnist-card">
+        <div class="lnist-card-tag">NIST SP 800-186</div>
+        <div class="lnist-card-name">Elliptic Curve Domain Parameters</div>
+        <div class="lnist-card-body">P-256 (secp256r1) is the approved NIST curve used by ECDSA agent keys and JWKS directory entries. Provides 128-bit equivalent security strength — the threshold for signatures through the 2030s per SP 800-131A.</div>
+        <div class="lnist-algos">
+          <span>P-256</span><span>128-bit security</span><span>SP 800-131A</span>
+        </div>
+      </div>
+      <div class="lnist-card">
+        <div class="lnist-card-tag">RFC 9421</div>
+        <div class="lnist-card-name">HTTP Message Signatures</div>
+        <div class="lnist-card-body">The IETF standard that defines how to sign HTTP requests end-to-end. ProveTheBuy verifies the signature base string covering method, authority, path, headers, and the nonce — making every covered component tamper-evident.</div>
+        <div class="lnist-algos">
+          <span>Signature base</span><span>Component binding</span><span>Nonce / replay</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ═══════════════════════ PRICING ═══════════════════ -->
 <section id="pricing" class="lpr">
@@ -430,6 +475,9 @@
       <div class="lfooter-badges">
         <span class="lfooter-badge">Open Source</span>
         <span class="lfooter-badge">Apache 2.0</span>
+        <span class="lfooter-badge">FIPS 186-5</span>
+        <span class="lfooter-badge">FIPS 180-4</span>
+        <span class="lfooter-badge">SP 800-186</span>
       </div>
     </div>
   </div>
