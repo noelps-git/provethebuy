@@ -25,7 +25,7 @@ export interface VerificationRecord {
   enforced: boolean;
   reasons: string[];
   /** Raw material kept so the record can be re-verified months later. */
-  artifacts?: { request?: HttpRequestLike; key_jwk?: Jwk; context?: CheckoutContext };
+  artifacts?: { request?: HttpRequestLike; key_jwk?: Jwk; issuer_jwk?: Jwk; context?: CheckoutContext };
   prev_hash: string;
   hash: string;
 }
@@ -141,7 +141,10 @@ export class EvidenceLedger {
         decision: result.decision,
         enforced: result.enforced,
         reasons: result.reasons,
-        artifacts: extra.storeArtifacts === false ? undefined : { request: extra.request, key_jwk: extra.keyJwk ?? result.agentKeyJwk, context: extra.context },
+        artifacts:
+          extra.storeArtifacts === false
+            ? undefined
+            : { request: extra.request, key_jwk: extra.keyJwk ?? result.agentKeyJwk, issuer_jwk: result.issuerKeyJwk, context: extra.context },
       },
       "rec",
     );

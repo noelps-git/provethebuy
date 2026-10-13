@@ -32,7 +32,9 @@ export async function reverifyRecord(
   if (!a?.request || !a.key_jwk || !rec.agent) return { ok: false, detail: "Record has no stored request or key snapshot to re-verify.", checks: [] };
   const keys = new KeyDirectory({ sources: [{ name: rec.agent.directory ?? "snapshot", jwks: { keys: [{ ...a.key_jwk, kid: rec.agent.keyid }] } }] });
   const at = (rec.agent.created ?? Math.floor(Date.parse(rec.received_at) / 1000)) + 1;
-  const v = new ProveTheBuy({ ...opts, keys, replay: new MemoryReplayStore(), now: () => at });
+  // Use the issuer key snapshot from the record when the caller has no issuer directory of its own.
+  const issuers = opts.issuers ?? (a.issuer_jwk ? new KeyDirectory({ sources: [{ name: "issuer-snapshot", jwks: { keys: [a.issuer_jwk] } }] }) : undefined);
+  const v = new ProveTheBuy({ ...opts, issuers, keys, replay: new MemoryReplayStore(), now: () => at });
   const res = await v.verify(a.request, a.context);
   const sigOk = res.checks.some((c) => c.name === "signature_valid" && c.status === "pass");
   const same = res.decision === rec.decision;

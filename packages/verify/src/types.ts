@@ -71,6 +71,8 @@ export interface VerificationResult {
   receivedAt: string;
   /** Public key the agent signed with, kept for the evidence record. */
   agentKeyJwk?: Jwk;
+  /** Mandate issuer key used (Verifiable Intent layer 1), kept for re-verification. */
+  issuerKeyJwk?: Jwk;
   /** Present when decision is step_up: what to ask the person to confirm. */
   stepUp?: { reason: string; suggested: "ap2-cart-mandate" | "3ds" | "confirm-in-session" };
 }

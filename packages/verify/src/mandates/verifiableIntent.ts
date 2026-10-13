@@ -43,10 +43,12 @@ export async function verifyVerifiableIntent(m: VerifiableIntentMandate, ctx: Ma
   // ---- L1: issuer credential
   if (!ctx.issuers) return fail("No issuer key directory is configured, so layer 1 cannot be checked.");
   let l1Claims: Record<string, unknown>;
+  let issuerJwk: Jwk | undefined;
   try {
     const kid = String(decodeJws(splitSdJwt(m.l1).jwt).header.kid ?? "");
     const issuerKey = await ctx.issuers.resolve(kid);
     if (!issuerKey) return fail(`Issuer key "${kid}" was not found in any issuer directory.`);
+    issuerJwk = { ...issuerKey.jwk, kid };
     l1Claims = verifySdJwt(m.l1, issuerKey.key).claims;
   } catch (e) {
     return fail(`Layer 1 (issuer credential) failed: ${(e as Error).message}`);
@@ -111,6 +113,7 @@ export async function verifyVerifiableIntent(m: VerifiableIntentMandate, ctx: Ma
   );
 
   return {
+    issuerKeyJwk: issuerJwk,
     info: {
       type: m.type,
       mode,

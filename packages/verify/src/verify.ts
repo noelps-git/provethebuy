@@ -127,7 +127,8 @@ export class ProveTheBuy {
     );
     const base = { enforced: p.mode === "enforce", policyVersion: p.version!, receivedAt, rawSha256 };
     let keyForRecord: VerificationResult["agentKeyJwk"];
-    const done = (decision: Decision, extra: Partial<VerificationResult> = {}): VerificationResult => ({ decision, reasons, checks, ...base, agentKeyJwk: keyForRecord, ...extra });
+    let issuerForRecord: VerificationResult["issuerKeyJwk"];
+    const done = (decision: Decision, extra: Partial<VerificationResult> = {}): VerificationResult => ({ decision, reasons, checks, ...base, agentKeyJwk: keyForRecord, issuerKeyJwk: issuerForRecord, ...extra });
 
     // ---------------------------------------------------------------- 1. agent?
     const sigInput = headers["signature-input"];
@@ -306,6 +307,7 @@ export class ProveTheBuy {
         checks.push({ name: "mandate_present", status: "pass", detail: `Mandate type ${m.info.type}.` });
         checks.push(...m.checks);
         mandateInfo = m.info;
+        issuerForRecord = m.issuerKeyJwk;
         if (!m.info.valid) escalate("block", "Mandate does not verify.");
         else if (m.info.constraintsOk === false) escalate(p.mandate.on_outside, "Order is outside the mandate.");
         const intentOnly = m.info.type === "ap2-intent" || m.info.mode === "autonomous";

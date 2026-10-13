@@ -21,6 +21,8 @@ export interface MandateContext {
 export interface MandateOutcome {
   info: MandateInfo;
   checks: Check[];
+  /** Issuer key used for layer 1, kept in the evidence record so it can be re-verified later. */
+  issuerKeyJwk?: Jwk;
 }
 
 export async function verifyMandate(m: Mandate | undefined, ctx: MandateContext): Promise<MandateOutcome | null> {
