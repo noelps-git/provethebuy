@@ -4,6 +4,7 @@
   "installCommand": "npm install",
   "outputDirectory": "apps/playground/public",
   "rewrites": [
-    { "source": "/api/:path*", "destination": "/api/index.mjs" }
+    { "source": "/api/:path*", "destination": "/api/index.mjs" },
+    { "source": "/app", "destination": "/app.html" }
   ]
 }

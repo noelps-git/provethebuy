@@ -552,7 +552,7 @@ async function renderPricing() {
 }
 
 // ------------------------------------------------------------------ router
-const ROUTES = { playground: renderPlayground, traffic: renderTraffic, requests: renderRequests, policy: renderPolicy, disputes: renderDisputes, agents: renderAgents, pricing: renderPricing };
+const ROUTES = { playground: renderPlayground, traffic: renderTraffic, requests: renderRequests, policy: renderPolicy, disputes: renderDisputes, agents: renderAgents };
 
 async function router() {
   const [, name = "playground", id] = (location.hash || "#/playground").split("/");

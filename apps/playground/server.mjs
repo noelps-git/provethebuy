@@ -246,13 +246,16 @@ async function route(req, res) {
   const m = req.method;
 
   if (!p.startsWith("/api/")) {
-    const file = normalize(join(PUBLIC, p === "/" ? "index.html" : p));
+    // /app and /app/ are the playground SPA
+    const requestedFile = p === "/app" || p === "/app/" ? "app.html" : (p === "/" ? "index.html" : p);
+    const file = normalize(join(PUBLIC, requestedFile));
     if (!file.startsWith(PUBLIC)) throw httpError(403, "Forbidden");
     try {
       const data = await readFile(file);
       res.writeHead(200, { "content-type": MIME[extname(file)] ?? "application/octet-stream" });
       return res.end(data);
     } catch {
+      // Unknown paths fall back to landing page
       const data = await readFile(join(PUBLIC, "index.html"));
       res.writeHead(200, { "content-type": MIME[".html"] });
       return res.end(data);
