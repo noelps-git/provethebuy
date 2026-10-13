@@ -53,3 +53,36 @@ export class RedisReplayStore implements ReplayStore {
     return res === "OK";
   }
 }
+
+export interface UpstashReplayStoreOptions {
+  /** UPSTASH_REDIS_REST_URL */
+  url: string;
+  /** UPSTASH_REDIS_REST_TOKEN */
+  token: string;
+  prefix?: string;
+  fetch?: typeof fetch;
+}
+
+/** Shared store for serverless deployments, using Upstash's Redis REST API (no TCP connection needed). */
+export class UpstashReplayStore implements ReplayStore {
+  private readonly prefix: string;
+  private readonly doFetch: typeof fetch;
+
+  constructor(private readonly opts: UpstashReplayStoreOptions) {
+    this.prefix = opts.prefix ?? "ptb:nonce:";
+    this.doFetch = opts.fetch ?? fetch;
+  }
+
+  async checkAndRemember(key: string, ttlSeconds: number): Promise<boolean> {
+    const ttl = Math.max(1, Math.ceil(ttlSeconds));
+    const res = await this.doFetch(this.opts.url.replace(/\/$/, ""), {
+      method: "POST",
+      headers: { authorization: `Bearer ${this.opts.token}`, "content-type": "application/json" },
+      body: JSON.stringify(["SET", this.prefix + key, "1", "NX", "EX", String(ttl)]),
+    });
+    if (!res.ok) throw new Error(`Upstash replay store returned HTTP ${res.status}`);
+    const data = (await res.json()) as { result?: unknown; error?: string };
+    if (data.error) throw new Error(`Upstash replay store: ${data.error}`);
+    return data.result === "OK";
+  }
+}

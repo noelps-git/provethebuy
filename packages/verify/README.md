@@ -26,6 +26,17 @@ const agents = createMiddleware(ptb, ledger);
 app.post("/checkout", agents.capture(), agents.verify(), handler);
 ```
 
+Send records to ProveTheBuy Cloud (optional, fails open):
+
+```js
+import { connectCloud, UpstashReplayStore } from "@provethebuy/verify";
+const cloud = connectCloud(ledger, { apiKey: process.env.PROVETHEBUY_API_KEY });
+// serverless: await cloud.flush() before the response ends
+
+// shared replay protection without a Redis connection
+const replay = new UpstashReplayStore({ url: process.env.UPSTASH_REDIS_REST_URL, token: process.env.UPSTASH_REDIS_REST_TOKEN });
+```
+
 Supports RFC 9421 / Web Bot Auth, Visa Trusted Agent Protocol, Mastercard Verifiable Intent (preview), AP2 (preview) and Stripe shared payment token limits. No runtime dependencies; Node 18.17+.
 
 Full documentation, the playground and examples: [github.com/provethebuy/provethebuy](https://github.com/provethebuy/provethebuy).

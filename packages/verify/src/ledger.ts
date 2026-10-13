@@ -87,12 +87,29 @@ export class EvidenceLedger {
 
   protected persist(_rec: LedgerRecord): void {}
 
+  private listeners: ((rec: LedgerRecord) => void)[] = [];
+
+  /** Call `fn` after every new record (used by connectCloud). Returns a function that removes the listener. */
+  onRecord(fn: (rec: LedgerRecord) => void): () => void {
+    this.listeners.push(fn);
+    return () => {
+      this.listeners = this.listeners.filter((l) => l !== fn);
+    };
+  }
+
   protected appendRaw<T extends LedgerRecord>(partial: Unhashed<T>, prefix: string): T {
     const prev_hash = this.records.length ? this.records[this.records.length - 1].hash : GENESIS;
     const body = { ...partial, record_id: randomId(prefix), received_at: partial.received_at ?? new Date().toISOString(), prev_hash } as Omit<T, "hash">;
     const rec = { ...body, hash: recordHash(body as Omit<LedgerRecord, "hash">) } as T;
     this.records.push(rec);
     this.persist(rec);
+    for (const l of this.listeners) {
+      try {
+        l(rec);
+      } catch {
+        /* a listener must never break recording */
+      }
+    }
     return rec;
   }
 

@@ -7,15 +7,41 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
-    "./express": { "types": "./dist/express.d.ts", "default": "./dist/express.js" },
-    "./testing": { "types": "./dist/testing.d.ts", "default": "./dist/testing.js" }
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./express": {
+      "types": "./dist/express.d.ts",
+      "default": "./dist/express.js"
+    },
+    "./testing": {
+      "types": "./dist/testing.d.ts",
+      "default": "./dist/testing.js"
+    }
   },
-  "files": ["dist", "README.md"],
-  "engines": { "node": ">=18.17" },
-  "keywords": ["agentic-commerce", "web-bot-auth", "visa-tap", "trusted-agent-protocol", "verifiable-intent", "ap2", "acp", "http-message-signatures", "rfc9421", "chargebacks", "disputes"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18.17"
+  },
+  "keywords": [
+    "agentic-commerce",
+    "web-bot-auth",
+    "visa-tap",
+    "trusted-agent-protocol",
+    "verifiable-intent",
+    "ap2",
+    "acp",
+    "http-message-signatures",
+    "rfc9421",
+    "chargebacks",
+    "disputes"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "node --test test/verify.test.mjs"
+    "test": "node --test test/verify.test.mjs test/cloud.test.mjs"
   }
 }
