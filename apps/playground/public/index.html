@@ -3,336 +3,437 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ProveTheBuy — Verify AI-agent payments. Win every chargeback.</title>
-  <meta name="description" content="The only toolkit that cryptographically proves every AI-agent checkout and assembles the dispute evidence pack before you need it.">
+  <title>ProveTheBuy — Verify every AI-agent payment. Win every dispute.</title>
+  <meta name="description" content="The only toolkit that cryptographically proves every AI-agent checkout and assembles the dispute evidence pack before you need it. Visa TAP + Mastercard Agent Pay.">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Serif:ital,wght@0,500;0,600;0,700;1,600&display=swap">
   <link rel="stylesheet" href="/landing.css">
 </head>
 <body>
 
-  <!-- ── Nav ───────────────────────────────────────────── -->
-  <header class="l-nav">
-    <div class="l-nav-inner">
-      <a class="l-brand" href="/" aria-label="ProveTheBuy home">
-        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
-          <rect x="5" y="3" width="22" height="26" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
-          <path d="M10 10h12M10 15h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <path d="M11 21.5l3 3 7-7" fill="none" stroke="var(--teal)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <strong>ProveTheBuy</strong>
-      </a>
-      <nav class="l-nav-links">
-        <a href="#features">Features</a>
-        <a href="#how-it-works">How it works</a>
-        <a href="#pricing">Pricing</a>
-        <a href="https://github.com/noelps-git/provethebuy" target="_blank" rel="noopener">GitHub</a>
-      </nav>
-      <a class="l-btn l-btn-primary l-nav-cta" href="/app.html">Open Playground</a>
-    </div>
-  </header>
-
-  <!-- ── Hero ──────────────────────────────────────────── -->
-  <section class="l-hero">
-    <div class="l-hero-inner">
-      <div class="l-badge">Now in public beta · Visa TAP + Mastercard Agent Pay</div>
-
-      <h1>There are average payment verifiers.<br>And there's <em>ProveTheBuy</em>.</h1>
-
-      <p class="l-hero-sub">
-        The only toolkit that cryptographically proves every AI-agent checkout —
-        and assembles the chargeback evidence pack before you even know there's a dispute.
-      </p>
-
-      <div class="l-hero-actions">
-        <a class="l-btn l-btn-primary l-btn-lg" href="/app.html">
-          Open the Playground
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M11 4l6 6-6 6"/></svg>
-        </a>
-        <a class="l-btn l-btn-ghost l-btn-lg" href="https://github.com/noelps-git/provethebuy" target="_blank" rel="noopener">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.54 2.87 8.39 6.84 9.75.5.09.68-.22.68-.49v-1.72c-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.89 1.57 2.34 1.12 2.91.86.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.38 9.38 0 0112 7.43c.85 0 1.71.12 2.51.34 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9v2.82c0 .27.18.59.69.49C19.13 20.65 22 16.8 22 12.26 22 6.58 17.52 2 12 2z"/></svg>
-          View source
-        </a>
-      </div>
-
-      <p class="l-hero-trust">No card required · Runs 100% locally · Apache 2.0</p>
-
-      <!-- Browser mockup -->
-      <div class="l-mockup-wrap">
-        <div class="l-mockup-bar">
-          <div class="l-mockup-dots">
-            <span></span><span></span><span></span>
-          </div>
-          <div class="l-mockup-url">localhost:4319 · ProveTheBuy playground</div>
-        </div>
-        <div class="l-mockup-body">
-          <div class="l-mockup-rail">
-            <div class="l-mockup-rail-brand">
-              <svg class="mark" viewBox="0 0 32 32" aria-hidden="true" style="width:18px;height:18px">
-                <rect x="5" y="3" width="22" height="26" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
-                <path d="M11 21.5l3 3 7-7" fill="none" stroke="var(--teal)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              ProveTheBuy
-            </div>
-            <div class="l-mockup-nav-item active">
-              <span class="l-mockup-nav-dot"></span> Playground
-            </div>
-            <div class="l-mockup-nav-item">
-              <span class="l-mockup-nav-dot" style="background:var(--muted)"></span> Agent traffic
-            </div>
-            <div class="l-mockup-nav-item">
-              <span class="l-mockup-nav-dot" style="background:var(--muted)"></span> Requests
-            </div>
-            <div class="l-mockup-nav-item">
-              <span class="l-mockup-nav-dot" style="background:var(--muted)"></span> Policy
-            </div>
-            <div class="l-mockup-nav-item">
-              <span class="l-mockup-nav-dot" style="background:var(--muted)"></span> Disputes
-            </div>
-          </div>
-          <div class="l-mockup-main">
-            <div class="l-mockup-main-head">
-              <h2>Playground</h2>
-              <p>Verify a signed agent request against the real verifier</p>
-            </div>
-            <div class="l-mock-proof">
-              <div class="l-mock-proof-verdict">
-                <b>Allow</b>
-                <span>Oct 13, 2026 · 14:22</span>
-              </div>
-              <div class="l-mock-proof-why">
-                Agent signature is valid. Order is within mandate limits. Merchant matches.
-              </div>
-              <div class="l-mock-checks">
-                <div class="l-mock-check">
-                  <div class="l-mock-check-dot pass">✓</div>
-                  <span class="l-mock-check-name">Agent signature present</span>
-                  <span class="l-mock-check-status pass">Pass</span>
-                </div>
-                <div class="l-mock-check">
-                  <div class="l-mock-check-dot pass">✓</div>
-                  <span class="l-mock-check-name">Signature matches</span>
-                  <span class="l-mock-check-status pass">Pass</span>
-                </div>
-                <div class="l-mock-check">
-                  <div class="l-mock-check-dot pass">✓</div>
-                  <span class="l-mock-check-name">Not a replay</span>
-                  <span class="l-mock-check-status pass">Pass</span>
-                </div>
-                <div class="l-mock-check">
-                  <div class="l-mock-check-dot pass">✓</div>
-                  <span class="l-mock-check-name">Key in directory</span>
-                  <span class="l-mock-check-status pass">Pass</span>
-                </div>
-                <div class="l-mock-check">
-                  <div class="l-mock-check-dot pass">✓</div>
-                  <span class="l-mock-check-name">Order inside mandate</span>
-                  <span class="l-mock-check-status pass">Pass</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Features ──────────────────────────────────────── -->
-  <section id="features" class="l-features">
-    <div class="l-features-inner">
-      <div class="l-section-label">What it does</div>
-      <p class="l-section-title">Everything you need to run a trusted agentic checkout.</p>
-
-      <div class="l-feat-grid">
-
-        <div class="l-feat-card">
-          <div class="l-feat-icon">
-            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M20 12c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V5l8-3 8 3v7z"/></svg>
-          </div>
-          <h3>Verify every agent checkout</h3>
-          <p>Cryptographic signature checks against live agent directories. Replays, spoofed keys, and out-of-mandate orders are caught before they settle.</p>
-          <div class="l-feat-tags">
-            <span class="l-feat-tag">Visa TAP</span>
-            <span class="l-feat-tag">Mastercard Agent Pay</span>
-            <span class="l-feat-tag">HTTP Signatures</span>
-          </div>
-        </div>
-
-        <div class="l-feat-card">
-          <div class="l-feat-icon">
-            <svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
-          </div>
-          <h3>Policy editor with dry-run</h3>
-          <p>Edit your verification policy in YAML. Run a dry-run against every recorded request to preview what would change — then apply only when you're confident.</p>
-          <div class="l-feat-tags">
-            <span class="l-feat-tag">Shadow mode</span>
-            <span class="l-feat-tag">Enforce mode</span>
-            <span class="l-feat-tag">Dry-run diff</span>
-          </div>
-        </div>
-
-        <div class="l-feat-card">
-          <div class="l-feat-icon">
-            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-          </div>
-          <h3>Dispute evidence, assembled automatically</h3>
-          <p>When a chargeback arrives, ProveTheBuy re-verifies the stored request at the key snapshot from order time and builds the full evidence pack — ready to submit.</p>
-          <div class="l-feat-tags">
-            <span class="l-feat-tag">Evidence ledger</span>
-            <span class="l-feat-tag">Chain-of-custody hash</span>
-            <span class="l-feat-tag">One-click export</span>
-          </div>
-        </div>
-
-        <div class="l-feat-card">
-          <div class="l-feat-icon">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/><path d="M18 8l2 2 4-4" stroke-width="2"/></svg>
-          </div>
-          <h3>Agent reputation tracking</h3>
-          <p>Track dispute rates, blocked orders, and mandate mismatches per agent key. When an agent's dispute rate exceeds your threshold, the policy automatically steps up.</p>
-          <div class="l-feat-tags">
-            <span class="l-feat-tag">Per-key signals</span>
-            <span class="l-feat-tag">Auto step-up</span>
-            <span class="l-feat-tag">Agent directory</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ── How it works ──────────────────────────────────── -->
-  <section id="how-it-works" class="l-how">
-    <div class="l-how-inner">
-      <div class="l-section-label">How it works</div>
-      <p class="l-section-title">From checkout to evidence in three steps.</p>
-      <div class="l-steps">
-        <div class="l-step">
-          <div class="l-step-num">01</div>
-          <h3>Agent signs the request</h3>
-          <p>The AI shopping agent attaches an HTTP Signature and a mandate to every checkout request, binding the order to the shopper's authorisation.</p>
-        </div>
-        <div class="l-step">
-          <div class="l-step-num">02</div>
-          <h3>ProveTheBuy verifies it</h3>
-          <p>Your store calls the verifier. It checks the signature against the agent's directory key, validates the mandate, detects replays, and applies your policy in &lt;5 ms.</p>
-        </div>
-        <div class="l-step">
-          <div class="l-step-num">03</div>
-          <h3>Dispute? Evidence is ready.</h3>
-          <p>The verification record, key snapshot, and order hash are stored in a tamper-evident ledger. When a chargeback arrives, the evidence pack is one click away.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Pricing ────────────────────────────────────────── -->
-  <section id="pricing" class="l-pricing">
-    <div class="l-pricing-inner">
-      <div class="l-pricing-head">
-        <span class="l-section-label">Pricing</span>
-        <p class="l-section-title">Simple plans. No per-verification fees.</p>
-        <p>Upgrade as your agent traffic grows. Every plan includes the full verifier, evidence ledger, dispute tooling, and policy editor.</p>
-      </div>
-
-      <div class="l-plan-grid">
-
-        <!-- Indie -->
-        <div class="l-plan">
-          <div class="l-plan-name">Indie</div>
-          <div class="l-plan-price">$9<span>&nbsp;/ month</span></div>
-          <p class="l-plan-desc">For indie developers and solo merchants testing the waters with agentic commerce.</p>
-          <hr class="l-plan-divider">
-          <ul class="l-plan-features">
-            <li>Up to 10,000 verified requests / mo</li>
-            <li>Full verifier + policy editor</li>
-            <li>Evidence ledger (30-day history)</li>
-            <li>Dispute pack export</li>
-            <li>Community support</li>
-          </ul>
-          <a class="l-plan-cta" href="https://dodo.pe/provethebuy-indie" target="_blank" rel="noopener">
-            Get Indie <span class="l-plan-cta-arrow">→</span>
-          </a>
-        </div>
-
-        <!-- Pro -->
-        <div class="l-plan l-plan-pro">
-          <div class="l-plan-badge">Most popular</div>
-          <div class="l-plan-name">Pro</div>
-          <div class="l-plan-price">$49<span>&nbsp;/ month</span></div>
-          <p class="l-plan-desc">For growing teams running agentic checkout in production and needing enforce mode.</p>
-          <hr class="l-plan-divider">
-          <ul class="l-plan-features">
-            <li>Up to 500,000 verified requests / mo</li>
-            <li>Everything in Indie</li>
-            <li>Enforce mode (live blocking)</li>
-            <li>Agent directory integrations</li>
-            <li>Reputation signals & auto step-up</li>
-            <li>Email support</li>
-          </ul>
-          <a class="l-plan-cta" href="https://dodo.pe/provethebuy-pro" target="_blank" rel="noopener">
-            Get Pro <span class="l-plan-cta-arrow">→</span>
-          </a>
-        </div>
-
-        <!-- Scale -->
-        <div class="l-plan">
-          <div class="l-plan-name">Scale</div>
-          <div class="l-plan-price">$199<span>&nbsp;/ month</span></div>
-          <p class="l-plan-desc">For high-volume merchants and enterprises with compliance requirements.</p>
-          <hr class="l-plan-divider">
-          <ul class="l-plan-features">
-            <li>Unlimited verified requests</li>
-            <li>Everything in Pro</li>
-            <li>Custom mandate policies</li>
-            <li>Full audit log export</li>
-            <li>SLA + dedicated support</li>
-          </ul>
-          <a class="l-plan-cta" href="https://dodo.pe/provethebuy-scale" target="_blank" rel="noopener">
-            Get Scale <span class="l-plan-cta-arrow">→</span>
-          </a>
-        </div>
-
-      </div>
-
-      <p class="l-pricing-note">
-        All plans billed monthly. Cancel any time. Payments handled securely by
-        <a href="https://dodopayments.com" target="_blank" rel="noopener">Dodo Payments</a>.
-      </p>
-    </div>
-  </section>
-
-  <!-- ── CTA Banner ─────────────────────────────────────── -->
-  <section class="l-cta-banner">
-    <h2>Try it now — no account needed.</h2>
-    <p>The playground runs entirely on your machine. Pick a scenario, verify a signed request, and see exactly which checks pass and why.</p>
-    <a class="l-btn l-btn-primary l-btn-lg" href="/app.html">
-      Open the Playground
-      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M11 4l6 6-6 6"/></svg>
+<!-- ═══════════════════════ NAV ═══════════════════════ -->
+<header class="ln">
+  <div class="ln-inner">
+    <a class="ln-brand" href="/">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="5" y="3" width="22" height="26" rx="3" stroke="currentColor" stroke-width="2"/>
+        <path d="M10 10h12M10 15h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M11 21.5l3 3 7-7" stroke="#0d44e8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      ProveTheBuy
     </a>
-  </section>
-
-  <!-- ── Footer ─────────────────────────────────────────── -->
-  <footer class="l-footer">
-    <div class="l-footer-inner">
-      <div class="l-footer-brand">
-        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true" style="width:20px;height:20px">
-          <rect x="5" y="3" width="22" height="26" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
-          <path d="M11 21.5l3 3 7-7" fill="none" stroke="var(--teal)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <strong>ProveTheBuy</strong>
-      </div>
-      <nav class="l-footer-links">
-        <a href="#features">Features</a>
-        <a href="#pricing">Pricing</a>
-        <a href="/app.html">Playground</a>
-        <a href="https://github.com/noelps-git/provethebuy" target="_blank" rel="noopener">GitHub</a>
-      </nav>
-      <p class="l-footer-copy">© 2026 ProveTheBuy · Apache 2.0</p>
+    <nav class="ln-links">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="https://github.com/noelps-git/provethebuy" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+    <div class="ln-actions">
+      <a class="ln-btn-ghost" href="https://github.com/noelps-git/provethebuy" target="_blank" rel="noopener">View source</a>
+      <a class="ln-btn-cta" href="/app.html">Open Playground</a>
     </div>
-  </footer>
+  </div>
+</header>
+
+<!-- ═══════════════════════ HERO ═══════════════════════ -->
+<section class="lh">
+  <div class="lh-inner">
+    <div class="lh-eyebrow">Now in public beta · Visa TAP + Mastercard Agent Pay</div>
+
+    <h1>Prove every AI-agent payment.<br>Win every dispute.</h1>
+
+    <p class="lh-sub">
+      The only open-source toolkit that cryptographically verifies every AI-agent checkout
+      and assembles the chargeback evidence pack — automatically.
+    </p>
+
+    <div class="lh-actions">
+      <a class="lh-cta" href="/app.html">
+        Open the Playground
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M11 4l6 6-6 6"/></svg>
+      </a>
+      <a class="lh-ghost" href="#features">
+        See how it works
+        <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4v12M4 10l6 6 6-6"/></svg>
+      </a>
+    </div>
+
+    <p class="lh-trust">No card required · Runs 100% locally · Apache 2.0 open source</p>
+
+    <!-- ─ Browser mockup ─ -->
+    <div class="lh-mockup">
+      <div class="lh-mockup-bar">
+        <div class="lh-dots"><i></i><i></i><i></i></div>
+        <div class="lh-mockup-addr">localhost:4319 — ProveTheBuy playground</div>
+      </div>
+      <div class="lh-mockup-body">
+        <!-- Sidebar -->
+        <div class="lh-sidebar">
+          <div class="lh-sb-brand">
+            <svg viewBox="0 0 32 32" fill="none" style="width:17px;height:17px">
+              <rect x="5" y="3" width="22" height="26" rx="3" stroke="currentColor" stroke-width="2"/>
+              <path d="M11 21.5l3 3 7-7" stroke="#0d44e8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            ProveTheBuy
+          </div>
+          <div class="lh-sb-item on"><span class="lh-sb-dot"></span>Playground</div>
+          <div class="lh-sb-item"><span class="lh-sb-dot" style="background:#aaa"></span>Agent traffic</div>
+          <div class="lh-sb-item"><span class="lh-sb-dot" style="background:#aaa"></span>Requests</div>
+          <div class="lh-sb-item"><span class="lh-sb-dot" style="background:#aaa"></span>Policy</div>
+          <div class="lh-sb-item"><span class="lh-sb-dot" style="background:#aaa"></span>Disputes</div>
+          <div class="lh-sb-item"><span class="lh-sb-dot" style="background:#aaa"></span>Agents</div>
+        </div>
+        <!-- Main content -->
+        <div class="lh-main">
+          <div class="lh-main-title">Playground</div>
+          <div class="lh-main-sub">Pick a scenario and verify a signed request against the real verifier</div>
+          <div class="lh-proof">
+            <div class="lh-verdict">
+              <b>Allow</b>
+              <span>visa-tap · Oct 13, 2026 14:22</span>
+            </div>
+            <div class="lh-verdict-why">Agent signature is valid. Order is within mandate limits. Merchant matches.</div>
+            <div class="lh-checks">
+              <div class="lh-check"><div class="lh-check-ic p">✓</div><span class="lh-check-name">Agent signature present</span><span class="lh-check-st p">Pass</span></div>
+              <div class="lh-check"><div class="lh-check-ic p">✓</div><span class="lh-check-name">Signature matches key in directory</span><span class="lh-check-st p">Pass</span></div>
+              <div class="lh-check"><div class="lh-check-ic p">✓</div><span class="lh-check-name">Not a replay attack</span><span class="lh-check-st p">Pass</span></div>
+              <div class="lh-check"><div class="lh-check-ic p">✓</div><span class="lh-check-name">Mandate present and verified</span><span class="lh-check-st p">Pass</span></div>
+              <div class="lh-check"><div class="lh-check-ic p">✓</div><span class="lh-check-name">Order within mandate limits</span><span class="lh-check-st p">Pass</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PROTOCOL STRIP ════════════════ -->
+<div class="lp">
+  <div class="lp-inner">
+    <span class="lp-label">Compatible with</span>
+    <div class="lp-logos">
+      <span class="lp-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Visa Trusted Agent Protocol
+      </span>
+      <span class="lp-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        Mastercard Agent Pay
+      </span>
+      <span class="lp-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+        HTTP Signatures RFC 9421
+      </span>
+      <span class="lp-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        JWS · AP2 · Verifiable Intent
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ FEATURES ══════════════════ -->
+<section id="features" class="lf">
+  <div class="lf-inner">
+    <div class="lf-head">
+      <div class="lf-label">What ProveTheBuy does</div>
+      <h2 class="lf-title">Everything you need to run<br>a trusted agentic checkout.</h2>
+      <p class="lf-sub">Four tools built for the age of AI-agent commerce — from the first signature check to the final dispute submission.</p>
+    </div>
+
+    <div class="lf-grid">
+
+      <!-- Card 1: Verify -->
+      <div class="lf-card">
+        <div class="lf-card-meta">
+          <h3>Verify every agent checkout</h3>
+          <p>Cryptographic HTTP Signature checks against live agent directories. Replays, spoofed keys, and out-of-mandate orders are caught before they settle.</p>
+        </div>
+        <div class="lf-screen">
+          <div class="lf-screen-bar">
+            <div class="lf-screen-dots"><i></i><i></i><i></i></div>
+            <span class="lf-screen-title">Verification receipt</span>
+          </div>
+          <div class="lf-receipt">
+            <div class="lf-receipt-verdict">
+              <b>Allow</b>
+              <span class="lf-badge-allow">visa-tap · mandate verified</span>
+            </div>
+            <div class="lf-receipt-row"><div class="lf-receipt-dot"></div><span class="lf-receipt-name">Agent signature present</span><span class="lf-receipt-pass">Pass</span></div>
+            <div class="lf-receipt-row"><div class="lf-receipt-dot"></div><span class="lf-receipt-name">Signature matches key</span><span class="lf-receipt-pass">Pass</span></div>
+            <div class="lf-receipt-row"><div class="lf-receipt-dot"></div><span class="lf-receipt-name">Not a replay</span><span class="lf-receipt-pass">Pass</span></div>
+            <div class="lf-receipt-row"><div class="lf-receipt-dot"></div><span class="lf-receipt-name">Merchant match</span><span class="lf-receipt-pass">Pass</span></div>
+            <div class="lf-receipt-row"><div class="lf-receipt-dot"></div><span class="lf-receipt-name">Order inside mandate</span><span class="lf-receipt-pass">Pass</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Policy -->
+      <div class="lf-card">
+        <div class="lf-card-meta">
+          <h3>Policy editor with dry-run</h3>
+          <p>Edit your policy in YAML. Run a diff against every recorded request to preview exactly which decisions change — apply only when ready.</p>
+        </div>
+        <div class="lf-screen">
+          <div class="lf-screen-bar">
+            <div class="lf-screen-dots"><i></i><i></i><i></i></div>
+            <span class="lf-screen-title">provethebuy.policy.yaml</span>
+          </div>
+          <div class="lf-code">
+            <div class="lf-code-header">
+              <span class="lf-code-tab">policy.yaml</span>
+            </div>
+            <div class="lf-code-body" style="color:#cdd6f4">
+              <div><span class="c-comment"># version v2 · shadow → enforce</span></div>
+              <div><span class="c-key">mode</span>: <span class="c-val">enforce</span></div>
+              <div><span class="c-key">mandate</span>:</div>
+              <div>&nbsp;&nbsp;<span class="c-key">accept</span>: <span class="c-val">[verifiable-intent, ap2]</span></div>
+              <div>&nbsp;&nbsp;<span class="c-key">on_missing</span>: <span class="c-kw">block</span></div>
+              <div><span class="c-key">limits</span>:</div>
+              <div>&nbsp;&nbsp;<span class="c-key">intent_mandate_max_order</span>: <span class="c-num">50000</span></div>
+              <div><span class="c-key">reputation</span>:</div>
+              <div>&nbsp;&nbsp;<span class="c-key">step_up_if_dispute_rate_over</span>: <span class="c-num">0.05</span></div>
+            </div>
+            <div class="lf-dryrun">
+              <span class="lf-dryrun-badge">Dry run complete</span>
+              <span class="lf-dryrun-text">3 of 284 decisions would change</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Disputes -->
+      <div class="lf-card">
+        <div class="lf-card-meta">
+          <h3>Dispute evidence, assembled automatically</h3>
+          <p>When a chargeback arrives, ProveTheBuy re-verifies at the key snapshot from order time and builds the full evidence pack — ready to submit.</p>
+        </div>
+        <div class="lf-screen">
+          <div class="lf-screen-bar">
+            <div class="lf-screen-dots"><i></i><i></i><i></i></div>
+            <span class="lf-screen-title">Dispute chb_4k2x · evidence pack</span>
+          </div>
+          <div class="lf-dispute">
+            <div class="lf-dispute-head">
+              <b>Evidence ready to submit</b>
+              <span class="lf-dispute-badge">Re-verified ✓</span>
+            </div>
+            <div class="lf-section">
+              <div class="lf-section-title">Summary</div>
+              <div class="lf-section-body">Order <code>pi_pg_m3x9k</code> placed by Visa TAP agent. Signature verified at order time against directory snapshot. Mandate confirms shopper authorisation.</div>
+            </div>
+            <div class="lf-section">
+              <div class="lf-section-title">Cryptographic proof</div>
+              <div class="lf-section-body">Record <code>rec_7fGx2q</code> · SHA-256 <code>a3f9…c821</code><br>Key snapshot locked · chain-of-custody intact</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Traffic -->
+      <div class="lf-card">
+        <div class="lf-card-meta">
+          <h3>Agent traffic and reputation</h3>
+          <p>24-hour breakdown of every agent request by decision. Dispute rates per agent key feed the reputation engine — automatic step-up above your threshold.</p>
+        </div>
+        <div class="lf-screen">
+          <div class="lf-screen-bar">
+            <div class="lf-screen-dots"><i></i><i></i><i></i></div>
+            <span class="lf-screen-title">Agent traffic · last 24 h</span>
+          </div>
+          <div class="lf-traffic">
+            <div class="lf-stats-row">
+              <div class="lf-stat"><div class="lf-stat-v">2,841</div><div class="lf-stat-l">Agent requests</div></div>
+              <div class="lf-stat"><div class="lf-stat-v">98.6%</div><div class="lf-stat-l">Signature verified</div></div>
+              <div class="lf-stat"><div class="lf-stat-v">$18.4k</div><div class="lf-stat-l">Allowed orders</div></div>
+            </div>
+            <div class="lf-chart-bars">
+              <div class="lf-bar allow" style="height:30%"></div>
+              <div class="lf-bar allow" style="height:45%"></div>
+              <div class="lf-bar allow" style="height:55%"></div>
+              <div class="lf-bar allow" style="height:70%"></div>
+              <div class="lf-bar allow" style="height:90%"></div>
+              <div class="lf-bar allow" style="height:100%"></div>
+              <div class="lf-bar allow" style="height:80%"></div>
+              <div class="lf-bar allow" style="height:60%"></div>
+              <div class="lf-bar block" style="height:8%"></div>
+              <div class="lf-bar allow" style="height:75%"></div>
+              <div class="lf-bar allow" style="height:65%"></div>
+              <div class="lf-bar allow" style="height:50%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ HOW IT WORKS ═════════════════ -->
+<section id="how-it-works" class="lw">
+  <div class="lw-inner">
+    <div class="lw-head">
+      <div class="lf-label">How it works</div>
+      <h2 class="lf-title">From checkout to evidence<br>in three steps.</h2>
+    </div>
+    <div class="lw-steps">
+      <div class="lw-step">
+        <div class="lw-step-n">Step 01</div>
+        <h3>The AI agent signs the request</h3>
+        <p>The shopping agent attaches an HTTP Signature and a mandate to every checkout call — binding the order to the shopper's explicit authorisation.</p>
+      </div>
+      <div class="lw-step">
+        <div class="lw-step-n">Step 02</div>
+        <h3>ProveTheBuy verifies it instantly</h3>
+        <p>Your store passes the request to the verifier. It checks the signature against the live directory key, validates the mandate, detects replays, and applies your policy in under 5 ms.</p>
+      </div>
+      <div class="lw-step">
+        <div class="lw-step-n">Step 03</div>
+        <h3>Dispute? Evidence is already built.</h3>
+        <p>Every verification record, key snapshot, and order hash is written to a tamper-evident ledger. When a chargeback arrives, the complete evidence pack is one click from submitted.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PRICING ═══════════════════ -->
+<section id="pricing" class="lpr">
+  <div class="lpr-inner">
+    <div class="lpr-head">
+      <span class="lf-label">Pricing</span>
+      <h2>Simple, honest pricing.</h2>
+      <p>No per-verification fees. Every plan includes the full verifier, policy editor, evidence ledger, and dispute tooling.</p>
+    </div>
+
+    <div class="lpr-grid">
+
+      <!-- Indie -->
+      <div class="lpr-plan">
+        <div class="lpr-name">Indie</div>
+        <div class="lpr-price">$9<span> / mo</span></div>
+        <p class="lpr-desc">For solo developers and indie merchants getting started with agentic commerce.</p>
+        <hr class="lpr-divider">
+        <ul class="lpr-features">
+          <li>Up to 10,000 verified requests / mo</li>
+          <li>Full verifier + policy editor</li>
+          <li>Evidence ledger (30-day history)</li>
+          <li>Dispute pack export</li>
+          <li>Community support</li>
+        </ul>
+        <a class="lpr-cta" href="https://dodo.pe/provethebuy-indie" target="_blank" rel="noopener">
+          Get Indie →
+        </a>
+      </div>
+
+      <!-- Pro -->
+      <div class="lpr-plan lpr-plan-pro">
+        <div class="lpr-badge">Most popular</div>
+        <div class="lpr-name">Pro</div>
+        <div class="lpr-price">$49<span> / mo</span></div>
+        <p class="lpr-desc">For growing teams running agentic checkout in production with enforce mode.</p>
+        <hr class="lpr-divider">
+        <ul class="lpr-features">
+          <li>Up to 500,000 verified requests / mo</li>
+          <li>Everything in Indie</li>
+          <li>Enforce mode — live blocking</li>
+          <li>Agent directory integrations</li>
+          <li>Reputation signals &amp; auto step-up</li>
+          <li>Email support</li>
+        </ul>
+        <a class="lpr-cta" href="https://dodo.pe/provethebuy-pro" target="_blank" rel="noopener">
+          Get Pro →
+        </a>
+      </div>
+
+      <!-- Scale -->
+      <div class="lpr-plan">
+        <div class="lpr-name">Scale</div>
+        <div class="lpr-price">$199<span> / mo</span></div>
+        <p class="lpr-desc">For high-volume merchants and enterprises with compliance requirements.</p>
+        <hr class="lpr-divider">
+        <ul class="lpr-features">
+          <li>Unlimited verified requests</li>
+          <li>Everything in Pro</li>
+          <li>Custom mandate policies</li>
+          <li>Full audit log export</li>
+          <li>SLA + dedicated support</li>
+        </ul>
+        <a class="lpr-cta" href="https://dodo.pe/provethebuy-scale" target="_blank" rel="noopener">
+          Get Scale →
+        </a>
+      </div>
+
+    </div>
+
+    <p class="lpr-note">
+      All plans billed monthly. Cancel any time.
+      Payments by <a href="https://dodopayments.com" target="_blank" rel="noopener">Dodo Payments</a>.
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════ CTA BANNER ═══════════════════ -->
+<section class="lcta">
+  <h2>Try it now — no account needed.</h2>
+  <p>The playground runs entirely on your machine. Pick a scenario, verify a signed request, and see exactly which checks pass and why.</p>
+  <a class="lh-cta" href="/app.html">
+    Open the Playground
+    <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M11 4l6 6-6 6"/></svg>
+  </a>
+  <span class="lcta-sub">No card required · Runs 100% locally · Apache 2.0</span>
+</section>
+
+<!-- ════════════════════════ FOOTER ═══════════════════ -->
+<footer class="lfooter">
+  <div class="lfooter-inner">
+    <div class="lfooter-top">
+      <div class="lfooter-brand">
+        <div class="lfooter-brand-row">
+          <svg viewBox="0 0 32 32" fill="none" style="width:22px;height:22px">
+            <rect x="5" y="3" width="22" height="26" rx="3" stroke="rgba(255,255,255,.7)" stroke-width="2"/>
+            <path d="M11 21.5l3 3 7-7" stroke="#0d44e8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <strong>ProveTheBuy</strong>
+        </div>
+        <p class="lfooter-tagline">Cryptographic proof for every AI-agent checkout.</p>
+      </div>
+      <div class="lfooter-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how-it-works">How it works</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="/app.html">Playground</a></li>
+        </ul>
+      </div>
+      <div class="lfooter-col">
+        <h4>Protocols</h4>
+        <ul>
+          <li><a href="#features">Visa TAP</a></li>
+          <li><a href="#features">Mastercard Agent Pay</a></li>
+          <li><a href="#features">HTTP Signatures</a></li>
+          <li><a href="#features">Verifiable Intent</a></li>
+        </ul>
+      </div>
+      <div class="lfooter-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="https://github.com/noelps-git/provethebuy" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://github.com/noelps-git/provethebuy/blob/main/README.md" target="_blank" rel="noopener">Docs</a></li>
+          <li><a href="https://github.com/noelps-git/provethebuy/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="lfooter-bottom">
+      <span class="lfooter-copy">© 2026 ProveTheBuy. Apache 2.0.</span>
+      <div class="lfooter-badges">
+        <span class="lfooter-badge">Open Source</span>
+        <span class="lfooter-badge">Apache 2.0</span>
+      </div>
+    </div>
+  </div>
+</footer>
 
 </body>
 </html>
