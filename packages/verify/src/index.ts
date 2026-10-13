@@ -5,6 +5,8 @@ export type { Jwk, Jwks, DirectorySource, ResolvedKey } from "./keys.js";
 export { MemoryReplayStore, RedisReplayStore, UpstashReplayStore } from "./replay.js";
 export type { ReplayStore, RedisLike, UpstashReplayStoreOptions } from "./replay.js";
 export { connectCloud } from "./cloud.js";
+export { verifyConfirmation } from "./confirmation.js";
+export type { ConfirmationClaims } from "./confirmation.js";
 export type { CloudOptions, CloudConnection, CloudStats } from "./cloud.js";
 export { parseSignatureInput, parseSignatureHeader, signatureBase, signRequest, AGENT_TAGS } from "./httpsig.js";
 export type { HttpRequestLike, ParsedSignature, AgentTag, SigAlg } from "./httpsig.js";

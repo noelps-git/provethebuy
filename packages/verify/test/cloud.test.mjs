@@ -90,3 +90,17 @@ test("UpstashReplayStore sends SET NX EX and reads the result", async () => {
   assert.equal(await store.checkAndRemember("kid:n1", 300), true);
   assert.equal(await store.checkAndRemember("kid:n1", 300), false);
 });
+
+test("verifyConfirmation checks the signature, type and order hash", async () => {
+  const { generateKeyPairSync, sign } = await import("node:crypto");
+  const { verifyConfirmation } = await import("../dist/index.js");
+  const { privateKey, publicKey } = generateKeyPairSync("ed25519");
+  const jwks = { keys: [{ ...publicKey.export({ format: "jwk" }), kid: "ptb-1" }] };
+  const b = (o) => Buffer.from(JSON.stringify(o)).toString("base64url");
+  const head = b({ alg: "EdDSA", kid: "ptb-1" });
+  const body = b({ typ: "provethebuy-confirmation", sub: "cf_1", status: "approved", order_hash: "abc", store: "st", decided_at: "x", iat: Math.floor(Date.now() / 1000), iss: "t" });
+  const token = `${head}.${body}.${sign(null, Buffer.from(`${head}.${body}`), privateKey).toString("base64url")}`;
+  assert.equal((await verifyConfirmation(token, { jwks, orderHash: "abc" })).status, "approved");
+  await assert.rejects(() => verifyConfirmation(token, { jwks, orderHash: "other" }), /different order/);
+  await assert.rejects(() => verifyConfirmation(token.slice(0, -4) + "AAAA", { jwks }), /does not verify/);
+});
