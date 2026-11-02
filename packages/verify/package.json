@@ -3,6 +3,16 @@
   "version": "0.1.0",
   "description": "Verify AI-agent requests (Visa TAP, Mastercard Agent Pay, Verifiable Intent, AP2, ACP/Stripe SPT), bind them to orders, and keep tamper-evident dispute evidence.",
   "license": "Apache-2.0",
+  "homepage": "https://provethebuy.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noelps-git/provethebuy.git",
+    "directory": "packages/verify"
+  },
+  "bugs": {
+    "url": "https://github.com/noelps-git/provethebuy/issues"
+  },
+  "author": "ProveTheBuy (https://provethebuy.com)",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -29,16 +39,24 @@
   },
   "keywords": [
     "agentic-commerce",
+    "ai-agents",
+    "agent-payments",
     "web-bot-auth",
     "visa-tap",
     "trusted-agent-protocol",
+    "mastercard-agent-pay",
     "verifiable-intent",
     "ap2",
     "acp",
+    "stripe",
     "http-message-signatures",
     "rfc9421",
+    "ed25519",
     "chargebacks",
-    "disputes"
+    "disputes",
+    "fraud-prevention",
+    "checkout",
+    "express-middleware"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",

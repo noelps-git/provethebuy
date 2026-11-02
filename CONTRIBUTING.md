@@ -10,7 +10,7 @@ Thanks for helping. The most useful contributions right now:
 ## Getting set up
 
 ```bash
-git clone https://github.com/provethebuy/provethebuy.git
+git clone https://github.com/noelps-git/provethebuy.git
 cd provethebuy
 npm install
 npm test          # builds, runs unit + CLI tests, checks every vector

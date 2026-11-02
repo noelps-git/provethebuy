@@ -1,7 +1,7 @@
 /**
  * Verify a shopper confirmation issued by ProveTheBuy Cloud's hosted confirmation page.
  *
- *   const c = await verifyConfirmation(token, { jwksUrl: "https://app.provethebuy.dev/.well-known/jwks.json", orderHash });
+ *   const c = await verifyConfirmation(token, { jwksUrl: "https://app.provethebuy.com/.well-known/jwks.json", orderHash });
  *   if (c.status === "approved") { ...charge... }
  */
 import { createPublicKey, verify } from "node:crypto";

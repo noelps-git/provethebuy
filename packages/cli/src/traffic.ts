@@ -129,5 +129,5 @@ export function analyse(lines: string[], checkoutPaths: string[] = ["/checkout",
 }
 
 export function shareLine(r: TrafficReport): string {
-  return `${r.agentRequests.toLocaleString("en-US")} AI-agent requests hit my store in this log, ${r.checkoutHits.toLocaleString("en-US")} of them on checkout. ${r.signedRequests ? r.signedRequests + " were cryptographically signed." : "None were signed."} Checked with ProveTheBuy (open source).`;
+  return `${r.agentRequests.toLocaleString("en-US")} AI-agent requests hit my store in this log, ${r.checkoutHits.toLocaleString("en-US")} of them on checkout. ${r.signedRequests ? r.signedRequests + " were cryptographically signed." : "None were signed."} Checked with ProveTheBuy, open source: provethebuy.com`;
 }

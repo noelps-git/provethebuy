@@ -1,10 +1,30 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run build && npm run build:site",
   "installCommand": "npm install",
-  "outputDirectory": "apps/playground/public",
+  "outputDirectory": "apps/site/dist",
+  "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/index.mjs" },
+    { "source": "/playground", "destination": "/app.html" },
     { "source": "/app", "destination": "/app.html" }
+  ],
+  "redirects": [
+    { "source": "/login", "destination": "https://app.provethebuy.com/login", "permanent": false },
+    { "source": "/dashboard", "destination": "https://app.provethebuy.com", "permanent": false }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    },
+    {
+      "source": "/(llms.txt|llms-full.txt|docs/(.*).md)",
+      "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }]
+    }
   ]
 }

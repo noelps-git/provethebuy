@@ -4,7 +4,7 @@ ProveTheBuy sits in front of checkouts, so security reports get priority.
 
 ## Reporting a vulnerability
 
-Please **don't open a public issue**. Use GitHub's private vulnerability reporting ("Report a vulnerability" under the Security tab of this repository), or email **security@provethebuy.dev**.
+Please **don't open a public issue**. Use GitHub's private vulnerability reporting ("Report a vulnerability" under the Security tab of this repository), or email **security@provethebuy.com**.
 
 Include what you found, how to reproduce it, and the impact you expect. You'll get an acknowledgement within 2 working days and a plan within 7.
 

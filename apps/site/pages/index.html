@@ -1,0 +1,195 @@
+<section class="hero" aria-labelledby="hero-title" style="padding: 0">
+  {{guilloche:640}}
+  <div class="wrap">
+    <div class="hero-copy">
+      <a class="pill" href="https://github.com/noelps-git/provethebuy"><i></i>Open source. Visa TAP, Mastercard Agent Pay, AP2</a>
+      <h1 id="hero-title">Prove what the agent was allowed to buy.</h1>
+      <p class="lede">An open-source verifier for orders placed by AI agents. It checks the agent's signature and the shopper's signed limits at your checkout, and keeps a record you can still verify when the chargeback lands months later.</p>
+      <div class="install">
+        <span><span class="p">$</span> npm i @provethebuy/verify</span>
+        <button class="copy" type="button" data-copy="npm i @provethebuy/verify" aria-label="Copy install command">{{icon:copy}}</button>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-accent" href="/playground">{{icon:play}}Try the playground</a>
+        <a class="btn btn-line" href="/docs/quickstart">Read the quickstart</a>
+      </div>
+    </div>
+    <div class="hero-demo">
+      <div class="window">
+        <div class="window-bar"><i></i><i></i><i></i><span>checkout.js</span></div>
+<pre class="code"><span class="k">import</span> { ProveTheBuy, KeyDirectory, KNOWN_DIRECTORIES }
+  <span class="k">from</span> <span class="s">"@provethebuy/verify"</span>
+<span class="k">import</span> { createMiddleware } <span class="k">from</span> <span class="s">"@provethebuy/verify/express"</span>
+
+<span class="k">const</span> ptb = <span class="k">new</span> <span class="f">ProveTheBuy</span>({
+  merchantId: <span class="s">"acct_your_shop"</span>,
+  keys: <span class="k">new</span> <span class="f">KeyDirectory</span>({
+    sources: [{ name: <span class="s">"visa"</span>, url: KNOWN_DIRECTORIES.visa }],
+  }),
+  policy: { mode: <span class="s">"shadow"</span> },  <span class="c">// record only, never block</span>
+})
+
+app.<span class="f">post</span>(<span class="s">"/checkout"</span>,
+  agents.<span class="f">capture</span>(), agents.<span class="f">verify</span>(), handler)
+<span class="c">// req.provethebuy.decision: allow | step_up | block</span></pre>
+<pre class="verify-log"><span class="ok">✓</span> signature   Ed25519 against the Visa key directory
+<span class="ok">✓</span> nonce       first seen, not a replay
+<span class="ok">✓</span> order       cart adds up, addressed to acct_your_shop
+<span class="ok">✓</span> mandate     $184.00 inside the shopper's $250.00 limit
+<span class="to">→</span> filed       rec_o4Vx8KrZkA0OGlwm, hash-chained</pre>
+      </div>
+      <span class="stamp allow" aria-label="Decision: allowed">ALLOWED</span>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="traffic-title">
+  <div class="wrap terminal-grid">
+    <pre class="term" id="term" aria-label="Output of the traffic-check command on a sample access log"><span class="p">$</span> <span class="w">npx @provethebuy/cli traffic-check access.log</span>
+
+<span class="w">Agent traffic check</span>  access.log
+
+  Requests in log          1,036
+  From AI agents           <span class="h">216</span>
+  On checkout paths        51  (/checkout, /cart, /api/checkout, /orders)
+  Signed (verifiable)      <span class="h">14</span>  (7 declared they were paying)
+
+  Agent                  Operator     Kind        Requests  Checkout
+  ChatGPT-User           OpenAI       user-agent        46        27
+  GPTBot                 OpenAI       crawler           38         0
+  ClaudeBot              Anthropic    crawler           27         0
+  PerplexityBot          Perplexity   crawler           24         0
+  Claude-User            Anthropic    user-agent        19         8
+  Signed agent           unknown      user-agent        14         7
+  Perplexity-User        Perplexity   user-agent        11         9
+
+  User-Agent names can be faked; only signed requests can be verified.
+
+<span class="p">$</span> <span class="cursor"></span></pre>
+    <div>
+      <div class="section-head" style="margin-bottom: 28px">
+        <h2 id="traffic-title">Start with one command. No account.</h2>
+        <p>Point the CLI at an access log and see how many AI agents already reach your store, how many hit checkout, and how many sign their requests.</p>
+      </div>
+      <div class="side-notes">
+        <div><h3>Your logs stay on your machine</h3><p>The log is read locally and never uploaded. Works with nginx, Apache and most combined log formats.</p></div>
+        <div><h3>Point it at your checkout</h3><p>Pass <code>--checkout /buy,/cart</code> if your paths are different, or <code>--json</code> to pipe it somewhere.</p></div>
+        <div><h3>Share the result</h3><p>It prints a one-line summary you can post, so other developers can compare their numbers.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="on-white" aria-labelledby="how-title">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="how-title">Three checks at order time. One record for dispute time.</h2>
+      <p>It runs inside your own server, never sees a card number, and starts in shadow mode, so it records what it would decide without blocking a sale.</p>
+    </div>
+    <ol class="steps">
+      <li><h3>Verify the agent</h3><p>Checks the HTTP message signature (RFC 9421, Web Bot Auth) against the card network's key directory, and rejects replays, expired signatures and edited requests.</p><code>keyid, nonce, created, expires</code></li>
+      <li><h3>Bind the order</h3><p>Checks the shopper's signed mandate (Verifiable Intent, AP2) and payment token limits, and confirms this exact cart, amount and merchant are inside them.</p><code>RFC 8785 + SHA-256 order hash</code></li>
+      <li><h3>Keep the proof</h3><p>Writes a hash-chained evidence record with a snapshot of the key. When a dispute arrives, it re-verifies and builds the evidence pack.</p><code>evidence.jsonl</code></li>
+    </ol>
+  </div>
+</section>
+
+<section class="on-ink" aria-labelledby="std-title">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="std-title">What it verifies today</h2>
+      <p>Agent-commerce standards are still settling. This says plainly how far each one is implemented, and where we follow an assumption rather than a published rule.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="std">
+        <thead><tr><th scope="col">Standard</th><th scope="col">What is checked</th><th scope="col">Status</th></tr></thead>
+        <tbody>
+          <tr><td>RFC 9421 HTTP Message Signatures</td><td>Ed25519, RSA-PSS-SHA512, ECDSA P-256. Passes the RFC's own Ed25519 test vector (B.2.6).</td><td><span class="status stable">STABLE</span></td></tr>
+          <tr><td>Web Bot Auth</td><td><code>agent-browser-auth</code> and <code>agent-payer-auth</code> tags, key directories, nonce replay.</td><td><span class="status stable">STABLE</span></td></tr>
+          <tr><td>Visa Trusted Agent Protocol</td><td>Signature against the Visa JWKS; consumer-recognition and payment-container body objects.</td><td><span class="status beta">BETA</span></td></tr>
+          <tr><td>Mastercard Agent Pay / Verifiable Intent</td><td>3-layer SD-JWT chain (issuer, user, agent); amount, merchant and item constraints.</td><td><span class="status preview">PREVIEW</span></td></tr>
+          <tr><td>AP2 (Agent Payments Protocol)</td><td>Cart mandate with merchant and user signatures; intent mandate with an unattended-amount threshold.</td><td><span class="status preview">PREVIEW</span></td></tr>
+          <tr><td>Stripe shared payment tokens / ACP</td><td>Allowance limits: amount, currency, merchant, expiry.</td><td><span class="status limits">LIMITS ONLY</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin: 18px 0 0; color: var(--on-ink-3); font-size: 14px">Details for each standard are in <a href="/docs/protocols" style="color: #F2B36B">Protocols</a>. Test vectors for other-language ports are in the repo.</p>
+  </div>
+</section>
+
+<section aria-labelledby="try-title">
+  <div class="wrap clone">
+    <div>
+      <div class="section-head" style="margin-bottom: 0">
+        <h2 id="try-title">Run the whole thing locally in 60 seconds</h2>
+        <p>Node 18.17 or newer. No database, no accounts, no API keys. The playground loads a simulated day of agent traffic for a demo shop.</p>
+      </div>
+      <ul class="screens">
+        <li>{{icon:check}}Replay, tampered and over-limit scenarios</li>
+        <li>{{icon:check}}Every check, with the raw headers</li>
+        <li>{{icon:check}}YAML policy with a dry run</li>
+        <li>{{icon:check}}Evidence packs for a sample dispute</li>
+      </ul>
+    </div>
+<pre><button class="copy" type="button" data-copy="git clone https://github.com/noelps-git/provethebuy.git&#10;cd provethebuy&#10;npm install&#10;npm run demo" aria-label="Copy commands">{{icon:copy}}</button><span class="p">$</span> git clone https://github.com/noelps-git/provethebuy.git
+<span class="p">$</span> cd provethebuy
+<span class="p">$</span> npm install
+<span class="p">$</span> npm run demo
+
+<span class="p">Then open http://localhost:4319</span></pre>
+  </div>
+</section>
+
+<section class="on-white" aria-labelledby="cloud-title">
+  <div class="wrap cloud">
+    <div>
+      <div class="section-head" style="margin-bottom: 0">
+        <h2 id="cloud-title">When the chargeback lands, the record does the talking</h2>
+        <p>The verifier is free forever. ProveTheBuy Cloud keeps the records and handles agent-order disputes on Stripe for you.</p>
+      </div>
+      <ul>
+        <li>{{icon:archive}}<span><b>13 months of records</b> with the key archive, so old orders still verify after an agent rotates its key.</span></li>
+        <li>{{icon:scale}}<span><b>A fight-or-accept verdict</b> on every agent-order dispute, with the reasons.</span></li>
+        <li>{{icon:file-check}}<span><b>A readable certificate</b> an issuer can check, submitted to Stripe in one click or by your rules.</span></li>
+      </ul>
+      <div class="cta-row">
+        <a class="btn btn-ink" href="https://app.provethebuy.com/login">Start free</a>
+        <a class="btn btn-ghost" href="/pricing">See pricing</a>
+      </div>
+    </div>
+    <div class="record" aria-label="Example evidence record in the dashboard">
+      <div class="record-head"><span>rec_o4Vx8KrZkA0OGlwm2FaNYV</span><span>Filed 2026-10-04 09:41 UTC</span></div>
+      <div class="record-body">
+        <div class="record-title"><div><b>Chargeback on order #48213</b><span>Reason 10.4, cardholder says they didn't authorise. $184.00</span></div><span class="stamp allow">ALLOWED</span></div>
+        <div class="proof-row">{{icon:check}}<div><b>The shopper set this limit</b><span>Signed mandate allows up to $250 at this store</span></div><code>VI, ES256</code></div>
+        <div class="proof-row">{{icon:check}}<div><b>The agent was who it said</b><span>Signature checks against the network's published key</span></div><code>TAP, Ed25519</code></div>
+        <div class="proof-row">{{icon:check}}<div><b>It was sent once</b><span>No earlier request reused this signature</span></div><code>nonce ok</code></div>
+        <div class="proof-row">{{icon:check}}<div><b>The record hasn't changed since</b><span>Hash matches the one filed at checkout</span></div><code>sha256 9f2c…c821</code></div>
+        <div class="proof-row locked">{{icon:lock}}<div><b>Prior undisputed orders</b><span>Earlier orders from this shopper, attached as evidence</span></div><span class="redact" aria-label="Available on Scale"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="faq-title">
+  <div class="wrap faq">
+    <div class="section-head"><h2 id="faq-title">Questions developers ask</h2><p>Something missing? <a href="https://github.com/noelps-git/provethebuy/issues">Open an issue</a>.</p></div>
+    <div>
+      <details><summary>Will it block real customers?</summary><p>Not unless you tell it to. It starts in shadow mode and only records decisions. Requests without an agent signature come back as <code>not_agent</code> and pass straight through. If the verifier itself errors, the order goes through by default.</p></details>
+      <details><summary>Does it touch card data?</summary><p>No. It reads agent signatures, signed mandates and payment token limits. It never decrypts payment containers or sees card numbers, so it adds nothing to your PCI scope.</p></details>
+      <details><summary>Which runtimes and frameworks work?</summary><p>Node 18.17 and newer, with Express middleware included. The core takes a plain request object, so other frameworks need a few lines. Python and Go verifiers are planned and will pass the same test vectors.</p></details>
+      <details><summary>How does a dispute months later still verify?</summary><p>Each record keeps the raw signed request and a snapshot of the key used that day, chained by hash. Re-verification uses that snapshot, so it works even after the agent rotates its key.</p></details>
+      <details><summary>What does it cost?</summary><p>The verifier and CLI are free and Apache-2.0. Cloud has a free plan for up to 1,000 verified orders a month, and paid plans from $9 a month for dispute handling. See <a href="/pricing">pricing</a>.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="on-ink closing" aria-labelledby="close-title" style="padding: 72px 0">
+  <div class="wrap">
+    <h2 id="close-title">See what your agent traffic looks like today.</h2>
+    <div class="cta-row">
+      <a class="btn btn-accent" href="/docs/cli">{{icon:terminal}}Run traffic-check</a>
+      <a class="btn btn-line" href="https://github.com/noelps-git/provethebuy">{{icon:github}}Star on GitHub</a>
+    </div>
+  </div>
+</section>

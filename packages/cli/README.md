@@ -15,6 +15,6 @@ provethebuy verify <request.json> --jwks <jwks.json|url> --merchant <id> [--poli
 provethebuy ledger verify <evidence.jsonl>
 ```
 
-Logs are read locally and never uploaded. More at [github.com/provethebuy/provethebuy](https://github.com/provethebuy/provethebuy).
+Logs are read locally and never uploaded. Docs at [provethebuy.com/docs/cli](https://provethebuy.com/docs/cli). Source on [GitHub](https://github.com/noelps-git/provethebuy).
 
 Apache-2.0

@@ -246,8 +246,8 @@ async function route(req, res) {
   const m = req.method;
 
   if (!p.startsWith("/api/")) {
-    // /app and /app/ are the playground SPA
-    const requestedFile = p === "/app" || p === "/app/" ? "app.html" : (p === "/" ? "index.html" : p);
+    // The playground SPA is served at /, /app and /playground. The marketing site lives in apps/site.
+    const requestedFile = ["/", "/app", "/app/", "/playground", "/playground/"].includes(p) ? "app.html" : p;
     const file = normalize(join(PUBLIC, requestedFile));
     if (!file.startsWith(PUBLIC)) throw httpError(403, "Forbidden");
     try {
@@ -255,8 +255,8 @@ async function route(req, res) {
       res.writeHead(200, { "content-type": MIME[extname(file)] ?? "application/octet-stream" });
       return res.end(data);
     } catch {
-      // Unknown paths fall back to landing page
-      const data = await readFile(join(PUBLIC, "index.html"));
+      // Unknown paths fall back to the playground
+      const data = await readFile(join(PUBLIC, "app.html"));
       res.writeHead(200, { "content-type": MIME[".html"] });
       return res.end(data);
     }

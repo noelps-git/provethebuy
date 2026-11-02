@@ -3,6 +3,16 @@
   "version": "0.1.0",
   "description": "ProveTheBuy CLI: count AI-agent traffic in your logs, verify and sign agent requests, check evidence ledgers.",
   "license": "Apache-2.0",
+  "homepage": "https://provethebuy.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noelps-git/provethebuy.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/noelps-git/provethebuy/issues"
+  },
+  "author": "ProveTheBuy (https://provethebuy.com)",
   "type": "module",
   "bin": {
     "provethebuy": "./dist/cli.js"
@@ -26,5 +36,18 @@
   "exports": {
     "./traffic": "./dist/traffic.js",
     "./package.json": "./package.json"
-  }
+  },
+  "keywords": [
+    "agentic-commerce",
+    "ai-agents",
+    "bot-traffic",
+    "access-log",
+    "log-analysis",
+    "web-bot-auth",
+    "rfc9421",
+    "chatgpt",
+    "claude",
+    "perplexity",
+    "cli"
+  ]
 }

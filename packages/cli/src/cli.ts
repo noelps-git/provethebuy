@@ -54,7 +54,7 @@ ${C.b("Start here")}
   provethebuy traffic-check /var/log/nginx/access.log
 `;
 
-const POLICY_TEMPLATE = `# ProveTheBuy policy — https://github.com/provethebuy/provethebuy/blob/main/docs/policy.md
+const POLICY_TEMPLATE = `# ProveTheBuy policy — https://provethebuy.com/docs/policy
 version: v1
 mode: shadow            # shadow: record only, never block. enforce: apply decisions.
 fail: open              # if verification itself errors: open = treat as normal traffic

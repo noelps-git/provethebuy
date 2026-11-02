@@ -1,0 +1,25 @@
+<div class="page-hero">
+  {{guilloche:320}}
+  <div class="wrap">
+    <h1>Security</h1>
+    <p>ProveTheBuy sits next to your checkout, so it's built to never put a sale at risk and never hold card data.</p>
+  </div>
+</div>
+<div class="wrap">
+  <div class="prose" style="padding: 48px 0 96px">
+    <h2>Your checkout comes first</h2>
+    <p>The verifier runs in your own server. It fails open by default: if it errors, the order goes through and the error is recorded. The Cloud connection sends records in the background with a short timeout and a bounded queue, so if we're slow or down, orders still go through and records are sent later.</p>
+    <h2>No card data</h2>
+    <p>We read agent signatures, signed mandates and payment token limits. We never decrypt payment containers or see card numbers, so we add nothing to your PCI scope.</p>
+    <h2>Cryptography</h2>
+    <p>Signatures use Ed25519, ECDSA P-256 and RSA-PSS through Node's crypto module, and records are hashed with SHA-256 over RFC 8785 canonical JSON. These are standard, NIST-approved algorithms; ProveTheBuy is not itself a FIPS-validated module.</p>
+    <h2>Isolation and access in Cloud</h2>
+    <p>Every workspace's data is separated by Postgres row-level security under a restricted database role. API keys are shown once and stored only as SHA-256 hashes. Sign-in is through GitHub or Google; we store no passwords. Team members get roles, and every sensitive action is written to an audit log.</p>
+    <h2>Evidence you can check</h2>
+    <p>Each record carries a SHA-256 hash and links to the one before it. Every record's hash is checked when it arrives and anything edited is rejected. When a record's retention ends we delete its contents but keep its hash, so the chain still verifies. Shopper confirmations are signed with our Ed25519 key, published at <code>https://app.provethebuy.com/.well-known/jwks.json</code>.</p>
+    <h2>Stripe and billing</h2>
+    <p>Stripe access uses Connect and is limited to reading disputes and submitting evidence you approve or rules you set. We never accept a dispute for you and never move money. Billing is handled by Dodo Payments.</p>
+    <h2>Reporting a vulnerability</h2>
+    <p>Email <a href="mailto:security@provethebuy.com">security@provethebuy.com</a>. We acknowledge within 2 working days. The threat model is in <a href="/docs/security">the docs</a>.</p>
+  </div>
+</div>

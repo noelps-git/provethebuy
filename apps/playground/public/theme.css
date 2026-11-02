@@ -1,0 +1,99 @@
+/* Signed & Filed: ProveTheBuy visual identity layer.
+   Loaded after app.css. Ink rail, paper workspace, evidence-orange accent,
+   rubber-stamp decisions. Serif is kept for the certificate and marketing only. */
+:root {
+  --ink: #141A3A;
+  --ink-2: #3A4260;
+  --muted: #5B6478;
+  --paper: #EEF1F6;
+  --surface: #FFFFFF;
+  --sunk: #E6EAF2;
+  --rule: #D5DBE7;
+  --teal: #141A3A;          /* primary actions use ink */
+  --teal-soft: #E1E5F0;
+  --accent: #F28C28;
+  --accent-text: #B85C0A;
+  --allow: #1F7A50;
+  --allow-soft: #E3F2EA;
+  --step: #B85C0A;
+  --step-soft: #FBEEDF;
+  --block: #B8321F;
+  --block-soft: #FBE7E3;
+  --neutral-soft: #EBEEF4;
+  --focus: #F28C28;
+  --rail: #141A3A;
+  --rail-2: #1E2550;
+  --rail-text: #C9D0EA;
+  --rail-muted: #8E98C2;
+  --sans: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+}
+
+a { color: var(--accent-text); }
+a:hover { color: #8A4306; }
+.link { color: var(--accent-text); }
+details.more summary { color: var(--accent-text); }
+
+/* Rail: ink, like the evidence record header */
+.rail { background: var(--rail); border-right: 0; color: var(--rail-text); }
+.brand strong { font: 600 16px/1.1 var(--sans); letter-spacing: -0.01em; }
+.rail .brand, .rail .brand .mark { color: #EEF1F6; }
+.rail .brand small { color: var(--rail-muted); }
+.rail nav a { color: var(--rail-text); }
+.rail nav a:hover { background: var(--rail-2); color: #FFFFFF; }
+.rail nav a[aria-current="page"] { background: #232B57; color: #FFFFFF; box-shadow: inset 2px 0 0 var(--accent); }
+.rail nav .count { background: var(--accent); color: var(--ink); }
+.rail-foot, .rail-group { color: var(--rail-muted); }
+.rail-foot .merchant, .who { color: var(--rail-text); }
+.rail .link { color: #F2B36B; }
+.rail .who img, .rail .who .initial { background: #232B57; color: #EEF1F6; }
+.rail .plan-pill { background: #232B57; color: #F2B36B; }
+.ledger.ok { color: #4CC38A; }
+.ledger.bad { color: #F26A55; }
+
+/* Headings: Geist in the product; serif stays for marketing and the certificate */
+.page-head h1, .auth h1, .drawer-panel h2, .verdict-card h3 { font-family: var(--sans); letter-spacing: -0.015em; }
+.page-head h1 { font-size: 26px; }
+.stat .v, .plan-price, .proof .verdict b { font-family: var(--sans); letter-spacing: -0.02em; }
+.public-main h1 { font-family: var(--serif); font-weight: 500; }
+
+/* Buttons */
+.btn { border-radius: 8px; font-weight: 600; }
+.btn:hover { border-color: var(--ink); }
+.btn.primary { background: var(--ink); border-color: var(--ink); color: #EEF1F6; }
+.btn.primary:hover { background: #232B57; filter: none; }
+.btn.accent { background: var(--accent); border-color: var(--accent); color: var(--ink); }
+.btn.accent:hover { background: #E07B17; }
+
+/* Decision chips become stamps: the only place the UI tilts */
+.chip.allow, .chip.step_up, .chip.block {
+  background: transparent; border: 2px solid currentColor; border-radius: 5px;
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 1px 7px; transform: rotate(-2deg);
+}
+.chip.allow::before, .chip.step_up::before, .chip.block::before { display: none; }
+.chip.step_up { transform: rotate(1.5deg); }
+.chip.evidence_submitted, .chip.under_review { color: var(--ink); background: var(--teal-soft); }
+
+/* Accents that used teal for emphasis */
+.scenarios button[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
+.bar-row .fill, .meter > i { background: var(--ink); }
+.upload.drag { border-color: var(--accent); color: var(--accent-text); }
+.plan-highlighted { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+.plan-badge { background: var(--accent); color: var(--ink); }
+.plan-features li::before { color: var(--allow); }
+.banner.info { background: var(--teal-soft); }
+pre.block { background: var(--ink); color: #C9D0EA; }
+
+/* Mobile: app.css turns the rail into a top bar; tighten it */
+@media (max-width: 820px) {
+  .rail { border-bottom: 0; }
+  .rail nav a { padding: 6px 8px; font-size: 13.5px; }
+  .rail nav a svg { display: none; }
+  .rail-group { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .chip { transform: none !important; } }
+a.btn { color: var(--ink); text-decoration: none; }
+a.btn.primary { color: #EEF1F6; }
+a.btn.accent { color: var(--ink); }

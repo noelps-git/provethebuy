@@ -39,6 +39,6 @@ const replay = new UpstashReplayStore({ url: process.env.UPSTASH_REDIS_REST_URL,
 
 Supports RFC 9421 / Web Bot Auth, Visa Trusted Agent Protocol, Mastercard Verifiable Intent (preview), AP2 (preview) and Stripe shared payment token limits. No runtime dependencies; Node 18.17+.
 
-Full documentation, the playground and examples: [github.com/provethebuy/provethebuy](https://github.com/provethebuy/provethebuy).
+Docs: [provethebuy.com/docs](https://provethebuy.com/docs/quickstart). Try it in the browser: [provethebuy.com/playground](https://provethebuy.com/playground). Source and examples: [GitHub](https://github.com/noelps-git/provethebuy).
 
 Apache-2.0

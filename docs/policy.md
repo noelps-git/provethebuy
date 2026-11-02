@@ -3,7 +3,7 @@
 The policy decides what each combination of check results means for your store. It is one YAML file (or a plain object in code). Anything you leave out takes the default.
 
 ```bash
-npx provethebuy init        # writes provethebuy.policy.yaml with every option
+npx @provethebuy/cli init   # writes provethebuy.policy.yaml with every option
 ```
 
 ## All options

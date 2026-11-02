@@ -9,15 +9,17 @@
 
 Verify the agent. Bind the order. Win the dispute.
 
-[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-0f766e)](LICENSE)
-[![Node](https://img.shields.io/badge/node-%E2%89%A518.17-13202b)](package.json)
-[![RFC 9421](https://img.shields.io/badge/RFC%209421-test%20vector%20passing-18794e)](docs/protocols.md#rfc-9421)
-[![Status](https://img.shields.io/badge/status-preview-a35c00)](docs/roadmap.md)
+[![npm](https://img.shields.io/npm/v/@provethebuy/verify?color=141A3A&label=npm)](https://www.npmjs.com/package/@provethebuy/verify)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-141A3A)](LICENSE)
+[![Node](https://img.shields.io/badge/node-%E2%89%A518.17-141A3A)](package.json)
+[![RFC 9421](https://img.shields.io/badge/RFC%209421-test%20vector%20passing-1F7A50)](docs/protocols.md#rfc-9421)
+[![Status](https://img.shields.io/badge/status-preview-B85C0A)](docs/roadmap.md)
 
-[Try it in 60 seconds](#try-it-in-60-seconds) ·
-[Add it to a checkout](#add-it-to-your-checkout) ·
-[How it works](#how-it-works) ·
-[Docs](docs/)
+**[provethebuy.com](https://provethebuy.com)** ·
+[Playground](https://provethebuy.com/playground) ·
+[Quickstart](https://provethebuy.com/docs/quickstart) ·
+[Docs](https://provethebuy.com/docs) ·
+[Try it in 60 seconds](#try-it-in-60-seconds)
 
 </div>
 
@@ -44,7 +46,7 @@ It runs in your own server, never sees card numbers, and starts in **shadow mode
 You need [Node.js 18.17 or newer](https://nodejs.org). Nothing else: no database, no accounts, no API keys.
 
 ```bash
-git clone https://github.com/provethebuy/provethebuy.git
+git clone https://github.com/noelps-git/provethebuy.git
 cd provethebuy
 npm install
 npm run demo
@@ -164,16 +166,16 @@ The CLI ships with the same verifier.
 
 ```bash
 # How many AI agents hit your store yesterday, and how many reached checkout?
-npx provethebuy traffic-check /var/log/nginx/access.log
+npx @provethebuy/cli traffic-check /var/log/nginx/access.log
 
 # Write a starter policy
-npx provethebuy init
+npx @provethebuy/cli init
 
 # Verify a saved request against a key directory
-npx provethebuy verify request.json --jwks https://mcp.visa.com/.well-known/jwks --merchant acct_your_shop
+npx @provethebuy/cli verify request.json --jwks https://mcp.visa.com/.well-known/jwks --merchant acct_your_shop
 
 # Check that an evidence ledger hasn't been edited
-npx provethebuy ledger verify evidence.jsonl
+npx @provethebuy/cli ledger verify evidence.jsonl
 ```
 
 From a clone, run them with `node packages/cli/dist/cli.js` after `npm run build`. Try `traffic-check packages/cli/samples/access.log` to see the output.

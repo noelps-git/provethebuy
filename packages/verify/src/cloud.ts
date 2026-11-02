@@ -11,7 +11,7 @@ import type { EvidenceLedger, LedgerRecord } from "./ledger.js";
 
 export interface CloudOptions {
   apiKey: string;
-  /** Default https://api.provethebuy.dev */
+  /** Default https://app.provethebuy.com */
   endpoint?: string;
   /** Records per request. Default 50. */
   batchSize?: number;
@@ -45,7 +45,7 @@ export interface CloudConnection {
 
 export function connectCloud(ledger: EvidenceLedger, opts: CloudOptions): CloudConnection {
   if (!opts?.apiKey) throw new Error("connectCloud needs an apiKey (PROVETHEBUY_API_KEY).");
-  const endpoint = (opts.endpoint ?? "https://api.provethebuy.dev").replace(/\/$/, "");
+  const endpoint = (opts.endpoint ?? "https://app.provethebuy.com").replace(/\/$/, "");
   const batchSize = opts.batchSize ?? 50;
   const maxQueue = opts.maxQueue ?? 5000;
   const timeoutMs = opts.timeoutMs ?? 3000;

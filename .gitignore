@@ -9,3 +9,4 @@ evidence.jsonl
 .DS_Store
 .env
 .vercel
+apps/site/dist/
