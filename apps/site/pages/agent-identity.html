@@ -1,0 +1,165 @@
+<div class="page-hero">
+  {{guilloche:420}}
+  <div class="wrap">
+    <h1>Know which AI agent is buying — and what it's allowed to do.</h1>
+    <p class="lede">Muse, Instinct, Rufus, Perplexity, ChatGPT — dozens of AI shopping agents are placing orders on behalf of consumers. ProveTheBuy Agent Identity tells you exactly which agent placed each order, who authorised it, and whether it stayed inside the shopper's limits.</p>
+    <div class="cta-row">
+      <a class="btn btn-accent" href="/playground">{{icon:play}}Try the playground</a>
+      <a class="btn btn-line" href="https://app.provethebuy.com/login?next=/app%23/billing?trial=1">Start a 14-day Pro trial</a>
+    </div>
+  </div>
+</div>
+
+<section class="on-ink">
+  <div class="wrap">
+    <div class="section-head"><h2>Bot detection tells you <em>something automated</em> hit your checkout.<br>Agent Identity tells you <em>who, why, and within what limits</em>.</h2></div>
+
+    <div class="compare-grid">
+      <div class="compare-col" style="background: var(--ink-deep); border-color: var(--ink-rule); color: var(--on-ink-2)">
+        <h3 style="color: var(--on-ink)">What bot detectors do</h3>
+        <ul class="compare-list dim" style="color: var(--on-ink-3)">
+          <li>Binary signal: bot or human</li>
+          <li>Device fingerprinting and behavioural signals</li>
+          <li>Block or allow — no middle ground</li>
+          <li>No concept of delegated authority</li>
+          <li>No payment-network protocol support</li>
+          <li>No evidence for chargebacks</li>
+        </ul>
+      </div>
+      <div class="compare-col highlight" style="background: var(--ink-deep); border-color: var(--orange); box-shadow: 0 0 0 1px var(--orange); color: var(--on-ink-2)">
+        <h3 style="color: var(--on-ink)">What Agent Identity does</h3>
+        <ul class="compare-list" style="color: var(--on-ink-2)">
+          <li>{{icon:check}}Cryptographic signature verification (Ed25519, RFC 9421)</li>
+          <li>{{icon:check}}Identifies the specific agent key and directory entry</li>
+          <li>{{icon:check}}Checks the shopper's signed mandate — spend cap, merchant, category</li>
+          <li>{{icon:check}}Supports Visa TAP, Mastercard Agent Pay, AP2, Verifiable Intent</li>
+          <li>{{icon:check}}Step-up confirmation for high-value or out-of-mandate orders</li>
+          <li>{{icon:check}}Hash-chained evidence record for disputes months later</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="section-head"><h2>AI agents your customers are already using</h2></div>
+    <div class="agent-grid">
+      <div class="agent-card">
+        <strong>Shopify Muse</strong>
+        <p>Personalised shopping assistant. 5M downloads in first 22 days. Browses, recommends, and can complete checkout on Shopify stores.</p>
+      </div>
+      <div class="agent-card">
+        <strong>Klarna Instinct</strong>
+        <p>AI shopping agent integrated with OpenAI. Searches 100M+ products, compares prices, and completes purchases on behalf of the shopper.</p>
+      </div>
+      <div class="agent-card">
+        <strong>Amazon Rufus</strong>
+        <p>Conversational shopping assistant with 300M+ users. Answers product questions, compares items, makes purchase recommendations.</p>
+      </div>
+      <div class="agent-card">
+        <strong>Perplexity Shopping</strong>
+        <p>In-chat checkout via PayPal. Searches across merchants, presents options, and completes purchases without leaving the conversation.</p>
+      </div>
+      <div class="agent-card">
+        <strong>ChatGPT Shopping</strong>
+        <p>50M+ shopping queries per day. Browses products, compares prices, and can purchase through connected merchant integrations.</p>
+      </div>
+      <div class="agent-card">
+        <strong>Google Shopping AI</strong>
+        <p>AI-powered shopping via Google's Universal Commerce Protocol. Partners include Shopify, Walmart, Target, and 20+ retailers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="on-ink">
+  <div class="wrap">
+    <div class="section-head"><h2>How it works</h2></div>
+    <ol class="steps" style="--step-border: var(--on-ink-3)">
+      <li style="border-top-color: var(--ink-rule)">
+        <h3 style="color: var(--on-ink)">1. Agent signs the request</h3>
+        <p style="color: var(--on-ink-2)">The shopping agent includes a cryptographic signature (Ed25519, RFC 9421) and optionally a mandate signed by the shopper, proving who it is and what it's allowed to buy.</p>
+      </li>
+      <li style="border-top-color: var(--ink-rule)">
+        <h3 style="color: var(--on-ink)">2. ProveTheBuy verifies at checkout</h3>
+        <p style="color: var(--on-ink-2)">Your middleware checks the signature against the card-network key directory (Visa, Mastercard), validates the mandate limits, and records everything in a hash-chained evidence ledger.</p>
+      </li>
+      <li style="border-top-color: var(--ink-rule)">
+        <h3 style="color: var(--on-ink)">3. My Agents dashboard</h3>
+        <p style="color: var(--on-ink-2)">See every agent that has bought from your store: which protocol it uses, its key directory entry, first-seen date, order count, dispute rate, and cross-merchant reputation.</p>
+      </li>
+      <li style="border-top-color: var(--ink-rule)">
+        <h3 style="color: var(--on-ink)">4. Dispute lands months later</h3>
+        <p style="color: var(--on-ink-2)">The evidence record still verifies. ProveTheBuy generates a fight-or-accept score, an evidence pack, and a PDF certificate — ready to submit to Stripe or export for Visa TC40/SAFE and Mastercard formats.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="section-head"><h2>How ProveTheBuy compares</h2></div>
+    <div style="overflow-x: auto">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th scope="col">Capability</th>
+            <th scope="col">Bot detectors<br><small>Fingerprint, DataDome, Arkose, Castle</small></th>
+            <th scope="col">Fraud platforms<br><small>SEON, Sardine, Feedzai, BioCatch</small></th>
+            <th scope="col">Identity verifiers<br><small>Persona, Plaid</small></th>
+            <th scope="col" class="highlight">ProveTheBuy<br><small>Agent Identity</small></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Detect automated traffic</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="no">No</td><td class="yes">Yes</td></tr>
+          <tr><td>Identify <em>which</em> agent</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td></tr>
+          <tr><td>Verify agent cryptographic signature</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="yes">Ed25519, RFC 9421</td></tr>
+          <tr><td>Check shopper's signed mandate</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="yes">Spend cap, merchant, category</td></tr>
+          <tr><td>Visa TAP / Mastercard Agent Pay</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="yes">Native support</td></tr>
+          <tr><td>Step-up confirmation</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="yes">Shopper approves exact cart</td></tr>
+          <tr><td>Evidence for chargebacks</td><td class="no">No</td><td class="partial">Fraud score only</td><td class="no">No</td><td class="yes">Hash-chained pack + PDF</td></tr>
+          <tr><td>Key directory log &amp; rotation tracking</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td></tr>
+          <tr><td>Card-network dispute export</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="yes">Visa, Mastercard, generic CSV</td></tr>
+          <tr><td>Cross-merchant agent reputation</td><td class="no">No</td><td class="partial">Transaction risk</td><td class="no">No</td><td class="yes">Scale plan</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="on-ink">
+  <div class="wrap">
+    <div class="section-head"><h2>The protocols behind agent commerce</h2></div>
+    <div class="protocol-grid">
+      <div class="protocol-card" style="background: var(--ink-deep); border-color: var(--ink-rule)">
+        <strong style="color: var(--on-ink)">Visa Trusted Agent Protocol (TAP)</strong>
+        <p style="color: var(--on-ink-2)">RFC 9421 HTTP Message Signatures with Ed25519. Agent keys registered in a Visa key directory. 100+ partners. ProveTheBuy verifies signatures against the directory in real time.</p>
+      </div>
+      <div class="protocol-card" style="background: var(--ink-deep); border-color: var(--ink-rule)">
+        <strong style="color: var(--on-ink)">Mastercard Agent Pay</strong>
+        <p style="color: var(--on-ink-2)">Agentic Tokens + Verifiable Intent. Tokenises the user's mandate (not just agent identity) so the merchant can verify what the shopper actually authorised. ProveTheBuy validates the full mandate chain.</p>
+      </div>
+      <div class="protocol-card" style="background: var(--ink-deep); border-color: var(--ink-rule)">
+        <strong style="color: var(--on-ink)">Google Universal Commerce Protocol</strong>
+        <p style="color: var(--on-ink-2)">Full-journey standard from discovery to post-purchase. 20+ partners including Shopify, Walmart, Target. ProveTheBuy captures and records agent-side request data at the checkout step.</p>
+      </div>
+      <div class="protocol-card" style="background: var(--ink-deep); border-color: var(--ink-rule)">
+        <strong style="color: var(--on-ink)">AP2 (Agent-to-Platform Protocol)</strong>
+        <p style="color: var(--on-ink-2)">Cart and intent mandate verification. The shopper and merchant co-sign the cart; the agent can only proceed with the exact items agreed. ProveTheBuy verifies both signatures and checks constraints.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="wrap" style="text-align: center; max-width: 640px">
+    <h2>Start identifying agents today</h2>
+    <p>The verifier is open source and free. Cloud plans add the My Agents dashboard, key directory log, dispute evidence, and card-network export.</p>
+    <div class="cta-row" style="justify-content: center">
+      <a class="btn btn-accent" href="/pricing">See pricing</a>
+      <a class="btn btn-line" href="/docs/quickstart">Read the quickstart</a>
+    </div>
+    <p class="trial-note">Or <a href="https://app.provethebuy.com/login?next=/app%23/billing?trial=1">start a 14-day Pro trial</a> — no card required.</p>
+  </div>
+</section>

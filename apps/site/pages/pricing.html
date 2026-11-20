@@ -6,9 +6,10 @@
   </div>
 </div>
 
-<section style="padding-top: 56px">
+<section class="pricing-section">
   <div class="wrap">
     <div class="plans">
+
       <div class="plan">
         <h3>Free</h3>
         <div class="price">$0</div>
@@ -22,6 +23,7 @@
         </ul>
         <a class="btn btn-ghost" href="https://app.provethebuy.com/login">Start free</a>
       </div>
+
       <div class="plan featured">
         <span class="tag">Recommended</span>
         <h3>Indie</h3>
@@ -39,6 +41,7 @@
         </ul>
         <a class="btn btn-ink" href="https://checkout.dodopayments.com/buy/pdt_0NpdSRPqTUSbaTSpIT3qd">Choose Indie</a>
       </div>
+
       <div class="plan">
         <h3>Pro</h3>
         <div class="price">$49 <small>/ month</small></div>
@@ -48,6 +51,7 @@
           <li>{{icon:check}}Everything in Indie</li>
           <li>{{icon:check}}Automatic submission by your rules</li>
           <li>{{icon:check}}Enforce mode, 30-day policy dry run</li>
+          <li>{{icon:check}}Agent Threat Check — detect attack frameworks</li>
           <li>{{icon:check}}Win-rate reports</li>
           <li>{{icon:check}}Slack alerts</li>
           <li>{{icon:check}}1,000 shopper confirmations / mo</li>
@@ -55,6 +59,7 @@
         </ul>
         <a class="btn btn-ghost" href="https://checkout.dodopayments.com/buy/pdt_0NpdSRTwKbMGXXu5lXCoO">Choose Pro</a>
       </div>
+
       <div class="plan">
         <h3>Scale</h3>
         <div class="price">$199 <small>/ month</small></div>
@@ -64,6 +69,7 @@
           <li>{{icon:check}}Everything in Pro</li>
           <li>{{icon:check}}25 months of records</li>
           <li>{{icon:check}}Reputation shared across merchants</li>
+          <li>{{icon:check}}Cross-merchant threat pattern sharing</li>
           <li>{{icon:check}}Earlier undisputed orders attached to evidence</li>
           <li>{{icon:check}}Audit export (CSV)</li>
           <li>{{icon:check}}Single sign-on</li>
@@ -71,14 +77,23 @@
         </ul>
         <a class="btn btn-ghost" href="https://checkout.dodopayments.com/buy/pdt_0NpdSRXWPiqPEjkzvh1QN">Choose Scale</a>
       </div>
+
     </div>
+
     <p class="plans-note">Prices in USD, billed monthly by Dodo Payments as merchant of record, so sales tax and VAT are handled. Over your plan's verified orders: $0.004 per order. Billing never affects checkout: verification keeps running even if a payment fails.</p>
 
     <div class="compare">
-      <div class="section-head" style="margin-bottom: 20px"><h2>What runs where</h2></div>
-      <div style="overflow-x: auto">
+      <div class="section-head"><h2>What runs where</h2></div>
+      <div class="compare-scroll">
         <table>
-          <thead><tr><th scope="col"></th><th scope="col">Open source</th><th scope="col">Cloud Free</th><th scope="col">Indie and up</th></tr></thead>
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Open source</th>
+              <th scope="col">Cloud Free</th>
+              <th scope="col">Indie and up</th>
+            </tr>
+          </thead>
           <tbody>
             <tr><td>Verify signatures, mandates and token limits</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
             <tr><td>Policy in YAML, shadow and enforce</td><td class="yes">Yes</td><td class="yes">Shadow</td><td class="yes">Yes, enforce from Pro</td></tr>
@@ -87,6 +102,7 @@
             <tr><td>Hosted records with key archive</td><td class="no">No</td><td>30 days</td><td>13 to 25 months</td></tr>
             <tr><td>Dispute verdict and certificate</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td></tr>
             <tr><td>Submit evidence to Stripe</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td></tr>
+            <tr><td>Agent Threat Check</td><td class="no">No</td><td class="no">No</td><td class="yes">Pro and up</td></tr>
           </tbody>
         </table>
       </div>
