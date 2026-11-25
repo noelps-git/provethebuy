@@ -32,6 +32,16 @@ export interface Policy {
     step_up_if_agent_dispute_rate_over: number;
     min_orders_for_reputation: number;
   };
+  approval: {
+    /** What happens when the approval was signed with the agent's own key. */
+    on_self_approved: "step_up" | "block";
+  };
+  agent_id: {
+    /** Ask paying agents for an Accountable Agents Framework ID; step up when it is missing. */
+    require: boolean;
+    /** ID directories to trust. Empty = all configured. */
+    directories: string[];
+  };
 }
 
 export const DEFAULT_POLICY: Policy = {
@@ -41,6 +51,8 @@ export const DEFAULT_POLICY: Policy = {
   mandate: { accept: ["verifiable-intent", "ap2-cart", "ap2-intent"], on_missing: "step_up", on_outside: "step_up" },
   limits: { require_merchant_match: true, intent_mandate_max_order: 50000 },
   reputation: { step_up_if_agent_dispute_rate_over: 0.02, min_orders_for_reputation: 20 },
+  approval: { on_self_approved: "step_up" },
+  agent_id: { require: false, directories: [] },
 };
 
 type DeepPartial<T> = { [K in keyof T]?: T[K] extends object ? (T[K] extends unknown[] ? T[K] : DeepPartial<T[K]>) : T[K] };
@@ -54,7 +66,10 @@ export function resolvePolicy(input: PolicyInput = {}): Policy {
     mandate: { ...DEFAULT_POLICY.mandate, ...(input.mandate ?? {}) },
     limits: { ...DEFAULT_POLICY.limits, ...(input.limits ?? {}) },
     reputation: { ...DEFAULT_POLICY.reputation, ...(input.reputation ?? {}) },
+    approval: { ...DEFAULT_POLICY.approval, ...(input.approval ?? {}) },
+    agent_id: { ...DEFAULT_POLICY.agent_id, ...(input.agent_id ?? {}) },
   } as Policy;
+  if (!["step_up", "block"].includes(p.approval.on_self_approved)) throw new Error(`approval.on_self_approved must be "step_up" or "block"`);
   if (!["shadow", "enforce"].includes(p.mode)) throw new Error(`policy.mode must be "shadow" or "enforce"`);
   if (!["open", "closed"].includes(p.fail)) throw new Error(`policy.fail must be "open" or "closed"`);
   if (p.agents.max_window_seconds <= 0 || p.agents.max_window_seconds > 3600) throw new Error("agents.max_window_seconds must be between 1 and 3600");

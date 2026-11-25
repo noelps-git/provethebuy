@@ -1,4 +1,4 @@
-export { ProveTheBuy, contextFromBody } from "./verify.js";
+export { ProveTheBuy, contextFromBody, declaredAgent } from "./verify.js";
 export type { ProveTheBuyOptions, CheckoutContext, AgentStats, ReputationProvider } from "./verify.js";
 export { KeyDirectory, KNOWN_DIRECTORIES, importJwk, jwkSnapshot, publicJwk } from "./keys.js";
 export type { Jwk, Jwks, DirectorySource, ResolvedKey } from "./keys.js";
@@ -25,5 +25,7 @@ export { buildEvidencePack, reverifyRecord } from "./evidence.js";
 export type { EvidencePack, DisputeInput, ReverifyResult } from "./evidence.js";
 export { agentSummaries, ledgerReputation } from "./reputation.js";
 export type { AgentSummary } from "./reputation.js";
+export { verifyAgentId, sameKey } from "./agentId.js";
+export type { AgentIdPresentation, AgentIdInfo } from "./agentId.js";
 export { canonicalize } from "./util.js";
 export type { Check, CheckStatus, Decision, Order, OrderItem, VerificationResult, AgentInfo, MandateInfo, Money } from "./types.js";

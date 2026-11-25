@@ -31,6 +31,13 @@ limits:
 reputation:
   step_up_if_agent_dispute_rate_over: 0.02
   min_orders_for_reputation: 20
+
+approval:
+  on_self_approved: step_up   # step_up | block
+
+agent_id:
+  require: false              # ask paying agents for an Accountable Agents Framework ID
+  directories: []             # empty = trust every configured ID directory
 ```
 
 | Option | Default | Meaning |
@@ -48,6 +55,9 @@ reputation:
 | `limits.intent_mandate_max_order` | `50000` | Above this, an intent-only mandate steps up. |
 | `reputation.step_up_if_agent_dispute_rate_over` | `0.02` | An agent key with a higher dispute rate at your store steps up. |
 | `reputation.min_orders_for_reputation` | `20` | Don't judge an agent on fewer orders than this. |
+| `approval.on_self_approved` | `step_up` | The shopper's approval was signed with the agent's own key, so the agent approved its own purchase. |
+| `agent_id.require` | `false` | Step up paying agents that present no Accountable Agents Framework ID. |
+| `agent_id.directories` | all | Which ID directories to trust. |
 
 ## What step-up means
 

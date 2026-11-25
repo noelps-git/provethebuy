@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Playground: send an agent shopping, then try to break it · ProveTheBuy</title>
+<meta name="description" content="Pick a store, send an AI agent to buy something, see exactly what the merchant gets, try to break it, then jump 40 days ahead to the chargeback. Runs the real open-source verifier.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap">
+<link rel="stylesheet" href="/lab.css">
+</head>
+<body class="lab-standalone">
+<header class="lab-top"><a href="/" class="lab-logo">provethebuy</a><nav><a href="/docs/quickstart">Docs</a><a href="/app">Console</a><a href="https://github.com/noelps-git/provethebuy">GitHub</a></nav></header>
+<!--lab:start-->
+<div class="lab" id="lab">
+  <section class="lab-hero">
+    <div class="lab-wrap">
+      <h1>Send an agent shopping. Then try to break it.</h1>
+      <p class="lab-lede">Pick a store and an agent, see exactly what the merchant receives, attack the order, then jump 40 days ahead to the chargeback. Every request is signed and checked by the same open-source code you install.</p>
+      <div class="lab-tabs" role="tablist" aria-label="Playground mode">
+        <button role="tab" id="tab-play" aria-selected="true" aria-controls="panel-play">Playground</button>
+        <button role="tab" id="tab-byo" aria-selected="false" aria-controls="panel-byo">Bring your own agent</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="lab-wrap" id="panel-play" role="tabpanel" aria-labelledby="tab-play">
+    <div class="lab-grid">
+      <!-- 1. Set up the shop -->
+      <form class="lab-col lab-setup" id="setup" aria-labelledby="h-setup">
+        <h2 id="h-setup"><span class="lab-n">1</span>Set up the shop</h2>
+
+        <fieldset>
+          <legend>Store</legend>
+          <div class="lab-stores" id="stores"></div>
+        </fieldset>
+
+        <div class="lab-ask">
+          <div class="lab-label">The shopper asked for</div>
+          <p id="ask-text"></p>
+          <label class="lab-cap">Spending cap they approved
+            <span class="lab-money"><span aria-hidden="true">$</span><input id="cap" type="number" min="1" step="1" inputmode="numeric"></span>
+          </label>
+        </div>
+
+        <fieldset>
+          <legend>Agent</legend>
+          <div class="lab-radios" id="agents"></div>
+        </fieldset>
+
+        <fieldset id="approval-set">
+          <legend>How the shopper approved</legend>
+          <div class="lab-radios" id="approvals"></div>
+        </fieldset>
+
+        <label class="lab-switch" id="id-switch">
+          <input type="checkbox" id="with-id">
+          <span><b>Attach an accountable agent ID</b><small>An ID from an Accountable Agents Framework directory, bound to the agent's key, with a spending limit.</small></span>
+        </label>
+
+        <fieldset class="lab-mode">
+          <legend>Merchant mode</legend>
+          <div class="lab-seg">
+            <label><input type="radio" name="mode" value="shadow" checked><span>Watch only</span></label>
+            <label><input type="radio" name="mode" value="enforce"><span>Enforce</span></label>
+          </div>
+          <small id="mode-help">Decisions are recorded, nothing is blocked.</small>
+        </fieldset>
+
+        <button class="lab-send" type="submit" id="send">Send the agent</button>
+      </form>
+
+      <!-- 2. What the agent sent -->
+      <section class="lab-col lab-sent" aria-labelledby="h-sent">
+        <h2 id="h-sent"><span class="lab-n">2</span>What the agent sent</h2>
+        <div class="lab-subtabs" role="tablist" aria-label="Request views">
+          <button role="tab" aria-selected="true" data-view="compare">Approved vs sent</button>
+          <button role="tab" aria-selected="false" data-view="request">Raw request</button>
+        </div>
+        <div id="view-compare" class="lab-view"><p class="lab-empty">Send the agent to see the order it placed next to what the shopper approved.</p></div>
+        <div id="view-request" class="lab-view" hidden><p class="lab-empty">The signed HTTP request appears here.</p></div>
+        <p class="lab-edit-note" id="edit-note" hidden>Want to tamper by hand? Copy the request, change it and paste it into <button type="button" class="lab-linkbtn" data-goto="byo">Bring your own agent</button>.</p>
+      </section>
+
+      <!-- 3. What the merchant gets -->
+      <section class="lab-col lab-gets" aria-labelledby="h-gets">
+        <h2 id="h-gets"><span class="lab-n">3</span>What the merchant gets</h2>
+        <div id="result" aria-live="polite"><p class="lab-empty">The decision, every check and the evidence record appear here.</p></div>
+      </section>
+    </div>
+
+    <!-- Break it -->
+    <section class="lab-break" aria-labelledby="h-break">
+      <div class="lab-break-head">
+        <h2 id="h-break">Try to break it</h2>
+        <p>Each attack runs against the setup above. You'll see which check catches it, or tell us if one gets through.</p>
+      </div>
+      <div class="lab-attacks" id="attacks"></div>
+    </section>
+
+    <!-- 40 days later -->
+    <section class="lab-dispute" id="dispute" hidden aria-labelledby="h-dispute">
+      <div class="lab-dispute-head">
+        <div>
+          <div class="lab-label">40 days later</div>
+          <h2 id="h-dispute">A chargeback arrives</h2>
+        </div>
+        <label class="lab-reason">Cardholder says
+          <select id="reason"></select>
+        </label>
+      </div>
+      <div id="dispute-body"></div>
+    </section>
+  </div>
+
+  <!-- Bring your own agent -->
+  <div class="lab-wrap" id="panel-byo" role="tabpanel" aria-labelledby="tab-byo" hidden>
+    <div class="lab-byo">
+      <section class="lab-col">
+        <h2><span class="lab-n">A</span>Paste a signed request</h2>
+        <p class="lab-help">Paste an HTTP request your agent sent: the request line, headers, a blank line and the body. JSON <code>{ method, url, headers, body }</code> works too. Keys are looked up in Visa's public directory, the key directory URL you give, and the playground's demo directory.</p>
+        <label class="lab-field">Request
+          <textarea id="raw" rows="12" spellcheck="false" placeholder="POST https://shop.example/checkout&#10;host: shop.example&#10;signature-input: sig1=(&quot;@authority&quot; &quot;@path&quot;);created=...;keyid=&quot;...&quot;;tag=&quot;agent-payer-auth&quot;&#10;signature: sig1=:...:&#10;&#10;{&quot;order&quot;: {...}}"></textarea>
+        </label>
+        <div class="lab-row">
+          <label class="lab-field">Your agent's key directory (JWKS URL, optional)<input id="raw-jwks" type="url" placeholder="https://agent.example/.well-known/http-message-signatures-directory"></label>
+          <label class="lab-field">Merchant id (optional)<input id="raw-merchant" type="text" placeholder="acct_your_shop"></label>
+        </div>
+        <div class="lab-row">
+          <button class="lab-btn" type="button" id="raw-verify">Check this request</button>
+          <button class="lab-btn lab-btn-line" type="button" id="raw-sample">Load the last playground request</button>
+        </div>
+        <div id="raw-result" aria-live="polite"></div>
+      </section>
+      <section class="lab-col">
+        <h2><span class="lab-n">B</span>Point a live agent at a sandbox</h2>
+        <p class="lab-help">Get a private checkout URL for the next hour. Send your agent there and each request appears below with the decision. Nothing is charged and nothing is kept after an hour.</p>
+        <div class="lab-row">
+          <label class="lab-field">Key directory URL (optional)<input id="sb-jwks" type="url" placeholder="https://agent.example/.well-known/jwks.json"></label>
+        </div>
+        <button class="lab-btn" type="button" id="sb-create">Create my sandbox URL</button>
+        <div id="sb-box" hidden>
+          <div class="lab-url"><code id="sb-url"></code><button type="button" class="lab-btn lab-btn-line lab-btn-sm" data-copy="#sb-url">Copy</button></div>
+          <div class="lab-sb-head"><b>Requests received</b><span id="sb-status">Waiting for your agent…</span></div>
+          <ol class="lab-events" id="sb-events"></ol>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Copy as code -->
+  <dialog class="lab-dialog" id="code-dialog" aria-labelledby="h-code">
+    <div class="lab-dialog-head">
+      <h2 id="h-code">Copy this scenario as code</h2>
+      <button type="button" class="lab-x" aria-label="Close" data-close>×</button>
+    </div>
+    <div class="lab-subtabs" role="tablist" aria-label="Code format">
+      <button role="tab" aria-selected="true" data-code="express">Express</button>
+      <button role="tab" aria-selected="false" data-code="curl">curl</button>
+      <button role="tab" aria-selected="false" data-code="install">Install</button>
+    </div>
+    <pre class="lab-code" id="code-pre"></pre>
+    <div class="lab-row lab-dialog-foot">
+      <button type="button" class="lab-btn" id="code-copy">Copy</button>
+      <a class="lab-btn lab-btn-line" id="quickstart-link" href="/docs/quickstart?utm_source=playground&amp;utm_medium=code_dialog">Read the quickstart</a>
+      <a class="lab-btn lab-btn-line" href="https://github.com/noelps-git/provethebuy/tree/main/test-vectors">Download test vectors</a>
+    </div>
+  </dialog>
+  <div class="lab-toast" id="toast" role="status" hidden></div>
+</div>
+<script type="module" src="/lab.js"></script>
+<!--lab:end-->
+</body>
+</html>
