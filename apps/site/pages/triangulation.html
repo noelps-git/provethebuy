@@ -23,19 +23,19 @@
     </div>
     <ol class="steps reveal">
       <li>
-        <h3>1. Agent buys from a fake store</h3>
+        <h3>Agent buys from a fake store</h3>
         <p>Your customer's shopping agent finds a "too-good-to-be-true" deal on a fake storefront that looks just like the real thing. Same product photos, same branding, half the price.</p>
       </li>
       <li>
-        <h3>2. Card details stolen</h3>
+        <h3>Card details stolen</h3>
         <p>The fake store harvests the shopper's card details at checkout. The shopper gets nothing, or a cheap counterfeit. The agent has no way to tell the store isn't real.</p>
       </li>
       <li>
-        <h3>3. Fraudster buys from you</h3>
+        <h3>Fraudster buys from you</h3>
         <p>Using the stolen card, the fraudster places a real order on your store. They ship it to the original buyer's address so the buyer never complains. To you, it looks like a normal order.</p>
       </li>
       <li>
-        <h3>4. You eat the chargeback</h3>
+        <h3>You eat the chargeback</h3>
         <p>The card's real owner disputes the charge. You've shipped the goods, you can't recover them, and you lose the chargeback. The fraudster keeps the original payment.</p>
       </li>
     </ol>
@@ -87,7 +87,7 @@
     </div>
     <p class="lede reveal" style="max-width:66ch">When a chargeback lands on a triangulation order, the evidence pack already has the answer.</p>
 
-    <div class="data-flow reveal" style="max-width:640px;margin:0 auto">
+    <div class="data-flow reveal" style="max-width:680px;margin:0 auto">
       <div class="data-flow-field blocked">
         <span class="data-flow-label">Recipient match</span>
         <span class="data-flow-status">FAIL</span>
@@ -191,12 +191,12 @@
 <div class="divider"></div>
 
 <section class="faq">
-  <div class="wrap faq-grid">
-    <div class="section-head reveal">
+  <div class="wrap">
+    <div class="section-head center reveal">
       <div class="label">FAQ</div>
       <h2>Common questions</h2>
     </div>
-    <div>
+    <div class="faq-list" style="max-width:760px;margin:0 auto">
       <details class="reveal">
         <summary>Does signed checkout stop all triangulation fraud?<span class="faq-icon">+</span></summary>
         <p>No. It stops the first step: an agent paying a fake store. If a fraudster places an order by hand using a stolen card, that bypasses agent verification entirely — that's your existing fraud tools' job. But if the order came through an agent, ProveTheBuy catches it.</p>
@@ -206,8 +206,16 @@
         <p>Gifts are a legitimate mismatch. The policy lets you configure what counts as a match. When the recipient doesn't match but the approval is genuine — device-signed by the shopper — the order proceeds with a note in the evidence. No false blocks.</p>
       </details>
       <details class="reveal">
+        <summary>Does recipient matching cause false blocks?<span class="faq-icon">+</span></summary>
+        <p>No. A mismatch triggers a step-up, not a block. The shopper is asked to confirm the order. If they confirm, the order proceeds with extra evidence. If they don't, you avoided a chargeback.</p>
+      </details>
+      <details class="reveal">
         <summary>When does cross-store detection ship?<span class="faq-icon">+</span></summary>
         <p>Once several merchants are on ProveTheBuy Cloud. One store's data alone shows too little. We're onboarding merchants now — if you're interested, start with the Indie plan and your data will be ready when it launches.</p>
+      </details>
+      <details class="reveal">
+        <summary>Is <code>verifyMerchant()</code> really free?<span class="faq-icon">+</span></summary>
+        <p>Yes. It's part of the open-source verifier, Apache-2.0 licensed, with no account or API key needed. Agent builders can use it without paying anything or signing up. Merchants publish a key; agents check it.</p>
       </details>
     </div>
   </div>

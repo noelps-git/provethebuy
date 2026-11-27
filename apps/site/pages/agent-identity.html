@@ -125,23 +125,23 @@
   <div class="wrap">
     <div class="section-head reveal">
       <div class="label">How it works</div>
-      <h2>How it works</h2>
+      <h2>From signature to evidence in four steps</h2>
     </div>
     <ol class="steps reveal">
       <li>
-        <h3>1. Agent signs the request</h3>
+        <h3>Agent signs the request</h3>
         <p>The shopping agent includes a cryptographic signature (Ed25519, RFC 9421) and optionally a mandate signed by the shopper, proving who it is and what it's allowed to buy.</p>
       </li>
       <li>
-        <h3>2. ProveTheBuy verifies at checkout</h3>
+        <h3>ProveTheBuy verifies at checkout</h3>
         <p>Your middleware checks the signature against the card-network key directory (Visa, Mastercard), validates the mandate limits, and records everything in a hash-chained evidence ledger.</p>
       </li>
       <li>
-        <h3>3. My Agents dashboard</h3>
+        <h3>My Agents dashboard</h3>
         <p>See every agent that has bought from your store: which protocol it uses, its key directory entry, first-seen date, order count, dispute rate, and cross-merchant reputation.</p>
       </li>
       <li>
-        <h3>4. Dispute lands months later</h3>
+        <h3>Dispute lands months later</h3>
         <p>The evidence record still verifies. ProveTheBuy generates a fight-or-accept score, an evidence pack, and a PDF certificate — ready to submit to Stripe or export for Visa TC40/SAFE and Mastercard formats.</p>
       </li>
     </ol>
@@ -235,7 +235,7 @@
   <div class="wrap reveal">
     <h2>Start identifying agents today.</h2>
     <p class="lede">The verifier is open source and free. Cloud plans add the My Agents dashboard, key directory log, dispute evidence, and card-network export.</p>
-    <div class="cta-row">
+    <div class="cta-row" style="justify-content:center">
       <a class="btn btn-glow" href="/pricing">See pricing</a>
       <a class="btn btn-outline" href="/docs/quickstart">Read the quickstart &rarr;</a>
     </div>

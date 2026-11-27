@@ -289,7 +289,7 @@ await write("agent-threat-check.html", layout({
 
 // Anti-triangulation fraud
 const triBody = fill(await readFile(join(HERE, "pages", "triangulation.html"), "utf8"));
-const triFaq = [...triBody.matchAll(/<details[^>]*><summary>(.*?)<span[^>]*>.*?<\/span><\/summary>\s*<p>(.*?)<\/p><\/details>/gs)].map(([, q, a]) => ({ "@type": "Question", name: q.trim(), acceptedAnswer: { "@type": "Answer", text: a.replace(/<[^>]+>/g, "").trim() } }));
+const triFaq = [...triBody.matchAll(/<details[^>]*>\s*<summary>(.*?)<span[^>]*>.*?<\/span><\/summary>\s*<p>(.*?)<\/p>\s*<\/details>/gs)].map(([, q, a]) => ({ "@type": "Question", name: q.replace(/<[^>]+>/g, "").trim(), acceptedAnswer: { "@type": "Answer", text: a.replace(/<[^>]+>/g, "").trim() } }));
 await write("triangulation.html", layout({
   path: "/triangulation", current: "triangulation", title: "Stop triangulation fraud in AI agent orders",
   description: "Signed checkout, recipient matching and cross-store pattern detection break every link in the triangulation fraud chain. Free verifyMerchant() for agent builders.",
