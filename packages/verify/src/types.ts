@@ -35,6 +35,8 @@ export interface Order {
   currency: string;
   total: number;
   items: OrderItem[];
+  /** Hashed shipping recipient for anti-triangulation matching (Feature 5). */
+  recipient?: { name_hash?: string; address_hash?: string; email_hash?: string };
 }
 
 export interface AgentInfo {
@@ -58,6 +60,23 @@ export interface MandateInfo {
   constraintsOk?: boolean;
   expiresAt?: string;
   summary?: string;
+  /** Hashed identity of the person who approved the mandate (Feature 5: recipient matching). */
+  approver?: { name_hash?: string; address_hash?: string; email_hash?: string };
+}
+
+/** What the agent must provide to recover from a step-up (Feature 2). */
+export interface StepUpRequirement {
+  type: "device-approval" | "aaf-id" | "assurance-level" | "spending-limit" | "body-digest" | "mandate" | "recipient-match";
+  detail: string;
+  min_value?: string;
+}
+
+/** Who vouched for a claim in the verification result (Feature 3). */
+export interface ClaimProvenance {
+  claim: string;
+  source: "directory" | "principal" | "self";
+  attester?: string;
+  device_type?: string;
 }
 
 export interface VerificationResult {
@@ -87,5 +106,12 @@ export interface VerificationResult {
   /** Mandate issuer key used (Verifiable Intent layer 1), kept for re-verification. */
   issuerKeyJwk?: Jwk;
   /** Present when decision is step_up: what to ask the person to confirm. */
-  stepUp?: { reason: string; suggested: "ap2-cart-mandate" | "3ds" | "confirm-in-session" };
+  stepUp?: {
+    reason: string;
+    suggested: "ap2-cart-mandate" | "3ds" | "confirm-in-session";
+    /** Structured list of exactly what the agent must provide to recover (Feature 2). */
+    required?: StepUpRequirement[];
+  };
+  /** Who vouched for each claim in the verification (Feature 3). */
+  provenance?: ClaimProvenance[];
 }

@@ -43,7 +43,7 @@ const ICONS = {
 };
 const icon = (n) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n] ?? ""}</svg>`;
 
-const MARK = () => `<svg viewBox="0 0 36 36" aria-hidden="true"><defs><linearGradient id="sq1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#7C6CF0"/><stop offset="100%" stop-color="#5B8DEF"/></linearGradient><linearGradient id="sq2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4DA0F0"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient><mask id="m1"><rect width="36" height="36" fill="white"/><rect x="14" y="14" width="8" height="8" rx="4" fill="black"/></mask><mask id="m2"><rect width="36" height="36" fill="white"/><rect x="14" y="14" width="8" height="8" rx="4" fill="black"/></mask></defs><rect x="0" y="0" width="22" height="22" rx="6" fill="url(#sq1)" mask="url(#m1)"/><rect x="14" y="14" width="22" height="22" rx="6" fill="url(#sq2)" mask="url(#m2)"/></svg>`;
+const MARK = () => `<svg class="logo-mark" width="28" height="28" viewBox="0 0 36 36" aria-hidden="true"><defs><mask id="sq1mask"><rect width="36" height="36" fill="white"/><rect x="14" y="14" width="8" height="8" rx="4" fill="black"/></mask><mask id="sq2mask"><rect width="36" height="36" fill="white"/><rect x="14" y="14" width="8" height="8" rx="4" fill="black"/></mask></defs><rect x="0" y="0" width="22" height="22" rx="6" fill="url(#logoSquare1)" mask="url(#sq1mask)"/><rect x="14" y="14" width="22" height="22" rx="6" fill="url(#logoSquare2)" mask="url(#sq2mask)"/></svg>`;
 
 // Engraved-line background, the "certificate" motif. Used on dark headers only.
 function guilloche(h) {
@@ -67,6 +67,13 @@ const fill = (html) => html
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
 // ---------------------------------------------------------------- layout
+// Global SVG gradient defs used by icons, logo, and cloud flow line
+const SVG_DEFS = `<svg class="svg-defs" aria-hidden="true"><defs>
+<linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6366F1"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient>
+<linearGradient id="logoSquare1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#7C6CF0"/><stop offset="100%" stop-color="#5B8DEF"/></linearGradient>
+<linearGradient id="logoSquare2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4DA0F0"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient>
+</defs></svg>`;
+
 function layout({ path, title, description, body, jsonld = [], current = "", extraHead = "", type = "website" }) {
   const url = SITE + path;
   const fullTitle = path === "/" ? title : `${title} | ProveTheBuy`;
@@ -79,7 +86,7 @@ function layout({ path, title, description, body, jsonld = [], current = "", ext
 <title>${esc(fullTitle)}</title>
 <meta name="description" content="${esc(description)}">
 <link rel="canonical" href="${url}">
-<meta name="theme-color" content="#141A3A">
+<meta name="theme-color" content="#09090B">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="${type}">
 <meta property="og:site_name" content="ProveTheBuy">
@@ -96,25 +103,30 @@ function layout({ path, title, description, body, jsonld = [], current = "", ext
 <link rel="alternate" type="text/plain" title="LLM-readable summary" href="/llms.txt">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap">
 <link rel="stylesheet" href="/site.css">
 ${jsonld.map((j) => `<script type="application/ld+json">${JSON.stringify(j)}</script>`).join("\n")}
 ${extraHead}
 </head>
 <body>
+${SVG_DEFS}
+<div class="gradient-mesh"></div>
+<div class="noise"></div>
+<div class="scroll-progress" id="scrollProgress"></div>
 <a class="skip" href="#main">Skip to content</a>
-<header class="top">
+<header class="top" id="topNav">
   <div class="wrap">
-    <a class="logo" href="/">${MARK()}provethebuy</a>
+    <a class="logo" href="/">${MARK()}ProveTheBuy</a>
     <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav">${icon("menu")}</button>
     <nav id="site-nav" aria-label="Main">
       ${navLink("/docs/quickstart", "Docs", "docs")}
       ${navLink("/agent-identity", "Agent Identity", "agent-identity")}
       ${navLink("/agent-threat-check", "Threat Check", "agent-threat-check")}
+      ${navLink("/triangulation", "Anti-fraud", "triangulation")}
       ${navLink("/playground", "Playground", "playground")}
       ${navLink("/pricing", "Pricing", "pricing")}
-      <a class="gh" href="${REPO}">${icon("github")}GitHub</a>
-      <a class="btn btn-line btn-sm" href="${APP}/login">Sign in</a>
+      <a class="gh" href="${REPO}">${icon("github")}Star</a>
+      <a class="btn btn-line btn-sm nav-cta" href="${APP}/login">Get started</a>
     </nav>
   </div>
 </header>
@@ -123,29 +135,30 @@ ${body}
 </main>
 <footer class="site">
   <div class="wrap">
-    <div>
-      <a class="logo" href="/">${MARK()}provethebuy</a>
-      <p style="margin: 14px 0 0; max-width: 30em">Open-source verification and dispute evidence for orders placed by AI agents.</p>
+    <div class="brand-col">
+      <a class="logo" href="/">${MARK()}ProveTheBuy</a>
+      <p>Open-source agent-order verification. Apache-2.0 licensed.</p>
     </div>
+    <div><h4>Product</h4><ul>
+      <li><a href="/agent-identity">Agent Identity</a></li>
+      <li><a href="/agent-threat-check">Threat Check</a></li>
+      <li><a href="/triangulation">Anti-fraud</a></li>
+      <li><a href="/pricing">Pricing</a></li>
+      <li><a href="/playground">Playground</a></li>
+    </ul></div>
     <div><h4>Developers</h4><ul>
       <li><a href="/docs/quickstart">Quickstart</a></li>
       <li><a href="/docs/cli">CLI</a></li>
       <li><a href="/docs/protocols">Protocols</a></li>
-      <li><a href="/playground">Playground</a></li>
+      <li><a href="/security">Security</a></li>
     </ul></div>
     <div><h4>Open source</h4><ul>
       <li><a href="${REPO}">GitHub</a></li>
       <li><a href="https://www.npmjs.com/package/@provethebuy/verify">npm</a></li>
       <li><a href="${REPO}/tree/main/test-vectors">Test vectors</a></li>
-      <li><a href="${REPO}/blob/main/CONTRIBUTING.md">Contributing</a></li>
-    </ul></div>
-    <div><h4>Product</h4><ul>
-      <li><a href="/pricing">Pricing</a></li>
-      <li><a href="/security">Security</a></li>
-      <li><a href="${APP}/login">Sign in</a></li>
       <li><a href="/llms.txt">llms.txt</a></li>
     </ul></div>
-    <div class="fine"><span>Apache-2.0</span><span>provethebuy.com</span></div>
+    <div class="fine"><span>&copy; ${new Date().getFullYear()} ProveTheBuy</span><span>Apache-2.0</span></div>
   </div>
 </footer>
 <script src="/site.js" defer></script>
@@ -204,7 +217,7 @@ function docsNav(currentSlug) {
   return `<nav class="docs-nav" aria-label="Docs">${html}</nav>`;
 }
 
-const MERMAID = `<script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.esm.min.mjs";mermaid.initialize({ startOnLoad: true, theme: "base", themeVariables: { fontFamily: "Geist, system-ui, sans-serif", primaryColor: "#EEF1F6", primaryBorderColor: "#141A3A", primaryTextColor: "#141A3A", lineColor: "#5B6478", secondaryColor: "#FBEEDF", tertiaryColor: "#FFFFFF" } });</script>`;
+const MERMAID = `<script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.esm.min.mjs";mermaid.initialize({ startOnLoad: true, theme: "base", themeVariables: { fontFamily: "Geist, system-ui, sans-serif", primaryColor: "#18181B", primaryBorderColor: "#6366F1", primaryTextColor: "#E4E4E7", lineColor: "#71717A", secondaryColor: "#111113", tertiaryColor: "#09090B", background: "#09090B" } });</script>`;
 
 // ---------------------------------------------------------------- build
 await rm(OUT, { recursive: true, force: true });
@@ -274,6 +287,15 @@ await write("agent-threat-check.html", layout({
   body: fill(await readFile(join(HERE, "pages", "agent-threat-check.html"), "utf8")),
 }));
 
+// Anti-triangulation fraud
+const triBody = fill(await readFile(join(HERE, "pages", "triangulation.html"), "utf8"));
+const triFaq = [...triBody.matchAll(/<details[^>]*><summary>(.*?)<span[^>]*>.*?<\/span><\/summary>\s*<p>(.*?)<\/p><\/details>/gs)].map(([, q, a]) => ({ "@type": "Question", name: q.trim(), acceptedAnswer: { "@type": "Answer", text: a.replace(/<[^>]+>/g, "").trim() } }));
+await write("triangulation.html", layout({
+  path: "/triangulation", current: "triangulation", title: "Stop triangulation fraud in AI agent orders",
+  description: "Signed checkout, recipient matching and cross-store pattern detection break every link in the triangulation fraud chain. Free verifyMerchant() for agent builders.",
+  body: triBody, jsonld: triFaq.length ? [{ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: triFaq }] : [],
+}));
+
 // Docs
 const md = markdown();
 const docsDir = join(ROOT, "docs");
@@ -306,7 +328,7 @@ await writePlayground();
 await write("404.html", layout({ path: "/404", title: "Page not found", description: "This page doesn't exist.", body: `<div class="page-hero">${guilloche(320)}<div class="wrap"><h1>This page isn't on file.</h1><p>It may have moved. Try the <a href="/docs" style="color:var(--accent-light)">docs</a> or go back to the <a href="/" style="color:var(--accent-light)">home page</a>.</p></div></div>` }));
 
 // Discovery files
-const pages = ["/", "/pricing", "/security", "/agent-identity", "/agent-threat-check", "/playground", "/docs", ...DOCS.map((d) => `/docs/${d.slug}`)];
+const pages = ["/", "/pricing", "/security", "/agent-identity", "/agent-threat-check", "/triangulation", "/playground", "/docs", ...DOCS.map((d) => `/docs/${d.slug}`)];
 await write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((p) => `  <url><loc>${SITE}${p}</loc><lastmod>${TODAY}</lastmod></url>`).join("\n")}\n</urlset>\n`);
 await write("robots.txt", `User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${SITE}/sitemap.xml\n`);
 await write(".well-known/security.txt", `Contact: mailto:security@provethebuy.com\nExpires: ${new Date(Date.now() + 365 * 864e5).toISOString()}\nPreferred-Languages: en\nCanonical: ${SITE}/.well-known/security.txt\nPolicy: ${REPO}/blob/main/SECURITY.md\n`);
@@ -317,6 +339,7 @@ await write("llms.txt", `# ProveTheBuy
 - Install: \`npm install @provethebuy/verify\`
 - Count agent traffic in a log: \`npx @provethebuy/cli traffic-check access.log\`
 - Decisions: allow, step_up, block, not_agent. Starts in shadow mode (records only) and fails open.
+- Anti-triangulation: signed checkout (\`verifyMerchant()\`) lets agents verify a store is real before paying. Recipient matching catches stolen-card orders. Cross-store detection flags triangulation rings.
 - ProveTheBuy Cloud (${APP}) stores records and submits dispute evidence to Stripe. The verifier works without it.
 
 ## Docs
@@ -329,10 +352,16 @@ ${DOCS.map((d) => `- [${d.nav}](${SITE}/docs/${d.slug}.md): ${d.description}`).j
 - [Express example](${REPO}/tree/main/examples/express-checkout): a runnable shop and an agent that buys from it
 - [Test vectors](${REPO}/tree/main/test-vectors): signed requests with expected decisions, for ports to other languages
 
+## Anti-triangulation fraud
+
+- [Triangulation fraud defence](${SITE}/triangulation): How signed checkout, recipient matching, and cross-store detection break triangulation fraud chains
+- \`verifyMerchant(signedCart, domain)\`: Free, open-source function for shopping agents to verify a store is real before paying
+
 ## Optional
 
 - [Pricing](${SITE}/pricing)
 - [Security](${SITE}/security)
+- [Anti-fraud](${SITE}/triangulation)
 - [Full docs in one file](${SITE}/llms-full.txt)
 `);
 await write("llms-full.txt", full.join("\n\n---\n\n"));

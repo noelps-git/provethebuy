@@ -83,7 +83,7 @@ export function createMiddleware(verifier: ProveTheBuy, ledger?: EvidenceLedger,
       const result = await verifier.verify(request, context);
       req.provethebuy = { ...result, request, context };
       if (result.enforced && result.decision === "block") return send(res, 403, { error: "agent_request_blocked", reasons: result.reasons });
-      if (result.enforced && result.decision === "step_up") return send(res, 409, { error: "confirmation_required", step_up: result.stepUp, reasons: result.reasons });
+      if (result.enforced && result.decision === "step_up") return send(res, 409, { error: "confirmation_required", step_up: result.stepUp, required: result.stepUp?.required, reasons: result.reasons });
       next();
     } catch (e) {
       next(e);

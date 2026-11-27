@@ -89,7 +89,9 @@ export async function verifyAp2Cart(m: Ap2CartMandate, ctx: MandateContext): Pro
       ? { name: "order_within_mandate", status: "fail", detail: "Order differs from the signed cart: " + problems.join("; ") + "." }
       : { name: "order_within_mandate", status: "pass", detail: "Order is exactly the cart the user signed." },
   );
-  return { info: { type: m.type, mode: "human-present", valid: true, constraintsOk: !problems.length, expiresAt: userCart.expires_at, summary: `cart ${userCart.cart_id}` }, checks, principalJwk: m.user_jwk };
+  // Extract approver hashes from cart delivery fields for recipient matching (Feature 5)
+  const delivery = (userCart as unknown as Record<string, unknown>).delivery as { name_hash?: string; address_hash?: string; email_hash?: string } | undefined;
+  return { info: { type: m.type, mode: "human-present", valid: true, constraintsOk: !problems.length, expiresAt: userCart.expires_at, summary: `cart ${userCart.cart_id}`, approver: delivery ? { name_hash: delivery.name_hash, address_hash: delivery.address_hash, email_hash: delivery.email_hash } : undefined }, checks, principalJwk: m.user_jwk };
 }
 
 export async function verifyAp2Intent(m: Ap2IntentMandate, ctx: MandateContext): Promise<MandateOutcome> {

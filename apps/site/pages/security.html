@@ -1,141 +1,254 @@
-<div class="page-hero">
-  {{guilloche:320}}
+<section class="hero">
+  <div class="grid-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
   <div class="wrap">
-    <h1>Security</h1>
-    <p class="lede">ProveTheBuy sits next to your checkout, so it's built to never put a sale at risk and never hold card data.</p>
+    <h1 class="gradient reveal">Security</h1>
+    <p class="lede reveal">ProveTheBuy sits next to your checkout, so it's built to never put a sale at risk and never hold card data.</p>
   </div>
-</div>
+</section>
+
+<div class="divider"></div>
 
 <section>
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
+      <div class="label">Reliability</div>
       <h2>Your checkout comes first</h2>
     </div>
-    <div class="protocol-grid">
-      <div class="protocol-card">
-        <strong>{{icon:check}} Fail-open by default</strong>
-        <p>The verifier runs in your own server. It fails open by default: if it errors, the order goes through and the error is recorded.</p>
-      </div>
-      <div class="protocol-card">
-        <strong>{{icon:check}} Background sync with bounded queue</strong>
-        <p>The Cloud connection sends records in the background with a short timeout and a bounded queue, so if we're slow or down, orders still go through and records are sent later.</p>
-      </div>
+
+    <div class="flow-diagram glass reveal" id="flowDiagram">
+      <svg viewBox="0 0 700 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Request node -->
+        <g class="flow-node">
+          <rect class="flow-node-box" x="10" y="85" width="120" height="50"/>
+          <text x="70" y="115" text-anchor="middle" fill="var(--text-primary)" font-family="var(--sans)" font-size="13" font-weight="600">Request</text>
+        </g>
+        <!-- Arrow to verifier -->
+        <line class="flow-path" x1="130" y1="110" x2="210" y2="110" stroke="var(--text-muted)"/>
+        <!-- Verifier node -->
+        <g class="flow-node">
+          <rect class="flow-node-box" x="210" y="85" width="140" height="50" style="stroke:var(--accent)"/>
+          <text x="280" y="115" text-anchor="middle" fill="var(--accent-light)" font-family="var(--mono)" font-size="12" font-weight="600">Verifier</text>
+        </g>
+        <!-- Success path -->
+        <line class="flow-path" x1="350" y1="95" x2="440" y2="50" stroke="var(--green)"/>
+        <g class="flow-node">
+          <rect class="flow-node-box success" x="440" y="25" width="160" height="50"/>
+          <text x="520" y="47" text-anchor="middle" fill="var(--green)" font-family="var(--sans)" font-size="12" font-weight="600">Order proceeds</text>
+          <text x="520" y="63" text-anchor="middle" fill="var(--text-muted)" font-family="var(--sans)" font-size="10">Record filed</text>
+        </g>
+        <!-- Error path -->
+        <line class="flow-path" x1="350" y1="125" x2="440" y2="170" stroke="var(--orange)"/>
+        <g class="flow-node">
+          <rect class="flow-node-box error" x="440" y="145" width="160" height="50"/>
+          <text x="520" y="167" text-anchor="middle" fill="var(--orange)" font-family="var(--sans)" font-size="12" font-weight="600">Order still proceeds</text>
+          <text x="520" y="183" text-anchor="middle" fill="var(--text-muted)" font-family="var(--sans)" font-size="10">Error logged</text>
+        </g>
+        <!-- Label -->
+        <text x="380" y="42" fill="var(--text-muted)" font-family="var(--mono)" font-size="9" font-weight="500">SUCCESS</text>
+        <text x="380" y="195" fill="var(--text-muted)" font-family="var(--mono)" font-size="9" font-weight="500">ERROR</text>
+      </svg>
     </div>
   </div>
 </section>
 
-<section class="alt">
+<div class="divider"></div>
+
+<section>
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
+      <div class="label">Privacy</div>
       <h2>No card data</h2>
       <p>We add nothing to your PCI scope.</p>
     </div>
-    <div class="protocol-grid">
-      <div class="protocol-card">
-        <strong>{{icon:lock}} Agent signatures only</strong>
-        <p>We read agent signatures, signed mandates and payment token limits. We never decrypt payment containers or see card numbers, so we add nothing to your PCI scope.</p>
+
+    <div class="data-flow reveal" id="dataFlow">
+      <div class="data-flow-field">
+        <span class="field-name">Signature</span>
+        <span style="flex:1;font:400 12px var(--mono);color:var(--text-tertiary)">Ed25519 agent key</span>
+        <span class="field-status allowed"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l3.5 3.5L13 5"/></svg></span>
+      </div>
+      <div class="data-flow-field">
+        <span class="field-name">Mandate</span>
+        <span style="flex:1;font:400 12px var(--mono);color:var(--text-tertiary)">Shopper's signed limits</span>
+        <span class="field-status allowed"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l3.5 3.5L13 5"/></svg></span>
+      </div>
+      <div class="data-flow-field">
+        <span class="field-name">Token limits</span>
+        <span style="flex:1;font:400 12px var(--mono);color:var(--text-tertiary)">Amount, currency, merchant</span>
+        <span class="field-status allowed"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l3.5 3.5L13 5"/></svg></span>
+      </div>
+      <div class="data-flow-field blocked-field">
+        <span class="field-name">Card number</span>
+        <span style="flex:1;font:400 12px var(--mono);color:var(--text-muted)">Never touched</span>
+        <span class="field-status blocked"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l8 8M12 4l-8 8"/></svg></span>
+      </div>
+      <div class="data-flow-field blocked-field">
+        <span class="field-name">CVV</span>
+        <span style="flex:1;font:400 12px var(--mono);color:var(--text-muted)">Never touched</span>
+        <span class="field-status blocked"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l8 8M12 4l-8 8"/></svg></span>
       </div>
     </div>
   </div>
 </section>
 
+<div class="divider"></div>
+
 <section>
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
+      <div class="label">Cryptography</div>
       <h2>Cryptography</h2>
       <p>Standard, NIST-approved algorithms throughout.</p>
     </div>
     <div class="agent-grid">
-      <div class="agent-card">
-        <strong>{{icon:lock}} Signature verification</strong>
+      <div class="agent-card glass card-glow lock-bounce reveal reveal-delay-1">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="12" height="9" rx="2"/><path d="M7 9V6a3 3 0 016 0v3"/><circle cx="10" cy="13.5" r="1.5"/></svg>
+        </div>
+        <strong>Signature verification</strong>
         <p>Signatures use Ed25519, ECDSA P-256 and RSA-PSS through Node's crypto module.</p>
       </div>
-      <div class="agent-card">
-        <strong>{{icon:lock}} Record hashing</strong>
+      <div class="agent-card glass card-glow lock-bounce reveal reveal-delay-2">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="12" height="9" rx="2"/><path d="M7 9V6a3 3 0 016 0v3"/><circle cx="10" cy="13.5" r="1.5"/></svg>
+        </div>
+        <strong>Record hashing</strong>
         <p>Records are hashed with SHA-256 over RFC 8785 canonical JSON.</p>
       </div>
-      <div class="agent-card">
-        <strong>{{icon:check}} Not a FIPS module</strong>
+      <div class="agent-card glass card-glow reveal reveal-delay-3">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2.5v0a7.5 7.5 0 017.5 7.5v0a7.5 7.5 0 01-7.5 7.5v0A7.5 7.5 0 012.5 10v0A7.5 7.5 0 0110 2.5z"/><path d="M7 10l2 2 4-4"/></svg>
+        </div>
+        <strong>Not a FIPS module</strong>
         <p>These are standard, NIST-approved algorithms; ProveTheBuy is not itself a FIPS-validated module.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="on-ink">
+<div class="divider"></div>
+
+<section>
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
+      <div class="label">Cloud Security</div>
       <h2>Isolation and access in Cloud</h2>
       <p>Every layer is locked down by default.</p>
     </div>
     <div class="compare-grid">
-      <div class="compare-col">
+      <div class="compare-col glass card-glow reveal reveal-delay-1">
         <h3>Data isolation</h3>
         <ul class="compare-list">
-          <li>{{icon:lock}} Every workspace's data is separated by Postgres row-level security under a restricted database role</li>
-          <li>{{icon:lock}} API keys are shown once and stored only as SHA-256 hashes</li>
+          <li>Every workspace's data is separated by Postgres row-level security under a restricted database role</li>
+          <li>API keys are shown once and stored only as SHA-256 hashes</li>
         </ul>
       </div>
-      <div class="compare-col">
+      <div class="compare-col glass card-glow reveal reveal-delay-2">
         <h3>Authentication and audit</h3>
         <ul class="compare-list">
-          <li>{{icon:check}} Sign-in is through GitHub or Google; we store no passwords</li>
-          <li>{{icon:check}} Team members get roles, and every sensitive action is written to an audit log</li>
+          <li>Sign-in is through GitHub or Google; we store no passwords</li>
+          <li>Team members get roles, and every sensitive action is written to an audit log</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
+<div class="divider"></div>
+
 <section>
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
+      <div class="label">Evidence</div>
       <h2>Evidence you can check</h2>
       <p>Every record is independently verifiable and tamper-evident.</p>
     </div>
-    <div class="signal-grid">
-      <div class="signal-card">
-        <strong>{{icon:check}} Hash-chained records</strong>
+
+    <div class="chain-flow reveal" id="securityChain" style="max-width:400px;">
+      <div class="chain-row">
+        <span class="chain-idx">1</span>
+        <div class="chain-hash">a3f8c1...d4e2b7</div>
+        <span class="chain-arrow">&rarr;</span>
+      </div>
+      <div class="chain-row">
+        <span class="chain-idx">2</span>
+        <div class="chain-hash">b7d2e4...f1a8c3</div>
+        <span class="chain-arrow">&rarr;</span>
+      </div>
+      <div class="chain-row">
+        <span class="chain-idx">3</span>
+        <div class="chain-hash">c1f4a8...e7b3d2</div>
+        <span class="chain-arrow">&rarr;</span>
+      </div>
+      <div class="chain-row">
+        <span class="chain-idx">4</span>
+        <div class="chain-hash">d8e2b1...a4f7c6</div>
+        <span class="chain-arrow">&rarr;</span>
+      </div>
+      <div class="chain-row">
+        <span class="chain-idx">5</span>
+        <div class="chain-hash">e4b7f2...c8d1a3 &#x2713;</div>
+      </div>
+    </div>
+
+    <div class="signal-grid" style="margin-top:40px;">
+      <div class="signal-card glass card-glow reveal reveal-delay-1">
+        <strong>Hash-chained records</strong>
         <p>Each record carries a SHA-256 hash and links to the one before it. Every record's hash is checked when it arrives and anything edited is rejected.</p>
       </div>
-      <div class="signal-card">
-        <strong>{{icon:check}} Retention with integrity</strong>
+      <div class="signal-card glass card-glow reveal reveal-delay-2">
+        <strong>Retention with integrity</strong>
         <p>When a record's retention ends we delete its contents but keep its hash, so the chain still verifies.</p>
       </div>
-      <div class="signal-card">
-        <strong>{{icon:lock}} Signed confirmations</strong>
+      <div class="signal-card glass card-glow lock-bounce reveal reveal-delay-3">
+        <strong>Signed confirmations</strong>
         <p>Shopper confirmations are signed with our Ed25519 key, published at <code>https://app.provethebuy.com/.well-known/jwks.json</code>.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="alt">
+<div class="divider"></div>
+
+<section>
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
+      <div class="label">Billing</div>
       <h2>Stripe and billing</h2>
       <p>Minimal permissions, no money movement.</p>
     </div>
     <div class="protocol-grid">
-      <div class="protocol-card">
-        <strong>{{icon:check}} Limited Stripe Connect access</strong>
+      <div class="protocol-card glass card-glow reveal reveal-delay-1">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2.5v0a7.5 7.5 0 017.5 7.5v0a7.5 7.5 0 01-7.5 7.5v0A7.5 7.5 0 012.5 10v0A7.5 7.5 0 0110 2.5z"/><path d="M7 10l2 2 4-4"/></svg>
+        </div>
+        <strong>Limited Stripe Connect access</strong>
         <p>Stripe access uses Connect and is limited to reading disputes and submitting evidence you approve or rules you set. We never accept a dispute for you and never move money.</p>
       </div>
-      <div class="protocol-card">
-        <strong>{{icon:check}} Billing via Dodo Payments</strong>
+      <div class="protocol-card glass card-glow reveal reveal-delay-2">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2.5v0a7.5 7.5 0 017.5 7.5v0a7.5 7.5 0 01-7.5 7.5v0A7.5 7.5 0 012.5 10v0A7.5 7.5 0 0110 2.5z"/><path d="M7 10l2 2 4-4"/></svg>
+        </div>
+        <strong>Billing via Dodo Payments</strong>
         <p>Billing is handled by Dodo Payments.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section>
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Reporting a vulnerability</h2>
-    </div>
-    <div class="prose" style="max-width: 640px">
-      <p>Email <a href="mailto:security@provethebuy.com">security@provethebuy.com</a>. We acknowledge within 2 working days. The threat model is in <a href="/docs/security">the docs</a>.</p>
+<div class="divider"></div>
+
+<section class="closing">
+  <div class="orb-cta"></div>
+  <div class="wrap reveal">
+    <h2>Report a vulnerability</h2>
+    <p class="lede">Email <a href="mailto:security@provethebuy.com">security@provethebuy.com</a>. We acknowledge within 2 working days.</p>
+    <div class="cta-row">
+      <a class="btn btn-glow" href="/docs/security">Read the threat model</a>
+      <a class="btn btn-outline" href="/pricing">See pricing &rarr;</a>
     </div>
   </div>
 </section>

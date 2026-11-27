@@ -1,118 +1,156 @@
-<div class="page-hero">
-  {{guilloche:420}}
+<section class="hero">
+  <div class="grid-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
   <div class="wrap">
-    <h1>Spot attack frameworks before they reach checkout.</h1>
-    <p class="lede">Autonomous agents are probing sign-up, login and password-reset flows, then switching to a browser to place fraudulent orders. Agent Threat Check reads the sequence of requests per session, scores it 0&ndash;100 with plain reasons, and feeds it into your existing allow, step-up or block policy.</p>
-    <div class="cta-row">
-      <a class="btn btn-accent" href="/playground">{{icon:play}}Try the playground</a>
-      <a class="btn btn-line" href="https://app.provethebuy.com/login?next=/app%23/billing?trial=1">Start a 14-day Pro trial</a>
+    <h1 class="reveal reveal-delay-1">Spot attack frameworks before they reach checkout.</h1>
+    <p class="lede reveal reveal-delay-2">Autonomous agents are probing sign-up, login and password-reset flows, then switching to a browser to place fraudulent orders. Agent Threat Check reads the sequence of requests per session, scores it 0&ndash;100 with plain reasons, and feeds it into your existing allow, step-up or block policy.</p>
+    <div class="cta-row reveal reveal-delay-3">
+      <a class="btn btn-glow" href="/playground">{{icon:play}}Try the playground</a>
+      <a class="btn btn-outline" href="https://app.provethebuy.com/login?next=/app%23/billing?trial=1">Start a 14-day Pro trial</a>
     </div>
   </div>
-</div>
+</section>
 
-<section class="on-ink">
+<div class="divider"></div>
+
+<section>
   <div class="wrap">
-    <div class="section-head"><h2>Bot detectors see the device.<br>Threat Check sees what the session <em>did</em>.</h2></div>
+    <div class="section-head reveal">
+      <div class="label">Why it matters</div>
+      <h2>Bot detectors see the device.<br>Threat Check sees what the session <em>did</em>.</h2>
+    </div>
 
-    <div class="compare-grid">
-      <div class="compare-col" style="background: var(--ink-deep); border-color: var(--ink-rule); color: var(--on-ink-2)">
-        <h3 style="color: var(--on-ink)">What anti-bot vendors do</h3>
-        <ul class="compare-list" style="color: var(--on-ink-3)">
+    <div class="compare-slider reveal">
+      <div class="compare-slider-side left">
+        <div class="slider-label">Anti-bot vendor</div>
+        <h3>Binary signal</h3>
+        <ul>
           <li>Client-side JavaScript and device fingerprinting</li>
           <li>Binary signal: bot or human</li>
-          <li>Block or allow &mdash; no middle ground</li>
+          <li>Block or allow — no middle ground</li>
           <li>Can't see delegated authority or mandates</li>
           <li>Sits in front of the site (CDN layer)</li>
           <li>No evidence for chargebacks</li>
         </ul>
       </div>
-      <div class="compare-col highlight" style="background: var(--ink-deep); border-color: var(--orange); box-shadow: 0 0 0 1px var(--orange); color: var(--on-ink-2)">
-        <h3 style="color: var(--on-ink)">What Agent Threat Check does</h3>
-        <ul class="compare-list">
-          <li>{{icon:check}}Server-side only &mdash; no client JS, no fingerprinting</li>
+      <div class="compare-slider-side right">
+        <div class="slider-label">Agent Threat Check</div>
+        <h3>Session intelligence</h3>
+        <ul>
+          <li>{{icon:check}}Server-side only — no client JS, no fingerprinting</li>
           <li>{{icon:check}}Reads the full request sequence per session, account and network</li>
-          <li>{{icon:check}}Scores 0&ndash;100 with plain-text reasons for each signal</li>
-          <li>{{icon:check}}Verified agents get their own lane &mdash; never judged by behaviour rules</li>
-          <li>{{icon:check}}Sits at checkout and auth &mdash; sees what the session did and was allowed to do</li>
-          <li>{{icon:check}}Evidence record for every step-up or block, ready for disputes</li>
+          <li>{{icon:check}}Scores 0–100 with plain-text reasons for each signal</li>
+          <li>{{icon:check}}Verified agents get their own lane — never judged by behaviour rules</li>
+          <li>{{icon:check}}Sits at checkout and auth — sees what the session did</li>
+          <li>{{icon:check}}Evidence record for every step-up or block</li>
         </ul>
+      </div>
+      <div class="compare-slider-handle">
+        <div class="compare-slider-grip"><i></i><i></i><i></i></div>
       </div>
     </div>
   </div>
 </section>
 
+<div class="divider"></div>
+
 <section>
   <div class="wrap">
-    <div class="section-head"><h2>Seven signals no single request gives away</h2>
-    <p>Every signal below can be read from what reaches your server, or from headers your CDN already adds. No client-side code required.</p></div>
+    <div class="section-head reveal">
+      <div class="label">Detection</div>
+      <h2>Seven signals no single request gives away</h2>
+      <p>Every signal below can be read from what reaches your server, or from headers your CDN already adds. No client-side code required.</p>
+    </div>
 
     <div class="signal-grid">
-      <div class="signal-card">
+      <div class="signal-card glass card-glow reveal reveal-delay-1" data-signal="scan">
         <strong>Hidden routes hit first</strong>
         <p>Requests to API routes that no served page links to, before any page that would load them. The agent finds routes by reading JavaScript bundles; people find them by clicking.</p>
       </div>
-      <div class="signal-card">
+      <div class="signal-card glass card-glow reveal reveal-delay-2" data-signal="auth">
         <strong>Auth surface sweep</strong>
         <p>Sign-up, login, password-reset and OTP endpoints hit in a short burst. Expired, reused or malformed tokens. One session touching many accounts.</p>
       </div>
-      <div class="signal-card">
+      <div class="signal-card glass card-glow reveal reveal-delay-3" data-signal="switch">
         <strong>API then browser</strong>
         <p>A run of failed direct API calls (401, 403, 429) followed minutes later by a full browser session on the same account, cookie or network. The fallback to a browser is what makes these frameworks work.</p>
       </div>
-      <div class="signal-card">
+      <div class="signal-card glass card-glow reveal reveal-delay-4" data-signal="recon">
         <strong>Recon footprint</strong>
         <p>robots.txt, sitemap, .well-known paths, OpenAPI or GraphQL introspection, error-driven guessing of IDs and paths. Mapping the app has to happen before attacking it.</p>
       </div>
-      <div class="signal-card">
+      <div class="signal-card glass card-glow reveal reveal-delay-1" data-signal="timing">
         <strong>Model-loop timing</strong>
         <p>Regular pauses of a few seconds between steps (the model thinking), then bursts. No idle reading time. Changing it slows the attack down.</p>
       </div>
-      <div class="signal-card">
+      <div class="signal-card glass card-glow reveal reveal-delay-2" data-signal="claim">
         <strong>Claim vs proof</strong>
         <p>A User-Agent naming a known agent but no cryptographic signature. Or a valid signature whose key then behaves outside its policy. Signatures can't be forged, so the claim is checkable.</p>
       </div>
-      <div class="signal-card">
+      <div class="signal-card glass card-glow reveal reveal-delay-3" data-signal="network">
         <strong>Network context</strong>
-        <p>TLS fingerprint (JA4), ASN and residential-proxy flags passed in by the CDN, if you have them. Supporting evidence only &mdash; easy to buy, never decisive alone.</p>
+        <p>TLS fingerprint (JA4), ASN and residential-proxy flags passed in by the CDN, if you have them. Supporting evidence only — easy to buy, never decisive alone.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="on-ink">
-  <div class="wrap">
-    <div class="section-head"><h2>How it decides</h2>
-    <p>Arithmetic decides, a language model only explains. The score is repeatable, cheap to run and easy to defend to an auditor.</p></div>
-    <ol class="steps" style="--step-border: var(--ink-rule)">
-      <li style="border-color: var(--ink-rule)">
-        <h3>1. Lane first</h3>
-        <p style="color: var(--on-ink-2)">A request with a valid agent signature (Web Bot Auth, Visa TAP, RFC 9421) goes to the verified lane and is judged on its key's policy and history. Everything else goes to the behaviour lane.</p>
-      </li>
-      <li style="border-color: var(--ink-rule)">
-        <h3>2. Stitch sessions</h3>
-        <p style="color: var(--on-ink-2)">Group requests by cookie, account and network window, so one actor switching from API calls to a browser shows up as one story.</p>
-      </li>
-      <li style="border-color: var(--ink-rule)">
-        <h3>3. Run the rules</h3>
-        <p style="color: var(--on-ink-2)">Each signal is a fixed rule with a weight and a cap, so no single signal can decide on its own. Every rule fires with a reason a person can read.</p>
-      </li>
-      <li style="border-color: var(--ink-rule)">
-        <h3>4. Score 0 to 100</h3>
-        <p style="color: var(--on-ink-2)">The score plus its reasons go into your existing policy: under a threshold, allow; in the middle, step up; above it, block. Shadow mode records the decision without acting.</p>
-      </li>
-      <li style="border-color: var(--ink-rule)">
-        <h3>5. File it</h3>
-        <p style="color: var(--on-ink-2)">Every step-up or block writes an evidence record, like an order does, so you can show why a session was stopped.</p>
-      </li>
-    </ol>
-  </div>
-</section>
+<div class="divider"></div>
 
 <section>
   <div class="wrap">
-    <div class="section-head"><h2>Where it runs</h2></div>
-    <div style="overflow-x: auto">
-      <table class="compare-table">
+    <div class="section-head reveal">
+      <div class="label">How it works</div>
+      <h2>How it decides</h2>
+      <p>Arithmetic decides, a language model only explains. The score is repeatable, cheap to run and easy to defend to an auditor.</p>
+    </div>
+
+    <div class="pipeline reveal" id="pipelineFlow">
+      <div class="pipeline-node">
+        <div class="pipeline-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12h4l3-9 3 18 3-9h4"/></svg></div>
+        <h4>Lane</h4>
+        <p>Signed → verified lane. Else → behaviour.</p>
+      </div>
+      <div class="pipeline-connector"></div>
+      <div class="pipeline-node">
+        <div class="pipeline-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v4m0 12v4m-7-10H2m20 0h-3M6.34 6.34L4.93 4.93m12.73 12.73l1.41 1.41M6.34 17.66l-1.41 1.41m12.73-12.73l1.41-1.41"/><circle cx="12" cy="12" r="4"/></svg></div>
+        <h4>Stitch</h4>
+        <p>Group by cookie, account, network.</p>
+      </div>
+      <div class="pipeline-connector"></div>
+      <div class="pipeline-node">
+        <div class="pipeline-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6m-6 3h6m-6 3h4"/></svg></div>
+        <h4>Rules</h4>
+        <p>Fixed rules, weighted, capped.</p>
+      </div>
+      <div class="pipeline-connector"></div>
+      <div class="pipeline-node">
+        <div class="pipeline-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <h4>Score</h4>
+        <p>0–100 with reasons.</p>
+      </div>
+      <div class="pipeline-connector"></div>
+      <div class="pipeline-node">
+        <div class="pipeline-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6"/></svg></div>
+        <h4>File</h4>
+        <p>Evidence record written.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="label">Deployment</div>
+      <h2>Where it runs</h2>
+    </div>
+    <div class="glass reveal">
+      <table class="compare-table table-stagger">
         <thead>
           <tr>
             <th scope="col">Surface</th>
@@ -133,7 +171,7 @@
           </tr>
           <tr>
             <td><strong>Cloud dashboard</strong></td>
-            <td>Dashboard view, alerts, and keys or patterns flagged at one merchant shown to others &mdash; sharing patterns, not customer data</td>
+            <td>Dashboard view, alerts, and keys or patterns flagged at one merchant shown to others — sharing patterns, not customer data</td>
             <td>The Scale plan's shared reputation</td>
           </tr>
         </tbody>
@@ -142,11 +180,16 @@
   </div>
 </section>
 
-<section class="on-ink">
+<div class="divider"></div>
+
+<section>
   <div class="wrap">
-    <div class="section-head"><h2>How it compares</h2></div>
-    <div style="overflow-x: auto">
-      <table class="compare-table">
+    <div class="section-head reveal">
+      <div class="label">Comparison</div>
+      <h2>How it compares</h2>
+    </div>
+    <div class="glass reveal">
+      <table class="compare-table table-stagger">
         <thead>
           <tr>
             <th scope="col">Capability</th>
@@ -161,40 +204,60 @@
           <tr><td>Sequence-based detection</td><td class="no">No</td><td class="partial">Limited</td><td class="yes">7 signal rules, session stitching</td></tr>
           <tr><td>Verified-agent lane</td><td class="no">No</td><td class="no">No</td><td class="yes">Web Bot Auth, Visa TAP, RFC 9421</td></tr>
           <tr><td>Human-readable reasons</td><td class="no">No</td><td class="partial">Risk score only</td><td class="yes">Plain-text reason per signal</td></tr>
-          <tr><td>Shadow mode</td><td class="partial">Some</td><td class="partial">Some</td><td class="yes">Default &mdash; records without acting</td></tr>
-          <tr><td>Fails open</td><td class="no">Varies</td><td class="no">Varies</td><td class="yes">Always &mdash; never blocks checkout</td></tr>
+          <tr><td>Shadow mode</td><td class="partial">Some</td><td class="partial">Some</td><td class="yes">Default — records without acting</td></tr>
+          <tr><td>Fails open</td><td class="no">Varies</td><td class="no">Varies</td><td class="yes">Always — never blocks checkout</td></tr>
           <tr><td>Evidence for disputes</td><td class="no">No</td><td class="partial">Fraud score only</td><td class="yes">Hash-chained evidence record</td></tr>
           <tr><td>Cross-merchant pattern sharing</td><td class="no">No</td><td class="partial">Transaction risk</td><td class="yes">Scale plan</td></tr>
-          <tr><td>Works alongside anti-bot vendor</td><td>&mdash;</td><td class="yes">Yes</td><td class="yes">Second opinion, not replacement</td></tr>
+          <tr><td>Works alongside anti-bot vendor</td><td>—</td><td class="yes">Yes</td><td class="yes">Second opinion, not replacement</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 </section>
 
+<div class="divider"></div>
+
 <section>
   <div class="wrap">
-    <div class="section-head"><h2>What a flagged session looks like</h2></div>
-    <div class="threat-example">
-      <div class="threat-score">Score: <strong>78 / 100</strong> <span class="tag-block">block</span></div>
-      <ul class="threat-reasons">
-        <li><span class="signal-tag">recon_footprint</span> 6 recon requests (robots.txt, /sitemap.xml, /.well-known/openapi.json +3) before interacting with the site</li>
-        <li><span class="signal-tag">auth_sweep</span> 9 accounts touched; 14 auth requests in 240s; 7 failed/invalid token attempts</li>
-        <li><span class="signal-tag">api_then_browser</span> 5 failed API calls (401/403) followed by a browser session 3min later on the same identity</li>
-        <li><span class="signal-tag">model_loop_timing</span> 8 think-pause gaps (3.2s avg) with 12 bursts and 1 idle period</li>
-      </ul>
+    <div class="section-head reveal">
+      <div class="label">Live demo</div>
+      <h2>Watch an attack session get scored</h2>
+    </div>
+
+    <div class="threat-demo reveal" id="threatDemo">
+      <div class="threat-demo-bar">
+        <span>Session: sess_x7K2m9…</span>
+        <button class="threat-demo-replay"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8a6 6 0 1111.5-2.5"/><path d="M13.5 2v3.5H10"/></svg> Replay</button>
+      </div>
+      <div class="threat-demo-body">
+        <div class="threat-demo-log"></div>
+        <div class="threat-demo-sidebar">
+          <div class="threat-score-gauge">
+            <div class="threat-score-num">0</div>
+            <div class="threat-score-bar"><div class="threat-score-fill"></div></div>
+          </div>
+          <div class="threat-signals-live">
+            <div class="threat-signal-pill">recon_footprint</div>
+            <div class="threat-signal-pill">auth_sweep</div>
+            <div class="threat-signal-pill">model_loop_timing</div>
+            <div class="threat-signal-pill">api_then_browser</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="cta-section">
-  <div class="wrap" style="text-align: center; max-width: 640px">
-    <h2>Start detecting attack frameworks today</h2>
-    <p>Agent Threat Check is included in the Pro plan ($49/mo) and Scale plan ($199/mo). The CLI threat scanner is free and open source.</p>
-    <div class="cta-row" style="justify-content: center">
-      <a class="btn btn-accent" href="/pricing">See pricing</a>
-      <a class="btn btn-line" href="/docs/quickstart">Read the quickstart</a>
+<div class="divider"></div>
+
+<section class="closing">
+  <div class="orb-cta"></div>
+  <div class="wrap reveal">
+    <h2>Start detecting attack frameworks today.</h2>
+    <p class="lede">Agent Threat Check is included in the Pro plan ($49/mo) and Scale plan ($199/mo). The CLI threat scanner is free and open source.</p>
+    <div class="cta-row">
+      <a class="btn btn-glow" href="/pricing">See pricing</a>
+      <a class="btn btn-outline" href="/docs/quickstart">Read the quickstart &rarr;</a>
     </div>
-    <p class="trial-note">Or <a href="https://app.provethebuy.com/login?next=/app%23/billing?trial=1">start a 14-day Pro trial</a> &mdash; no card required.</p>
   </div>
 </section>

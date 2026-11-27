@@ -23,6 +23,7 @@ agents:
   directories: [visa, mastercard]
   max_window_seconds: 480
   clock_skew_seconds: 60
+  require_body_digest: false
 
 mandate:
   accept: [verifiable-intent, ap2-cart, ap2-intent]
@@ -32,6 +33,7 @@ mandate:
 limits:
   require_merchant_match: true
   intent_mandate_max_order: 50000
+  require_recipient_match: false
 
 reputation:
   step_up_if_agent_dispute_rate_over: 0.05

@@ -1,0 +1,226 @@
+<section class="hero">
+  <div class="grid-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="wrap">
+    <h1 class="reveal reveal-delay-1">Stop triangulation fraud before it reaches your store.</h1>
+    <p class="lede reveal reveal-delay-2">An agent buys from a fake store. The fraudster steals the card and fills the order from yours. You ship the goods. You eat the chargeback. ProveTheBuy's signed checkout, recipient matching and cross-store detection break every link in that chain.</p>
+    <div class="cta-row reveal reveal-delay-3">
+      <a class="btn btn-glow" href="/playground">Try the playground</a>
+      <a class="btn btn-outline" href="/pricing">See pricing &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="label">The attack</div>
+      <h2>How triangulation fraud works</h2>
+    </div>
+    <ol class="steps reveal">
+      <li>
+        <h3>1. Agent buys from a fake store</h3>
+        <p>Your customer's shopping agent finds a "too-good-to-be-true" deal on a fake storefront that looks just like the real thing. Same product photos, same branding, half the price.</p>
+      </li>
+      <li>
+        <h3>2. Card details stolen</h3>
+        <p>The fake store harvests the shopper's card details at checkout. The shopper gets nothing, or a cheap counterfeit. The agent has no way to tell the store isn't real.</p>
+      </li>
+      <li>
+        <h3>3. Fraudster buys from you</h3>
+        <p>Using the stolen card, the fraudster places a real order on your store. They ship it to the original buyer's address so the buyer never complains. To you, it looks like a normal order.</p>
+      </li>
+      <li>
+        <h3>4. You eat the chargeback</h3>
+        <p>The card's real owner disputes the charge. You've shipped the goods, you can't recover them, and you lose the chargeback. The fraudster keeps the original payment.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="label">The defence</div>
+      <h2>Three defences, one verifier</h2>
+    </div>
+    <div class="signal-grid">
+
+      <div class="signal-card glass card-glow reveal reveal-delay-1">
+        <div class="icon-wrap">{{icon:lock}}</div>
+        <strong>Signed checkout</strong>
+        <p>Your store publishes a key at your domain and signs every cart and price it sends to an agent. A fake storefront can copy the design and the product photos, but it can't sign as your domain. The agent's check fails, and it refuses to pay.</p>
+        <span class="chip allow">Open source — free for agents</span>
+      </div>
+
+      <div class="signal-card glass card-glow reveal reveal-delay-2">
+        <div class="icon-wrap">{{icon:file-check}}</div>
+        <strong>Recipient matching</strong>
+        <p>For every agent order, ProveTheBuy compares who the order ships to with the shopper who signed the approval. If the approval is missing or comes from a different person than the recipient, it's a step-up. When the stolen card's owner disputes, you can show in seconds the order wasn't placed by them.</p>
+        <span class="chip step_up">Indie plan and up</span>
+      </div>
+
+      <div class="signal-card glass card-glow reveal reveal-delay-3">
+        <div class="icon-wrap">{{icon:scale}}</div>
+        <strong>Cross-store pattern detection</strong>
+        <p>In ProveTheBuy Cloud, hashed shipping addresses are compared across stores — no store sees another's customer data. The pattern: one address receiving orders paid by different cards, without matching signed approvals. That's the fingerprint of a triangulation operation.</p>
+        <span class="chip block">Scale plan — coming soon</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="label">Evidence</div>
+      <h2>What the evidence shows</h2>
+    </div>
+    <p class="lede reveal" style="max-width:66ch">When a chargeback lands on a triangulation order, the evidence pack already has the answer.</p>
+
+    <div class="data-flow reveal" style="max-width:640px;margin:0 auto">
+      <div class="data-flow-field blocked">
+        <span class="data-flow-label">Recipient match</span>
+        <span class="data-flow-status">FAIL</span>
+        <span class="data-flow-detail">Shipping address does not match approving shopper</span>
+      </div>
+      <div class="data-flow-field allowed">
+        <span class="data-flow-label">Merchant signature</span>
+        <span class="data-flow-status">PASS</span>
+        <span class="data-flow-detail">Cart signed by nike.com, verified against published key</span>
+      </div>
+      <div class="data-flow-field blocked">
+        <span class="data-flow-label">Signed approval</span>
+        <span class="data-flow-status">FAIL</span>
+        <span class="data-flow-detail">No shopper approval found for this order</span>
+      </div>
+      <div class="data-flow-field allowed">
+        <span class="data-flow-label">Agent identity</span>
+        <span class="data-flow-status">PASS</span>
+        <span class="data-flow-detail">Signed with Ed25519, key in Visa TAP directory</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="label">Compare</div>
+      <h2>Before and after</h2>
+    </div>
+    <div class="glass reveal" style="border-radius:12px;overflow:hidden">
+      <div class="compare-scroll">
+        <table class="compare-table table-stagger">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Without ProveTheBuy</th>
+              <th scope="col" class="highlight">With ProveTheBuy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Agent buys from fake store</td>
+              <td>Nothing stops it</td>
+              <td class="highlight">Signed checkout fails — agent refuses to pay</td>
+            </tr>
+            <tr>
+              <td>Stolen card order at your store</td>
+              <td>Looks like a normal order</td>
+              <td class="highlight">Recipient mismatch triggers step-up</td>
+            </tr>
+            <tr>
+              <td>Chargeback arrives</td>
+              <td>Manual investigation, usually lost</td>
+              <td class="highlight">Evidence pack ready: recipient mismatch, no approval</td>
+            </tr>
+            <tr>
+              <td>Cross-store pattern</td>
+              <td>Invisible to any single store</td>
+              <td class="highlight">Hashed address pattern detection (Cloud)</td>
+            </tr>
+            <tr>
+              <td>Time to respond</td>
+              <td>Days of investigation</td>
+              <td class="highlight">Seconds — evidence is pre-built</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="label">For agent builders</div>
+      <h2>Your agent can verify the store is real</h2>
+    </div>
+    <p class="lede reveal" style="max-width:66ch">Signed checkout isn't just for merchants. It gives your agent a way to verify it's buying from a real store before it pays. <code>verifyMerchant()</code> is free, open source, and takes three lines of code.</p>
+
+    <div class="code-window reveal" style="max-width:600px;margin:0 auto 32px">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <pre class="code"><span class="k">import</span> { verifyMerchant } <span class="k">from</span> <span class="s">"@provethebuy/verify"</span>;
+
+<span class="k">const</span> result = <span class="k">await</span> <span class="f">verifyMerchant</span>(signedCart, <span class="s">"nike.com"</span>);
+<span class="k">if</span> (!result.valid) <span class="k">throw new</span> <span class="f">Error</span>(<span class="s">"Fake store"</span>);</pre>
+    </div>
+
+    <div class="cta-row reveal" style="justify-content:center">
+      <a class="btn btn-outline" href="/docs/quickstart">Read the docs &rarr;</a>
+      <a class="btn btn-outline gh" href="https://github.com/noelps-git/provethebuy">{{icon:github}}Star on GitHub</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="faq">
+  <div class="wrap faq-grid">
+    <div class="section-head reveal">
+      <div class="label">FAQ</div>
+      <h2>Common questions</h2>
+    </div>
+    <div>
+      <details class="reveal">
+        <summary>Does signed checkout stop all triangulation fraud?<span class="faq-icon">+</span></summary>
+        <p>No. It stops the first step: an agent paying a fake store. If a fraudster places an order by hand using a stolen card, that bypasses agent verification entirely — that's your existing fraud tools' job. But if the order came through an agent, ProveTheBuy catches it.</p>
+      </details>
+      <details class="reveal">
+        <summary>What if the recipient is a gift?<span class="faq-icon">+</span></summary>
+        <p>Gifts are a legitimate mismatch. The policy lets you configure what counts as a match. When the recipient doesn't match but the approval is genuine — device-signed by the shopper — the order proceeds with a note in the evidence. No false blocks.</p>
+      </details>
+      <details class="reveal">
+        <summary>When does cross-store detection ship?<span class="faq-icon">+</span></summary>
+        <p>Once several merchants are on ProveTheBuy Cloud. One store's data alone shows too little. We're onboarding merchants now — if you're interested, start with the Indie plan and your data will be ready when it launches.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="orb-cta"></div>
+  <div class="wrap reveal">
+    <h2>Start protecting your store from triangulation fraud.</h2>
+    <p class="lede">The verifier is free and open source. Cloud plans add recipient matching, cross-store detection, and evidence that wins disputes.</p>
+    <div class="cta-row" style="justify-content:center">
+      <a class="btn btn-glow" href="https://app.provethebuy.com/login">Start free</a>
+      <a class="btn btn-outline" href="/pricing">See pricing &rarr;</a>
+    </div>
+  </div>
+</section>

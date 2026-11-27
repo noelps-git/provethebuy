@@ -1,34 +1,52 @@
-<div class="page-hero">
-  {{guilloche:360}}
+<section class="hero">
+  <div class="grid-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
   <div class="wrap">
-    <h1>Verification is free. Pay when disputes need handling.</h1>
-    <p>The verifier and CLI are open source and free forever. Cloud plans keep the records, score each agent-order dispute and submit the evidence to Stripe.</p>
+    <h1 class="reveal reveal-delay-1">The verifier is free. Evidence that wins disputes is not.</h1>
+    <p class="lede reveal reveal-delay-2">Open-source verification, shadow mode and the CLI cost nothing. Cloud plans add enforced decisions, dispute evidence with provenance labels, anti-triangulation checks and cross-merchant intelligence.</p>
+    <div class="stats-bar reveal reveal-delay-3">
+      <div class="stat-item"><div class="stat-num counter" data-target="14">0</div><div class="stat-label">verified orders / sec</div></div>
+      <div class="stat-item"><div class="stat-num counter" data-target="4">0</div><div class="stat-label">protocols supported</div></div>
+      <div class="stat-item"><div class="stat-num">$0</div><div class="stat-label">to start</div></div>
+    </div>
   </div>
-</div>
+</section>
 
 <section class="pricing-section">
   <div class="wrap">
+    <div class="pricing-toggle reveal">
+      <span class="active">Monthly</span>
+      <div class="toggle-switch" id="pricingToggle" role="switch" aria-checked="false" tabindex="0"></div>
+      <span>Annual</span>
+      <span class="save-badge">Save 2 months</span>
+    </div>
+
     <div class="plans">
 
-      <div class="plan">
+      <div class="plan glass reveal reveal-delay-1">
         <h3>Free</h3>
         <div class="price">$0</div>
-        <p class="desc">Find out whether AI agents are buying from you.</p>
+        <p class="desc">See whether AI agents are buying from you. Full verifier, open source, no account needed.</p>
         <div class="allow-line">1,000 verified orders a month</div>
         <ul>
           <li>{{icon:check}}Agent traffic report</li>
-          <li>{{icon:check}}Agent-order flag on every Stripe dispute</li>
-          <li>{{icon:check}}30 days of records</li>
-          <li>{{icon:check}}Shadow mode</li>
+          <li>{{icon:check}}Shadow mode — observe, never block</li>
+          <li>{{icon:check}}Local evidence ledger (hash-chained)</li>
+          <li>{{icon:check}}traffic-check CLI</li>
+          <li>{{icon:check}}<code>verifyMerchant()</code> — agents check if the store is real</li>
+          <li>{{icon:check}}Body digest verification</li>
+          <li>{{icon:check}}30 days of cloud records</li>
         </ul>
-        <a class="btn btn-ghost" href="https://app.provethebuy.com/login">Start free</a>
+        <a class="btn btn-outline" href="https://app.provethebuy.com/login">Start free</a>
       </div>
 
-      <div class="plan featured">
+      <div class="plan featured reveal reveal-delay-2">
         <span class="tag">Recommended</span>
         <h3>Indie</h3>
         <div class="price">$9 <small>/ month</small></div>
-        <p class="desc">Every agent-order dispute arrives with a verdict, a readable proof and a deadline you won't miss.</p>
+        <p class="desc">Every agent-order dispute arrives with a verdict, provenance labels, and a deadline you won't miss.</p>
         <div class="allow-line">5,000 verified orders a month</div>
         <ul>
           <li>{{icon:check}}13 months of records with key archive</li>
@@ -36,76 +54,115 @@
           <li>{{icon:check}}Authorisation certificate (PDF)</li>
           <li>{{icon:check}}One-click submit to Stripe</li>
           <li>{{icon:check}}Deadline emails at 7, 3 and 1 days</li>
+          <li>{{icon:check}}Recipient matching (anti-triangulation)</li>
+          <li>{{icon:check}}Claim provenance labels in evidence</li>
           <li>{{icon:check}}50 shopper confirmations / mo</li>
-          <li>{{icon:check}}Weekly summary email, 7-day policy dry run</li>
+          <li>{{icon:check}}Weekly summary email</li>
         </ul>
-        <a class="btn btn-ink" href="https://checkout.dodopayments.com/buy/pdt_0NpdSRPqTUSbaTSpIT3qd">Choose Indie</a>
+        <a class="btn btn-glow" href="https://checkout.dodopayments.com/buy/pdt_0NpdSRPqTUSbaTSpIT3qd">Choose Indie</a>
       </div>
 
-      <div class="plan">
+      <div class="plan glass reveal reveal-delay-3">
         <h3>Pro</h3>
         <div class="price">$49 <small>/ month</small></div>
-        <p class="desc">Agent-order disputes answered automatically, with a monthly report of what you won back.</p>
+        <p class="desc">Enforce decisions, detect attack frameworks, and auto-submit dispute evidence.</p>
         <div class="allow-line">50,000 verified orders a month</div>
         <ul>
           <li>{{icon:check}}Everything in Indie</li>
-          <li>{{icon:check}}Automatic submission by your rules</li>
-          <li>{{icon:check}}Enforce mode, 30-day policy dry run</li>
-          <li>{{icon:check}}Agent Threat Check — detect attack frameworks</li>
-          <li>{{icon:check}}Win-rate reports</li>
-          <li>{{icon:check}}Slack alerts</li>
+          <li>{{icon:check}}Enforce mode — actually block and step-up</li>
+          <li>{{icon:check}}Agent Threat Check (7 signal detection)</li>
+          <li>{{icon:check}}Automatic dispute submission by rules</li>
+          <li>{{icon:check}}Step-up with required claims (agents self-recover)</li>
+          <li>{{icon:check}}Directory assurance levels</li>
+          <li>{{icon:check}}Revocation list checks</li>
+          <li>{{icon:check}}Pairwise-ID reputation + agent block list</li>
+          <li>{{icon:check}}Win-rate reports, Slack alerts</li>
           <li>{{icon:check}}1,000 shopper confirmations / mo</li>
           <li>{{icon:check}}3 stores, 3 team members</li>
         </ul>
-        <a class="btn btn-ghost" href="https://checkout.dodopayments.com/buy/pdt_0NpdSRTwKbMGXXu5lXCoO">Choose Pro</a>
+        <a class="btn btn-outline" href="https://checkout.dodopayments.com/buy/pdt_0NpdSRTwKbMGXXu5lXCoO">Choose Pro</a>
       </div>
 
-      <div class="plan">
+      <div class="plan glass reveal reveal-delay-4">
         <h3>Scale</h3>
         <div class="price">$199 <small>/ month</small></div>
-        <p class="desc">The strongest evidence, records auditors accept, and warnings from every store on the network.</p>
+        <p class="desc">Cross-merchant intelligence, court-grade evidence, and triangulation detection.</p>
         <div class="allow-line">500,000 verified orders a month</div>
         <ul>
           <li>{{icon:check}}Everything in Pro</li>
           <li>{{icon:check}}25 months of records</li>
-          <li>{{icon:check}}Reputation shared across merchants</li>
-          <li>{{icon:check}}Cross-merchant threat pattern sharing</li>
-          <li>{{icon:check}}Earlier undisputed orders attached to evidence</li>
+          <li>{{icon:check}}Cross-merchant reputation sharing</li>
+          <li>{{icon:check}}Cross-store triangulation pattern detection</li>
+          <li>{{icon:check}}Merchant challenge for big orders</li>
+          <li>{{icon:check}}Public transparency log (court-grade)</li>
+          <li>{{icon:check}}Incident report export</li>
           <li>{{icon:check}}Audit export (CSV)</li>
           <li>{{icon:check}}Single sign-on</li>
           <li>{{icon:check}}10 stores, 10 team members</li>
         </ul>
-        <a class="btn btn-ghost" href="https://checkout.dodopayments.com/buy/pdt_0NpdSRXWPiqPEjkzvh1QN">Choose Scale</a>
+        <a class="btn btn-outline" href="https://checkout.dodopayments.com/buy/pdt_0NpdSRXWPiqPEjkzvh1QN">Choose Scale</a>
       </div>
 
     </div>
 
-    <p class="plans-note">Prices in USD, billed monthly by Dodo Payments as merchant of record, so sales tax and VAT are handled. Over your plan's verified orders: $0.004 per order. Billing never affects checkout: verification keeps running even if a payment fails.</p>
+    <p class="plans-note reveal">Prices in USD, billed monthly by Dodo Payments as merchant of record, so sales tax and VAT are handled. Over your plan's verified orders: $0.004 per order. Billing never affects checkout: verification keeps running even if a payment fails.</p>
 
-    <div class="compare">
-      <div class="section-head"><h2>What runs where</h2></div>
+    <div class="glass reveal" style="border-radius:12px;padding:24px 28px;margin-bottom:32px;text-align:center">
+      <p style="margin:0;color:var(--text-secondary)"><strong style="color:var(--text-primary)">Building a shopping agent?</strong> <code>verifyMerchant()</code> is free and open source. Your agent can check it's buying from a real store before it pays. No plan needed. <a href="/triangulation">Learn more &rarr;</a></p>
+    </div>
+
+    <div class="compare reveal">
+      <div class="section-head reveal">
+        <div class="label">Compare</div>
+        <h2>What runs where</h2>
+      </div>
       <div class="compare-scroll">
-        <table>
+        <table class="table-stagger">
           <thead>
             <tr>
               <th scope="col"></th>
               <th scope="col">Open source</th>
-              <th scope="col">Cloud Free</th>
-              <th scope="col">Indie and up</th>
+              <th scope="col">Free</th>
+              <th scope="col">Indie</th>
+              <th scope="col">Pro</th>
+              <th scope="col">Scale</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>Verify signatures, mandates and token limits</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
-            <tr><td>Policy in YAML, shadow and enforce</td><td class="yes">Yes</td><td class="yes">Shadow</td><td class="yes">Yes, enforce from Pro</td></tr>
-            <tr><td>traffic-check CLI</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
-            <tr><td>Evidence ledger on your server</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
-            <tr><td>Hosted records with key archive</td><td class="no">No</td><td>30 days</td><td>13 to 25 months</td></tr>
-            <tr><td>Dispute verdict and certificate</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td></tr>
-            <tr><td>Submit evidence to Stripe</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td></tr>
-            <tr><td>Agent Threat Check</td><td class="no">No</td><td class="no">No</td><td class="yes">Pro and up</td></tr>
+            <tr><td>Verify signatures, mandates and token limits</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><td>Body digest verification</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><td>Signed checkout (verifyMerchant)</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><td>traffic-check CLI</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><td>Local evidence ledger</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><td>Shadow mode</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><td>Hosted records with key archive</td><td class="no">No</td><td>30 days</td><td>13 months</td><td>13 months</td><td>25 months</td></tr>
+            <tr><td>Recipient matching (anti-triangulation)</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><td>Claim provenance in evidence</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><td>Dispute verdict and certificate</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><td>Submit evidence to Stripe</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><td>Enforce mode</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><td>Step-up with required claims</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><td>Agent Threat Check</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><td>Directory assurance levels</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><td>Pairwise-ID reputation + block list</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><td>Cross-store triangulation detection</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td></tr>
+            <tr><td>Merchant challenge for big orders</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td></tr>
+            <tr><td>Transparency log (court-grade)</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td></tr>
+            <tr><td>Cross-merchant reputation</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td></tr>
           </tbody>
         </table>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="orb-cta"></div>
+  <div class="wrap reveal">
+    <h2>Start protecting agent orders today.</h2>
+    <div class="cta-row" style="justify-content:center">
+      <a class="btn btn-glow" href="https://app.provethebuy.com/login">Start free</a>
+      <a class="btn btn-outline" href="/docs/quickstart">Read the quickstart &rarr;</a>
     </div>
   </div>
 </section>

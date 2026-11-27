@@ -1,7 +1,7 @@
 // Demo world for the local playground: agents, keys, scenarios and a day of simulated traffic.
 // Every request is signed and verified by the real @provethebuy/verify code.
 import { ProveTheBuy, KeyDirectory, MemoryReplayStore, ledgerReputation } from "@provethebuy/verify";
-import { createAgent, generateKey, checkoutRequest, buildVerifiableIntent, buildAp2Cart, buildAp2Intent, signBodyObject } from "@provethebuy/verify/testing";
+import { createAgent, generateKey, checkoutRequest, buildVerifiableIntent, buildAp2Cart, buildAp2Intent, signBodyObject, addContentDigest, createMerchant, hashField } from "@provethebuy/verify/testing";
 
 export const MERCHANT_ID = "acct_northwind_coffee";
 export const ORIGIN = "https://shop.northwind.example";
@@ -96,6 +96,8 @@ export const SCENARIOS = [
   { id: "over-mandate", name: "Over the mandate limit", expect: "step_up", description: "The shopper capped purchases at $100; the cart is $249." },
   { id: "wrong-checkout", name: "Different checkout presented", expect: "step_up", description: "The agent's signed checkout does not match the order it is placing." },
   { id: "over-token", name: "Over the token limit", expect: "block", description: "The order is above the shared payment token's cap. Charging would break its limits." },
+  { id: "body-tampered", name: "Body tampered in transit", expect: "block", description: "The agent sent a Content-Digest header, but the body was modified after signing. The digest no longer matches." },
+  { id: "recipient-mismatch", name: "Recipient mismatch", expect: "step_up", description: "The shipping address doesn't match the person who approved the mandate. Possible triangulation fraud." },
 ];
 
 export function buildScenario(id, now = Math.floor(Date.now() / 1000), seed = Date.now()) {
@@ -155,6 +157,21 @@ export function buildScenario(id, now = Math.floor(Date.now() / 1000), seed = Da
     case "over-token": {
       const order = makeOrder(r, { sku: "kettle-pour", items: 1 });
       return sign(A.cartpilot, checkout({ order, mandate: buildAp2Cart({ merchant: MERCHANT_KEY, user, order }), payment: sptFor(order.total, now, { max: 5000 }) }));
+    }
+    case "body-tampered": {
+      const order = makeOrder(r);
+      const body = { order, mandate: viFor(A.shopassist, user, order, now), payment: sptFor(order.total, now) };
+      let req = sign(A.shopassist, checkout(body));
+      req = addContentDigest(req);
+      // Tamper with the body after signing — add an extra field
+      const parsed = JSON.parse(req.body);
+      parsed.order.total = parsed.order.total + 100;
+      return { ...req, body: JSON.stringify(parsed) };
+    }
+    case "recipient-mismatch": {
+      const order = { ...makeOrder(r), recipient: { name_hash: hashField("John Fraudster"), address_hash: hashField("123 Drop Street, Nowhere") } };
+      const mandate = viFor(A.shopassist, user, order, now);
+      return sign(A.shopassist, checkout({ order, mandate, payment: sptFor(order.total, now) }));
     }
     default:
       throw new Error(`Unknown scenario ${id}`);

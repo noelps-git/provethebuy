@@ -112,6 +112,11 @@ export async function verifyVerifiableIntent(m: VerifiableIntentMandate, ctx: Ma
       : { name: "order_within_mandate", status: "pass", detail: "Order matches the presented checkout and every mandate constraint." },
   );
 
+  // Extract approver hashes from L2 claims for recipient matching (Feature 5)
+  const approverData = l2Claims.approver as { name_hash?: string; address_hash?: string; email_hash?: string } | undefined;
+  const delivery = l2Claims.delivery as { name_hash?: string; address_hash?: string; email_hash?: string } | undefined;
+  const approver = approverData ?? delivery;
+
   return {
     issuerKeyJwk: issuerJwk,
     principalJwk: userJwk,
@@ -122,6 +127,7 @@ export async function verifyVerifiableIntent(m: VerifiableIntentMandate, ctx: Ma
       constraintsOk: problems.length === 0,
       expiresAt: typeof l2Claims.exp === "number" ? new Date(l2Claims.exp * 1000).toISOString() : undefined,
       summary: describeConstraints(constraints),
+      approver: approver ? { name_hash: approver.name_hash, address_hash: approver.address_hash, email_hash: approver.email_hash } : undefined,
     },
     checks,
   };

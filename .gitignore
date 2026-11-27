@@ -10,3 +10,4 @@ evidence.jsonl
 .env
 .vercel
 apps/site/dist/
+.env*.local

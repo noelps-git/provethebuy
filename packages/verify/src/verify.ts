@@ -7,7 +7,7 @@
  *   4. Is this the order it was allowed to buy?  order hash and constraints
  *   5. Decide                     allow / step_up / block, applied only in enforce mode
  */
-import { sha256Hex, nowSeconds } from "./util.js";
+import { sha256, sha256Hex, nowSeconds } from "./util.js";
 import { KeyDirectory, type Jwk } from "./keys.js";
 import { MemoryReplayStore, type ReplayStore } from "./replay.js";
 import {
@@ -26,7 +26,7 @@ import { checkPaymentLimits, type PaymentCredential } from "./payment.js";
 import { itemsTotal, orderHash } from "./order.js";
 import { resolvePolicy, type Policy, type PolicyInput } from "./policy.js";
 import { verifyAgentId, sameKey, type AgentIdPresentation, type AgentIdInfo } from "./agentId.js";
-import type { AgentInfo, Check, Decision, MandateInfo, Order, VerificationResult } from "./types.js";
+import type { AgentInfo, Check, ClaimProvenance, Decision, MandateInfo, Order, StepUpRequirement, VerificationResult } from "./types.js";
 
 export interface CheckoutContext {
   order?: Order;
@@ -152,6 +152,8 @@ export class ProveTheBuy {
     let keyForRecord: VerificationResult["agentKeyJwk"];
     let issuerForRecord: VerificationResult["issuerKeyJwk"];
     const declaredAs = declaredAgent(headers["user-agent"]);
+    const provenance: ClaimProvenance[] = [];
+    const stepUpRequired: StepUpRequirement[] = [];
     const identification = (): VerificationResult["identification"] => {
       const ok = (n: string) => checks.some((c) => c.name === n && c.status === "pass");
       if (ok("signature_valid") && ok("agent_id_bound")) return "credentialed";
@@ -167,6 +169,7 @@ export class ProveTheBuy {
       declaredAs,
       agentKeyJwk: keyForRecord,
       issuerKeyJwk: issuerForRecord,
+      provenance: provenance.length ? provenance : undefined,
       ...extra,
     });
 
@@ -253,6 +256,7 @@ export class ProveTheBuy {
     agent.keySnapshotSha256 = key.snapshotSha256;
     keyForRecord = key.jwk;
     checks.push({ name: "key_found", status: "pass", detail: `Key found in the ${key.source} directory.`, data: { snapshot: key.snapshotSha256 } });
+    provenance.push({ claim: "agent_identity", source: "directory", attester: key.source });
 
     // signature
     const alg = inferAlg(key.jwk, sp.alg as string | undefined);
@@ -277,6 +281,31 @@ export class ProveTheBuy {
       return done("block", { agent });
     }
     checks.push({ name: "signature_valid", status: "pass", detail: `${alg} signature verified over ${parsed.components.join(", ")}.`, data: { signature_base: baseStr } });
+    provenance.push({ claim: "signature", source: "self", attester: agent.keyid });
+
+    // ---- body digest (Feature 1): verify Content-Digest header matches body per RFC 9530
+    const digestHeader = headers["content-digest"];
+    if (digestHeader) {
+      const match = digestHeader.match(/^sha-256=:([A-Za-z0-9+/=]+):$/);
+      if (!match) {
+        checks.push({ name: "body_digest", status: "fail", detail: "Content-Digest header is present but not in the expected sha-256=:base64: format." });
+        reasons.push("Malformed body digest.");
+        return done("block", { agent });
+      }
+      const expected = sha256(req.body ?? "").toString("base64");
+      if (match[1] !== expected) {
+        checks.push({ name: "body_digest", status: "fail", detail: "Content-Digest does not match the request body. The body was altered in transit.", data: { expected, received: match[1] } });
+        reasons.push("Body was tampered with.");
+        return done("block", { agent });
+      }
+      checks.push({ name: "body_digest", status: "pass", detail: "Content-Digest matches the request body." });
+    } else if (p.agents.require_body_digest) {
+      checks.push({ name: "body_digest", status: "fail", detail: "Policy requires Content-Digest but the header is missing." });
+      reasons.push("Missing body digest.");
+      return done("block", { agent });
+    } else {
+      checks.push({ name: "body_digest", status: "skip", detail: "No Content-Digest header. Body integrity relies on the HTTP signature alone." });
+    }
 
     // nonce: only after the signature is valid, so forged requests cannot burn nonces
     const fresh = await this.replay.checkAndRemember(`${agent.keyid}:${agent.nonce}`, expires - now + skew);
@@ -374,6 +403,19 @@ export class ProveTheBuy {
         checks.push(...m.checks);
         mandateInfo = m.info;
         issuerForRecord = m.issuerKeyJwk;
+        // Provenance for mandate claims (Feature 3)
+        if (m.issuerKeyJwk) provenance.push({ claim: "issuer_credential", source: "directory", attester: m.issuerKeyJwk.kid ?? "issuer" });
+        if (m.info.type === "verifiable-intent") {
+          provenance.push({ claim: "user_mandate", source: "principal", device_type: "unknown" });
+          provenance.push({ claim: "agent_presentation", source: "self", attester: agent.keyid });
+        } else if (m.info.type === "ap2-cart") {
+          provenance.push({ claim: "merchant_signature", source: "directory", attester: this.opts.merchantId });
+          provenance.push({ claim: "user_approval", source: "principal", device_type: "unknown" });
+        } else if (m.info.type === "ap2-intent") {
+          provenance.push({ claim: "user_intent", source: "principal", device_type: "unknown" });
+        }
+        // Extract approver from mandate outcome for recipient matching (Feature 5)
+        if (m.info.approver) mandateInfo.approver = m.info.approver;
         if (!m.info.valid) escalate("block", "Mandate does not verify.");
         else if (m.info.constraintsOk === false) escalate(p.mandate.on_outside, "Order is outside the mandate.");
         if (m.info.valid && m.principalJwk) {
@@ -409,6 +451,26 @@ export class ProveTheBuy {
       const t = checkPaymentLimits(ctx.payment, order, this.opts.merchantId, now);
       checks.push(t);
       if (t.status === "fail") escalate("block", "Payment token limits would be exceeded.");
+
+      // ---- recipient matching (Feature 5: anti-triangulation)
+      if (order.recipient && mandateInfo?.approver) {
+        const r = order.recipient;
+        const a = mandateInfo.approver;
+        const matched = (r.name_hash && a.name_hash && r.name_hash === a.name_hash)
+          || (r.address_hash && a.address_hash && r.address_hash === a.address_hash)
+          || (r.email_hash && a.email_hash && r.email_hash === a.email_hash);
+        if (matched) {
+          checks.push({ name: "recipient_match", status: "pass", detail: "Shipping recipient matches the mandate approver." });
+        } else {
+          checks.push({ name: "recipient_match", status: "fail", detail: "Shipping recipient does not match the mandate approver. Possible triangulation.", data: { recipient_fields: Object.keys(r).filter(k => r[k as keyof typeof r]), approver_fields: Object.keys(a).filter(k => a[k as keyof typeof a]) } });
+          if (p.limits.require_recipient_match) escalate("step_up", "Recipient does not match the approver.");
+        }
+      } else if (order.recipient && !mandateInfo?.approver) {
+        checks.push({ name: "recipient_match", status: "warn", detail: "Order has a recipient but no mandate approver to compare against." });
+        if (p.limits.require_recipient_match) escalate("step_up", "No approval to compare against the recipient.");
+      } else {
+        checks.push({ name: "recipient_match", status: "skip", detail: "No recipient data on this order." });
+      }
     }
 
     // ---------------------------------------------------------------- reputation
@@ -431,13 +493,29 @@ export class ProveTheBuy {
 
     const final: Decision = state.decision;
     if (final === "allow" && !reasons.length) reasons.push("Verified agent, valid mandate, order inside its limits.");
+
+    // Build step-up requirements from failed/warned checks (Feature 2)
+    if (final === "step_up") {
+      for (const c of checks) {
+        if (c.status !== "fail" && c.status !== "warn") continue;
+        if (c.name === "mandate_present") stepUpRequired.push({ type: "mandate", detail: "A signed mandate from the person is required." });
+        else if (c.name === "intent_threshold") stepUpRequired.push({ type: "spending-limit", detail: "Order exceeds the unattended purchase threshold.", min_value: String(p.limits.intent_mandate_max_order) });
+        else if (c.name === "body_digest" && c.status === "fail") stepUpRequired.push({ type: "body-digest", detail: "Include a Content-Digest header with the request body hash." });
+        else if (c.name === "recipient_match") stepUpRequired.push({ type: "recipient-match", detail: "Shipping recipient must match the mandate approver." });
+      }
+    }
+
     return done(final, {
       agent,
       mandate: mandateInfo,
       orderHash: oh,
       stepUp:
         final === "step_up"
-          ? { reason: reasons[reasons.length - 1], suggested: ctx.mandate?.type === "ap2-intent" || !ctx.mandate ? "ap2-cart-mandate" : "confirm-in-session" }
+          ? {
+              reason: reasons[reasons.length - 1],
+              suggested: ctx.mandate?.type === "ap2-intent" || !ctx.mandate ? "ap2-cart-mandate" : "confirm-in-session",
+              required: stepUpRequired.length ? stepUpRequired : undefined,
+            }
           : undefined,
     });
   }

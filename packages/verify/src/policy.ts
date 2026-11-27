@@ -16,6 +16,8 @@ export interface Policy {
     max_window_seconds: number;
     /** Allowed clock skew, in seconds. */
     clock_skew_seconds: number;
+    /** Require Content-Digest header to be present and match the body (Feature 1). Default: true in enforce, false in shadow. */
+    require_body_digest: boolean;
   };
   mandate: {
     accept: string[];
@@ -27,6 +29,8 @@ export interface Policy {
     require_merchant_match: boolean;
     /** Above this total (minor units), an intent-only mandate triggers a step-up. 0 = off. */
     intent_mandate_max_order: number;
+    /** Require the order recipient to match the mandate approver (Feature 5: anti-triangulation). */
+    require_recipient_match: boolean;
   };
   reputation: {
     step_up_if_agent_dispute_rate_over: number;
@@ -47,9 +51,9 @@ export interface Policy {
 export const DEFAULT_POLICY: Policy = {
   mode: "shadow",
   fail: "open",
-  agents: { require_signature_for: ["agent-payer-auth"], directories: [], max_window_seconds: 480, clock_skew_seconds: 60 },
+  agents: { require_signature_for: ["agent-payer-auth"], directories: [], max_window_seconds: 480, clock_skew_seconds: 60, require_body_digest: false },
   mandate: { accept: ["verifiable-intent", "ap2-cart", "ap2-intent"], on_missing: "step_up", on_outside: "step_up" },
-  limits: { require_merchant_match: true, intent_mandate_max_order: 50000 },
+  limits: { require_merchant_match: true, intent_mandate_max_order: 50000, require_recipient_match: false },
   reputation: { step_up_if_agent_dispute_rate_over: 0.02, min_orders_for_reputation: 20 },
   approval: { on_self_approved: "step_up" },
   agent_id: { require: false, directories: [] },

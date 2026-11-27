@@ -5,6 +5,7 @@
  */
 import { createHash, createPrivateKey, createPublicKey, generateKeyPairSync, randomBytes } from "node:crypto";
 import { signRequest, type AgentTag, type HttpRequestLike } from "./httpsig.js";
+import { signCheckout, type MerchantKeySet } from "./merchant.js";
 import { issueSdJwt, signJws } from "./jws.js";
 import { publicJwk, type Jwk } from "./keys.js";
 import { signBodyObject } from "./bodyObjects.js";
@@ -140,6 +141,31 @@ export function buildAp2Intent(o: { user: KeyPair; merchants?: string[]; maxAmou
     prompt_playback: "Reorder coffee beans when I run low, up to the limit",
   };
   return { type: "ap2-intent", jws: signJws(intent, o.user.privateJwk), user_jwk: o.user.publicJwk };
+}
+
+/** Add a Content-Digest header (RFC 9530) to a request. Feature 1: body digest. */
+export function addContentDigest(req: HttpRequestLike): HttpRequestLike {
+  const digest = createHash("sha256").update(req.body ?? "").digest("base64");
+  return { ...req, headers: { ...req.headers, "content-digest": `sha-256=:${digest}:` } };
+}
+
+/** Create a test merchant with key pair and .well-known key set. Feature 4: signed checkout. */
+export function createMerchant(domain: string, seed?: string): { domain: string; keys: KeyPair; keySet: MerchantKeySet; signCart: (cart: Record<string, unknown>) => string } {
+  const keys = generateKey(`${domain}-merchant-k1`, seed ?? domain);
+  const keySet: MerchantKeySet = { keys: [keys.publicJwk], domain, updated_at: new Date().toISOString() };
+  return {
+    domain,
+    keys,
+    keySet,
+    signCart(cart: Record<string, unknown>) {
+      return signCheckout({ ...cart, merchant_id: domain }, keys.privateJwk);
+    },
+  };
+}
+
+/** Hash a string for recipient/approver fields. Feature 5: recipient matching. */
+export function hashField(value: string): string {
+  return createHash("sha256").update(value.toLowerCase().trim()).digest("hex");
 }
 
 export { signBodyObject };

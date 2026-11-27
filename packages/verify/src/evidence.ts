@@ -81,6 +81,7 @@ export async function buildEvidencePack(
   const pass = (n: string) => rec.checks.find((c) => c.name === n)?.status === "pass";
   const amount = rec.order?.amount !== undefined ? formatMoney(rec.order.amount, rec.order.currency ?? dispute.currency) : "n/a";
 
+  const recipientCheck = rec.checks.find((c) => c.name === "recipient_match");
   const sections = [
     {
       title: "Summary",
@@ -132,6 +133,22 @@ export async function buildEvidencePack(
             ].join("\n"),
           },
         ]
+      : []),
+    // Feature 3: Attestation sources
+    ...(rec.provenance?.length
+      ? [{
+          title: "Attestation sources",
+          body: rec.provenance.map((p: { claim: string; source: string; attester?: string; device_type?: string }) =>
+            `${p.claim}: ${p.source}${p.attester ? ` (${p.attester})` : ""}${p.device_type ? `, device: ${p.device_type}` : ""}`
+          ).join("\n"),
+        }]
+      : []),
+    // Feature 5: Recipient match
+    ...(recipientCheck
+      ? [{
+          title: "Recipient match",
+          body: `Status: ${recipientCheck.status}\n${recipientCheck.detail}`,
+        }]
       : []),
     {
       title: "Integrity",

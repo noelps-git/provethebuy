@@ -7,6 +7,7 @@
   "trailingSlash": false,
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/index.mjs" },
+    { "source": "/playground", "destination": "/app.html" },
     { "source": "/app", "destination": "/app.html" }
   ],
   "redirects": [
@@ -22,7 +23,11 @@
       ]
     },
     {
-      "source": "/(llms.txt|llms-full.txt|docs/(.*).md)",
+      "source": "/llms.txt",
+      "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }]
+    },
+    {
+      "source": "/llms-full.txt",
       "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }]
     }
   ]

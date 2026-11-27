@@ -7,7 +7,7 @@ import { dirname } from "node:path";
 import { canonicalize, randomId, sha256Hex } from "./util.js";
 import type { Jwk } from "./keys.js";
 import type { HttpRequestLike } from "./httpsig.js";
-import type { AgentInfo, Check, Decision, MandateInfo, VerificationResult } from "./types.js";
+import type { AgentInfo, Check, ClaimProvenance, Decision, MandateInfo, VerificationResult } from "./types.js";
 import type { CheckoutContext } from "./verify.js";
 
 export interface VerificationRecord {
@@ -22,6 +22,7 @@ export interface VerificationRecord {
   checks: Check[];
   mandate?: MandateInfo;
   order?: { order_hash?: string; order_id?: string; amount?: number; currency?: string; payment_intent?: string };
+  provenance?: ClaimProvenance[];
   policy_version: string;
   decision: Decision;
   enforced: boolean;
@@ -140,6 +141,7 @@ export class EvidenceLedger {
         checks: result.checks,
         mandate: result.mandate,
         order: order ? { order_hash: result.orderHash, order_id: extra.orderId ?? order.id, amount: order.total, currency: order.currency, payment_intent: extra.paymentIntent } : undefined,
+        provenance: result.provenance,
         policy_version: result.policyVersion,
         decision: result.decision,
         enforced: result.enforced,
