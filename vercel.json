@@ -7,7 +7,6 @@
   "trailingSlash": false,
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/index.mjs" },
-    { "source": "/playground", "destination": "/app.html" },
     { "source": "/app", "destination": "/app.html" }
   ],
   "redirects": [

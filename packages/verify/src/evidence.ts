@@ -110,6 +110,7 @@ export async function buildEvidencePack(
             `Mode: ${rec.mandate.mode ?? "n/a"}`,
             `Credential chain valid: ${rec.mandate.valid ? "yes" : "no"}`,
             `Order inside the mandate: ${rec.mandate.constraintsOk ? "yes" : "no"}`,
+            `Approved with the person's own key, separate from the agent's: ${approvalLine(rec)}`,
             `Mandate valid until: ${rec.mandate.expiresAt ?? "n/a"}`,
           ].join("\n")
         : "No mandate was presented with this order.",
@@ -118,6 +119,20 @@ export async function buildEvidencePack(
       title: "Order match",
       body: [`Order hash (RFC 8785 + SHA-256): ${rec.order?.order_hash}`, `Order id: ${rec.order?.order_id ?? "n/a"}`, `Amount: ${amount}`, `Payment: ${rec.order?.payment_intent ?? "n/a"}`].join("\n"),
     },
+    ...(rec.agent?.agentId
+      ? [
+          {
+            title: "Agent ID (Accountable Agents Framework)",
+            body: [
+              `Issuing directory: ${rec.agent.agentId.directory}`,
+              `Agent ID: ${rec.agent.agentId.id}`,
+              `Principal verification level: ${rec.agent.agentId.assurance ?? "not disclosed"}`,
+              `Spending limit: ${rec.agent.agentId.spendingLimit ? formatMoney(rec.agent.agentId.spendingLimit.amount, rec.agent.agentId.spendingLimit.currency) : "not disclosed"}`,
+              "The directory can identify the person or organisation behind this ID under its incident process.",
+            ].join("\n"),
+          },
+        ]
+      : []),
     {
       title: "Integrity",
       body: [
@@ -130,7 +145,14 @@ export async function buildEvidencePack(
   if (reason.focus === "fulfilment")
     sections.push({ title: "Fulfilment", body: "Attach the carrier tracking number and delivery confirmation. The agent and mandate evidence above shows who ordered; delivery proof shows it arrived." });
 
-  const submittable = reverification.ok && chain.ok && !!rec.mandate?.valid;
+  const selfApproved = rec.checks.some((c) => c.name === "approval_independent" && c.status === "fail");
+  const outside = rec.mandate?.constraintsOk === false;
+  const submittable = reverification.ok && chain.ok && !!rec.mandate?.valid && !selfApproved && !outside;
   const text = [`Dispute ${dispute.dispute_id}: ${reason.label}`, ...sections.map((s) => `${s.title.toUpperCase()}\n${s.body}`)].join("\n\n");
   return { dispute_id: dispute.dispute_id, reason: reason.label, record_id: rec.record_id, record_hash: rec.hash, reverification, submittable, sections, text };
+}
+
+function approvalLine(rec: VerificationRecord): string {
+  const c = rec.checks.find((x) => x.name === "approval_independent");
+  return c ? (c.status === "pass" ? "yes" : "no, the agent signed its own approval") : "not checked";
 }

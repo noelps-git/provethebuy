@@ -445,7 +445,16 @@ async function renderDisputes(openId) {
           )
           .join("") || '<tr><td colspan="6" class="empty-state">No disputes. When a chargeback arrives for an agent order, it appears here with its evidence ready.</td></tr>'
       }</tbody></table></div>
+    <div class="btn-row" style="margin-top:16px">
+      <button class="btn" id="export-generic" type="button">Export CSV</button>
+      <button class="btn" id="export-visa" type="button">Export Visa TC40</button>
+      <button class="btn" id="export-mc" type="button">Export Mastercard</button>
+    </div>
     <p class="sub">In the cloud version these arrive from Stripe's dispute webhook and are submitted through the Disputes API. Here, submitting and outcomes are simulated.</p>`;
+  const dl = (format) => { window.open(`/api/disputes/export?format=${format}`, "_blank"); toast(`Downloading ${format} export.`); };
+  $("#export-generic")?.addEventListener("click", () => dl("generic"));
+  $("#export-visa")?.addEventListener("click", () => dl("visa"));
+  $("#export-mc")?.addEventListener("click", () => dl("mastercard"));
   $$("tr.clickable").forEach((tr) => {
     tr.addEventListener("click", () => (location.hash = `#/disputes/${tr.dataset.id}`));
     tr.addEventListener("keydown", (e) => e.key === "Enter" && (location.hash = `#/disputes/${tr.dataset.id}`));
@@ -505,9 +514,149 @@ async function renderAgents() {
         .map((a) => {
           const rate = a.orders ? a.disputes / a.orders : 0;
           const standing = !a.directory ? ["block", "Not in any directory"] : rate > 0.05 ? ["step_up", "Confirm with shopper"] : ["allow", "Good"];
-          return `<tr><td><b>${esc(a.name)}</b><div class="sub"><code>${esc(a.keyid)}</code></div></td><td>${esc(a.directory ? PROTOCOL_LABEL[a.protocol] ?? a.directory : "None")}</td><td class="num">${a.requests}</td><td class="num">${a.orders}</td><td class="num">${a.blocked}</td><td class="num">${a.mismatches}</td><td class="num">${a.disputes}${a.disputesWon || a.disputesLost ? `<div class="sub">${a.disputesWon} won, ${a.disputesLost} lost</div>` : ""}</td><td class="num">${a.orders ? (rate * 100).toFixed(1) + "%" : "–"}</td><td>${chip(standing[0], standing[1])}</td></tr>`;
+          return `<tr class="clickable" data-keyid="${esc(a.keyid)}" tabindex="0"><td><b>${esc(a.name)}</b><div class="sub"><code>${esc(a.keyid)}</code></div></td><td>${esc(a.directory ? PROTOCOL_LABEL[a.protocol] ?? a.directory : "None")}</td><td class="num">${a.requests}</td><td class="num">${a.orders}</td><td class="num">${a.blocked}</td><td class="num">${a.mismatches}</td><td class="num">${a.disputes}${a.disputesWon || a.disputesLost ? `<div class="sub">${a.disputesWon} won, ${a.disputesLost} lost</div>` : ""}</td><td class="num">${a.orders ? (rate * 100).toFixed(1) + "%" : "–"}</td><td>${chip(standing[0], standing[1])}</td></tr>`;
         })
         .join("")}</tbody></table></div>`;
+  $$("tr.clickable").forEach((tr) => {
+    tr.addEventListener("click", () => openAgentDetail(tr.dataset.keyid));
+    tr.addEventListener("keydown", (e) => e.key === "Enter" && openAgentDetail(tr.dataset.keyid));
+  });
+}
+
+// ------------------------------------------------------------------ agent detail
+async function openAgentDetail(keyid) {
+  const a = await api(`/api/agents/${keyid}`);
+  const rate = a.orders ? a.disputes / a.orders : 0;
+  const standing = !a.directory ? ["block", "Not in any directory"] : rate > 0.05 ? ["step_up", "Confirm with shopper"] : ["allow", "Good"];
+  openDrawer(
+    a.name,
+    `<dl class="kv">
+      <dt>Key ID</dt><dd><code>${esc(a.keyid)}</code></dd>
+      <dt>Protocol</dt><dd>${esc(PROTOCOL_LABEL[a.protocol] ?? a.protocol ?? "Unknown")}</dd>
+      <dt>Directory</dt><dd>${esc(a.directory ?? "None")}</dd>
+      <dt>Standing</dt><dd>${chip(standing[0], standing[1])}</dd>
+      <dt>Requests</dt><dd>${a.requests}</dd>
+      <dt>Orders</dt><dd>${a.orders}</dd>
+      <dt>Disputes</dt><dd>${a.disputes}${a.dispute_rate != null ? ` (${(a.dispute_rate * 100).toFixed(1)}%)` : ""}</dd>
+    </dl>
+    <h3 style="margin-top:20px">Key log</h3>
+    <div class="table-wrap"><table><thead><tr><th>Event</th><th>Protocol</th><th>Directory</th><th>When</th></tr></thead>
+    <tbody>${(a.key_log ?? []).map((e) => `<tr><td>${esc(e.event)}</td><td>${esc(e.protocol)}</td><td>${esc(e.directory)}</td><td>${esc(time(e.at))}</td></tr>`).join("") || '<tr><td colspan="4" class="empty-state">No key events.</td></tr>'}</tbody></table></div>
+    <h3 style="margin-top:20px">Recent orders</h3>
+    <div class="table-wrap"><table><thead><tr><th>Time</th><th>Request</th><th>Decision</th><th class="num">Amount</th></tr></thead>
+    <tbody>${(a.recent_orders ?? []).map((r) => `<tr class="clickable" data-id="${esc(r.record_id)}"><td>${esc(time(r.received_at))}</td><td><code>${esc(r.method)} ${esc(r.path)}</code></td><td>${chip(r.decision)}</td><td class="num">${esc(r.amount_display ?? "")}</td></tr>`).join("") || '<tr><td colspan="4" class="empty-state">No recent orders.</td></tr>'}</tbody></table></div>`,
+  );
+  $$("#drawer-body tr.clickable").forEach((tr) =>
+    tr.addEventListener("click", () => { closeDrawer(); location.hash = `#/requests/${tr.dataset.id}`; }),
+  );
+}
+
+// ------------------------------------------------------------------ threats
+const SIGNAL_LABEL = {
+  recon_footprint: "Recon footprint",
+  hidden_routes: "Hidden routes",
+  auth_sweep: "Auth sweep",
+  api_then_browser: "API then browser",
+  model_loop_timing: "Model-loop timing",
+  claim_vs_proof: "Claim vs proof",
+  network_context: "Network context",
+};
+
+async function renderThreats(openId) {
+  const [{ sessions }, summary] = await Promise.all([api("/api/threats"), api("/api/threats/summary")]);
+  view.innerHTML = `
+    <div class="page-head"><div><h1>Threat Check</h1><p>Sessions scored by seven server-side signal rules. Verified agents bypass behaviour rules entirely. Each flagged session gets plain-text reasons and an evidence record.</p></div></div>
+    <div class="stats">
+      <div class="stat"><div class="v">${summary.total_sessions}</div><div class="l">Sessions analysed</div></div>
+      <div class="stat"><div class="v">${summary.blocked}</div><div class="l">Blocked</div></div>
+      <div class="stat"><div class="v">${summary.stepped_up}</div><div class="l">Step-up</div></div>
+      <div class="stat"><div class="v">${summary.allowed}</div><div class="l">Allowed</div></div>
+      <div class="stat"><div class="v">${summary.avg_score}</div><div class="l">Avg score</div></div>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Session</th><th class="num">Score</th><th>Decision</th><th class="num">Events</th><th class="num">Accounts</th><th>Time span</th><th>Signals</th></tr></thead>
+      <tbody>${sessions.map((s) => `<tr class="clickable" data-id="${esc(s.id)}" tabindex="0">
+        <td><code>${esc(s.session_key)}</code></td>
+        <td class="num"><strong>${s.score}</strong></td>
+        <td>${chip(s.decision)}</td>
+        <td class="num">${s.event_count}</td>
+        <td class="num">${s.accounts_touched}</td>
+        <td>${esc(time(s.first_seen))} — ${esc(time(s.last_seen))}</td>
+        <td>${s.signals.map((sig) => `<span class="tag-sm ${esc(sig.rule)}">${esc(SIGNAL_LABEL[sig.rule] ?? sig.rule)}</span>`).join(" ") || '<span class="sub">None</span>'}</td>
+      </tr>`).join("") || '<tr><td colspan="7" class="empty-state">No threat sessions found.</td></tr>'}</tbody></table></div>
+    <p class="sub">In the cloud version, threat events arrive from your middleware via <code>POST /v1/threat-events</code>. Here they are pre-seeded: an attack session, a claims-but-no-proof session, a verified agent, and a human shopper.</p>`;
+  $$("tr.clickable").forEach((tr) => {
+    tr.addEventListener("click", () => openThreatDetail(sessions.find((s) => String(s.id) === tr.dataset.id)));
+    tr.addEventListener("keydown", (e) => e.key === "Enter" && openThreatDetail(sessions.find((s) => String(s.id) === tr.dataset.id)));
+  });
+}
+
+function openThreatDetail(s) {
+  if (!s) return;
+  openDrawer(
+    `Session ${s.session_key}`,
+    `<div class="threat-header">
+      <div class="threat-score-big"><span class="score-num">${s.score}</span><span class="score-of"> / 100</span></div>
+      ${chip(s.decision)}
+    </div>
+    <dl class="kv" style="margin-top:16px">
+      <dt>Events</dt><dd>${s.event_count}</dd>
+      <dt>Accounts touched</dt><dd>${s.accounts_touched}</dd>
+      <dt>First seen</dt><dd>${esc(time(s.first_seen))}</dd>
+      <dt>Last seen</dt><dd>${esc(time(s.last_seen))}</dd>
+    </dl>
+    ${s.signals.length ? `<h3 style="margin-top:20px">Signals fired</h3>
+    <div class="signal-list">${s.signals.map((sig) => `<div class="signal-item">
+      <div class="signal-head"><span class="tag-sm ${esc(sig.rule)}">${esc(SIGNAL_LABEL[sig.rule] ?? sig.rule)}</span><strong>+${sig.weight}</strong></div>
+      <p>${esc(sig.reason)}</p>
+    </div>`).join("")}</div>` : '<p class="sub" style="margin-top:16px">No signals fired — this session is clean.</p>'}`,
+  );
+}
+
+// ------------------------------------------------------------------ confirmations
+const CONF_STATUS_LABEL = { approved: "Approved", declined: "Declined", pending: "Pending" };
+
+async function renderConfirmations() {
+  const list = await api("/api/confirmations");
+  view.innerHTML = `
+    <div class="page-head"><div><h1>Confirmations</h1><p>When an agent order exceeds the shopper's mandate or needs explicit approval, ProveTheBuy asks the shopper to confirm. These are the confirmation requests and their outcomes.</p></div></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>ID</th><th>Agent</th><th class="num">Amount</th><th>Items</th><th>Status</th><th>Decided</th><th>Expires</th></tr></thead>
+      <tbody>${list.map((c) => {
+        const statusClass = c.status === "approved" ? "allow" : c.status === "declined" ? "block" : "step_up";
+        return `<tr class="clickable" data-id="${esc(c.id)}" tabindex="0">
+          <td><code>${esc(c.id)}</code></td>
+          <td>${esc(c.agent)}</td>
+          <td class="num">${esc(c.amount_display)}</td>
+          <td>${esc((c.items ?? []).join(", "))}</td>
+          <td>${chip(statusClass, CONF_STATUS_LABEL[c.status] ?? c.status)}</td>
+          <td>${c.decided_at ? esc(time(c.decided_at)) : '<span class="sub">Waiting</span>'}</td>
+          <td>${esc(time(c.expires_at))}</td>
+        </tr>`;
+      }).join("") || '<tr><td colspan="7" class="empty-state">No confirmations. These appear when an agent order triggers a step-up decision.</td></tr>'}</tbody></table></div>
+    <p class="sub">In the cloud version, the shopper receives a link (email or in-app) showing the exact cart. They approve or decline, and the confirmation status feeds back into the order flow.</p>`;
+  $$("tr.clickable").forEach((tr) => {
+    tr.addEventListener("click", () => openConfirmationDetail(list.find((c) => c.id === tr.dataset.id)));
+    tr.addEventListener("keydown", (e) => e.key === "Enter" && openConfirmationDetail(list.find((c) => c.id === tr.dataset.id)));
+  });
+}
+
+function openConfirmationDetail(c) {
+  if (!c) return;
+  const statusClass = c.status === "approved" ? "allow" : c.status === "declined" ? "block" : "step_up";
+  openDrawer(
+    `Confirmation ${c.id}`,
+    `<div style="margin-bottom:16px">${chip(statusClass, CONF_STATUS_LABEL[c.status] ?? c.status)}</div>
+    <dl class="kv">
+      <dt>Agent</dt><dd>${esc(c.agent)}</dd>
+      <dt>Amount</dt><dd>${esc(c.amount_display)}</dd>
+      <dt>Items</dt><dd>${esc((c.items ?? []).join(", "))}</dd>
+      <dt>Order hash</dt><dd><code>${esc(c.order_hash)}</code></dd>
+      <dt>Decided</dt><dd>${c.decided_at ? esc(time(c.decided_at)) : "Waiting for shopper"}</dd>
+      <dt>Expires</dt><dd>${esc(time(c.expires_at))}</dd>
+    </dl>
+    <p class="sub" style="margin-top:16px">The shopper sees the exact cart — items, amounts and agent name — and can approve or decline. If declined, the agent's order is not completed.</p>`,
+  );
 }
 
 // ------------------------------------------------------------------ pricing
@@ -552,25 +701,115 @@ async function renderPricing() {
 }
 
 // ------------------------------------------------------------------ router
-const ROUTES = { playground: renderPlayground, traffic: renderTraffic, requests: renderRequests, policy: renderPolicy, disputes: renderDisputes, agents: renderAgents };
+const ROUTES = { playground: renderPlayground, traffic: renderTraffic, requests: renderRequests, policy: renderPolicy, disputes: renderDisputes, agents: renderAgents, threats: renderThreats, confirmations: renderConfirmations };
 
 async function router() {
   const [, name = "playground", id] = (location.hash || "#/playground").split("/");
   const fn = ROUTES[name] ?? renderPlayground;
   $$("nav a").forEach((a) => (a.dataset.route === name ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current")));
+  if (navEl?.classList.contains("open")) toggleNav(false);
   const d = document.getElementById("drawer");
   if (!id) d.hidden = true;
   try {
     if (id && view.dataset.route === name && name === "requests") return openRecord(id);
     if (id && view.dataset.route === name && name === "disputes") return renderDisputes(id);
+    // Smooth page transition
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reduceMotion && view.dataset.route) {
+      view.style.transition = "opacity 0.12s, transform 0.12s";
+      view.style.opacity = "0";
+      view.style.transform = "translateY(10px)";
+      await new Promise((r) => setTimeout(r, 120));
+    }
     view.dataset.route = name;
     await fn(id);
+    if (!reduceMotion) {
+      view.style.transition = "opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)";
+      view.style.opacity = "1";
+      view.style.transform = "translateY(0)";
+    }
+    revealElements();
     if (!id) view.focus({ preventScroll: true });
   } catch (e) {
+    view.style.opacity = "1";
+    view.style.transform = "none";
     view.innerHTML = `<div class="page-head"><div><h1>Something went wrong</h1><p>${esc(e.message)}. Check that the playground server is still running, then reload.</p></div></div>`;
   }
 }
 
+// ------------------------------------------------------------------ reveal & interactions
+function revealElements() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const els = view.querySelectorAll(".stats, .panel, .table-wrap, .proof:not(.empty), .plan-card, .signal-item, .pg-work > div, .pg > .scenarios");
+  els.forEach((el, i) => {
+    el.classList.add("reveal");
+    el.classList.add("card-glow");
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        el.style.transitionDelay = `${i * 0.07}s`;
+        el.classList.add("visible");
+      });
+    });
+  });
+  // Stat counter animation
+  view.querySelectorAll(".stat .v").forEach((el) => {
+    const text = el.textContent.trim();
+    const num = parseFloat(text.replace(/[^0-9.]/g, ""));
+    if (!num || isNaN(num)) return;
+    const prefix = text.match(/^[^0-9]*/)?.[0] ?? "";
+    const suffix = text.match(/[^0-9.]*$/)?.[0] ?? "";
+    const isInt = !text.includes(".");
+    const dur = 1200;
+    const start = performance.now();
+    function tick(now) {
+      const p = Math.min((now - start) / dur, 1);
+      const ease = 1 - Math.pow(1 - p, 3);
+      const v = isInt ? Math.round(num * ease) : (num * ease).toFixed(1);
+      el.textContent = prefix + (isInt ? Number(v).toLocaleString() : v) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    el.textContent = prefix + "0" + suffix;
+    requestAnimationFrame(tick);
+  });
+}
+
+// ------------------------------------------------------------------ mobile nav
+const menuBtn = document.getElementById("menuBtn");
+const navEl = document.querySelector(".rail nav");
+const navScrim = document.getElementById("navScrim");
+
+function toggleNav(open) {
+  if (!navEl) return;
+  const isOpen = open ?? !navEl.classList.contains("open");
+  navEl.classList.toggle("open", isOpen);
+  if (navScrim) navScrim.hidden = !isOpen;
+  if (menuBtn) menuBtn.setAttribute("aria-expanded", String(isOpen));
+}
+if (menuBtn) menuBtn.addEventListener("click", () => toggleNav());
+if (navScrim) navScrim.addEventListener("click", () => toggleNav(false));
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 820 && navEl?.classList.contains("open")) toggleNav(false);
+});
+
+// ------------------------------------------------------------------ scroll progress
+const scrollProg = document.getElementById("scrollProgress");
+if (scrollProg) {
+  window.addEventListener("scroll", () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    scrollProg.style.transform = `scaleX(${h > 0 ? Math.min(window.scrollY / h, 1) : 0})`;
+  }, { passive: true });
+}
+
+// ------------------------------------------------------------------ card glow (mousemove)
+document.addEventListener("mousemove", (e) => {
+  const card = e.target.closest(".card-glow");
+  if (!card) return;
+  const r = card.getBoundingClientRect();
+  card.style.setProperty("--mouse-x", (e.clientX - r.left) + "px");
+  card.style.setProperty("--mouse-y", (e.clientY - r.top) + "px");
+});
+
+// ------------------------------------------------------------------ init
 $("#reset").addEventListener("click", async () => {
   await api("/api/reset", { method: "POST" });
   pg.request = null;

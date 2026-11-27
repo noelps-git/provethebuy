@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import YAML from "yaml";
 import { EvidenceLedger, MemoryReplayStore, buildEvidencePack, agentSummaries, resolvePolicy, formatMoney } from "@provethebuy/verify";
 import { analyse, shareLine } from "@provethebuy/cli/traffic";
+import { labRoute } from "./lab.mjs";
 import { SCENARIOS, buildScenario, makeVerifier, simulateDay, openDisputes, directories, AGENTS, MERCHANT_ID, ORIGIN } from "./demo.mjs";
 
 const PORT = Number(process.env.PORT ?? 4319);
@@ -288,8 +289,8 @@ async function route(req, res) {
   const m = req.method;
 
   if (!p.startsWith("/api/")) {
-    // The playground SPA is served at /, /app and /playground. The marketing site lives in apps/site.
-    const requestedFile = ["/", "/app", "/app/", "/playground", "/playground/"].includes(p) ? "app.html" : p;
+    // The console SPA is served at / and /app; the playground lab at /playground. The marketing site lives in apps/site.
+    const requestedFile = ["/playground", "/playground/"].includes(p) ? "lab.html" : ["/", "/app", "/app/"].includes(p) ? "app.html" : p;
     const file = normalize(join(PUBLIC, requestedFile));
     if (!file.startsWith(PUBLIC)) throw httpError(403, "Forbidden");
     try {
@@ -304,6 +305,7 @@ async function route(req, res) {
     }
   }
 
+  if (p.startsWith("/api/lab/")) return labRoute(req, res, url, { body, json });
   if (m === "GET" && p === "/api/state")
     return json(res, 200, { merchant: MERCHANT_ID, origin: ORIGIN, mode: state.policy.mode, policy_version: state.policy.version, records: state.ledger.size, open_disputes: disputes().filter((d) => d.status === "opened").length });
   if (m === "GET" && p === "/api/scenarios") return json(res, 200, SCENARIOS);

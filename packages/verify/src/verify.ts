@@ -3,7 +3,7 @@
  *
  *   1. Is this an agent?          Signature-Input / Signature headers present
  *   2. Is the agent who it says?  window, nonce, tag, key directory, RFC 9421 signature, body objects
- *   3. Was it allowed to buy?     mandate chain (Verifiable Intent, AP2) and scoped token limits
+ *   3. Was it allowed to buy?     mandate chain (Verifiable Intent, AP2), who approved it, AAF agent ID and scoped token limits
  *   4. Is this the order it was allowed to buy?  order hash and constraints
  *   5. Decide                     allow / step_up / block, applied only in enforce mode
  */
@@ -25,6 +25,7 @@ import { verifyMandate, type Mandate } from "./mandates/index.js";
 import { checkPaymentLimits, type PaymentCredential } from "./payment.js";
 import { itemsTotal, orderHash } from "./order.js";
 import { resolvePolicy, type Policy, type PolicyInput } from "./policy.js";
+import { verifyAgentId, sameKey, type AgentIdPresentation, type AgentIdInfo } from "./agentId.js";
 import type { AgentInfo, Check, Decision, MandateInfo, Order, VerificationResult } from "./types.js";
 
 export interface CheckoutContext {
@@ -33,6 +34,8 @@ export interface CheckoutContext {
   payment?: PaymentCredential;
   consumerRecognition?: SignedBodyObject;
   paymentContainer?: SignedBodyObject;
+  /** Accountable Agents Framework ID presented by the agent. */
+  agentId?: AgentIdPresentation;
 }
 
 export interface AgentStats {
@@ -56,6 +59,10 @@ export interface ProveTheBuyOptions {
   /** Your own public key, to check your signature on AP2 cart mandates. */
   merchantJwk?: Jwk;
   reputation?: ReputationProvider;
+  /** Directories that issue Accountable Agents Framework IDs (directory signing keys). */
+  agentIds?: KeyDirectory;
+  /** Revocation lookup for agent IDs, e.g. backed by a directory status list. */
+  isAgentIdRevoked?: (id: string, directory: string) => boolean | Promise<boolean>;
   /** Clock override for tests. */
   now?: () => number;
 }
@@ -71,10 +78,26 @@ export function contextFromBody(body: string | undefined): CheckoutContext {
       payment: j.payment as PaymentCredential | undefined,
       consumerRecognition: (j.consumer_recognition ?? j.agenticConsumer) as SignedBodyObject | undefined,
       paymentContainer: (j.payment_container ?? j.agenticPaymentContainer) as SignedBodyObject | undefined,
+      agentId: j.agent_id as AgentIdPresentation | undefined,
     };
   } catch {
     return {};
   }
+}
+
+/** Agent names commonly written into the User-Agent header. A name is a claim, not proof. */
+const DECLARED_AGENTS: [RegExp, string][] = [
+  [/Claude-User|Claude\//i, "Claude"],
+  [/ChatGPT-User|ChatGPT-Agent|OAI-/i, "ChatGPT"],
+  [/Google-Agent/i, "Google Agent"],
+  [/Perplexity-User|PerplexityBot/i, "Perplexity"],
+  [/Comet/i, "Comet"],
+  [/GPTBot/i, "GPTBot"],
+];
+
+export function declaredAgent(ua: string | undefined): string | undefined {
+  if (!ua) return undefined;
+  return DECLARED_AGENTS.find(([re]) => re.test(ua))?.[1];
 }
 
 function protocolFor(directory: string | undefined): AgentInfo["protocol"] {
@@ -128,14 +151,33 @@ export class ProveTheBuy {
     const base = { enforced: p.mode === "enforce", policyVersion: p.version!, receivedAt, rawSha256 };
     let keyForRecord: VerificationResult["agentKeyJwk"];
     let issuerForRecord: VerificationResult["issuerKeyJwk"];
-    const done = (decision: Decision, extra: Partial<VerificationResult> = {}): VerificationResult => ({ decision, reasons, checks, ...base, agentKeyJwk: keyForRecord, issuerKeyJwk: issuerForRecord, ...extra });
+    const declaredAs = declaredAgent(headers["user-agent"]);
+    const identification = (): VerificationResult["identification"] => {
+      const ok = (n: string) => checks.some((c) => c.name === n && c.status === "pass");
+      if (ok("signature_valid") && ok("agent_id_bound")) return "credentialed";
+      if (ok("signature_valid")) return "verified";
+      return declaredAs ? "declared" : "none";
+    };
+    const done = (decision: Decision, extra: Partial<VerificationResult> = {}): VerificationResult => ({
+      decision,
+      reasons,
+      checks,
+      ...base,
+      identification: identification(),
+      declaredAs,
+      agentKeyJwk: keyForRecord,
+      issuerKeyJwk: issuerForRecord,
+      ...extra,
+    });
 
     // ---------------------------------------------------------------- 1. agent?
     const sigInput = headers["signature-input"];
     const sigHeader = headers["signature"];
     if (!sigInput || !sigHeader) {
       checks.push({ name: "signature_present", status: "skip", detail: "No agent signature headers. Left to your existing fraud tools." });
-      reasons.push("Not a signed agent request.");
+      if (declaredAs)
+        checks.push({ name: "declared_name", status: "warn", detail: `The User-Agent says this is ${declaredAs}, but there is no signature, so the name cannot be checked. Anyone can write it.` });
+      reasons.push(declaredAs ? `Names itself ${declaredAs} but is not signed.` : "Not a signed agent request.");
       return done("not_agent");
     }
     checks.push({ name: "signature_present", status: "pass", detail: "Signature-Input and Signature headers are present." });
@@ -257,6 +299,28 @@ export class ProveTheBuy {
       }
     }
 
+    // AAF agent ID: who stands behind this agent (optional, preview)
+    let agentIdInfo: AgentIdInfo | undefined;
+    const idOutcome = await verifyAgentId(ctx.agentId, {
+      directories: this.opts.agentIds,
+      trusted: p.agent_id.directories,
+      agentJwk: key.jwk,
+      merchantId: this.opts.merchantId,
+      now,
+      isRevoked: this.opts.isAgentIdRevoked,
+    });
+    if (idOutcome) {
+      checks.push(...idOutcome.checks);
+      if (!idOutcome.ok) {
+        reasons.push("Agent ID does not check out.");
+        return done("block", { agent });
+      }
+      agentIdInfo = idOutcome.info;
+      agent.agentId = agentIdInfo;
+    } else if (p.agent_id.require && tag === "agent-payer-auth") {
+      checks.push({ name: "agent_id_present", status: "fail", detail: "This merchant asks paying agents for an Accountable Agents Framework ID, and none was presented." });
+    }
+
     // browsing agents stop here
     if (tag === "agent-browser-auth" && !ctx.order) {
       reasons.push("Verified browsing agent.");
@@ -273,6 +337,8 @@ export class ProveTheBuy {
       const rank: Record<Decision, number> = { not_agent: 0, allow: 1, step_up: 2, block: 3 };
       if (rank[to] > rank[state.decision]) state.decision = to;
     };
+
+    if (p.agent_id.require && tag === "agent-payer-auth" && !idOutcome) escalate("step_up", "No agent ID.");
 
     if (!order) {
       checks.push({ name: "order_present", status: "warn", detail: "Paying agent request has no order in the body, so it cannot be bound to a mandate." });
@@ -310,11 +376,34 @@ export class ProveTheBuy {
         issuerForRecord = m.issuerKeyJwk;
         if (!m.info.valid) escalate("block", "Mandate does not verify.");
         else if (m.info.constraintsOk === false) escalate(p.mandate.on_outside, "Order is outside the mandate.");
+        if (m.info.valid && m.principalJwk) {
+          if (sameKey(m.principalJwk, key.jwk)) {
+            checks.push({
+              name: "approval_independent",
+              status: "fail",
+              detail: "The approval was signed with the agent's own key, so the agent approved its own purchase. Ask the person to confirm on their own device.",
+            });
+            escalate(p.approval.on_self_approved, "Agent approved its own purchase.");
+          } else {
+            checks.push({ name: "approval_independent", status: "pass", detail: "The person's approval was signed with a different key from the agent's." });
+          }
+        }
         const intentOnly = m.info.type === "ap2-intent" || m.info.mode === "autonomous";
         if (m.info.valid && intentOnly && p.limits.intent_mandate_max_order > 0 && order.total > p.limits.intent_mandate_max_order) {
           checks.push({ name: "intent_threshold", status: "warn", detail: `Unattended purchase of ${order.total} is above the ${p.limits.intent_mandate_max_order} confirmation threshold.` });
           escalate("step_up", "Large unattended purchase.");
         }
+      }
+
+      if (agentIdInfo?.spendingLimit) {
+        const lim = agentIdInfo.spendingLimit;
+        const over = lim.currency.toLowerCase() !== order.currency.toLowerCase() || order.total > lim.amount;
+        checks.push(
+          over
+            ? { name: "agent_id_limit", status: "fail", detail: `Order total ${order.total} ${order.currency} is above the agent ID's spending limit of ${lim.amount} ${lim.currency}.` }
+            : { name: "agent_id_limit", status: "pass", detail: "Order is inside the agent ID's spending limit." },
+        );
+        if (over) escalate(p.mandate.on_outside, "Order is above the agent ID's spending limit.");
       }
 
       const t = checkPaymentLimits(ctx.payment, order, this.opts.merchantId, now);

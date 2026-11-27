@@ -89,7 +89,7 @@ export async function verifyAp2Cart(m: Ap2CartMandate, ctx: MandateContext): Pro
       ? { name: "order_within_mandate", status: "fail", detail: "Order differs from the signed cart: " + problems.join("; ") + "." }
       : { name: "order_within_mandate", status: "pass", detail: "Order is exactly the cart the user signed." },
   );
-  return { info: { type: m.type, mode: "human-present", valid: true, constraintsOk: !problems.length, expiresAt: userCart.expires_at, summary: `cart ${userCart.cart_id}` }, checks };
+  return { info: { type: m.type, mode: "human-present", valid: true, constraintsOk: !problems.length, expiresAt: userCart.expires_at, summary: `cart ${userCart.cart_id}` }, checks, principalJwk: m.user_jwk };
 }
 
 export async function verifyAp2Intent(m: Ap2IntentMandate, ctx: MandateContext): Promise<MandateOutcome> {
@@ -116,6 +116,7 @@ export async function verifyAp2Intent(m: Ap2IntentMandate, ctx: MandateContext):
       : { name: "order_within_mandate", status: "pass", detail: "Order is inside the intent mandate." },
   );
   return {
+    principalJwk: m.user_jwk,
     info: { type: m.type, mode: "human-not-present", valid: true, constraintsOk: !problems.length, expiresAt: intent.expires_at, summary: intent.prompt_playback },
     checks,
   };

@@ -23,6 +23,8 @@ export interface MandateOutcome {
   checks: Check[];
   /** Issuer key used for layer 1, kept in the evidence record so it can be re-verified later. */
   issuerKeyJwk?: Jwk;
+  /** The key the person approved with (Verifiable Intent layer 1 user key, AP2 user key). Used to check the agent did not approve its own purchase. */
+  principalJwk?: Jwk;
 }
 
 export async function verifyMandate(m: Mandate | undefined, ctx: MandateContext): Promise<MandateOutcome | null> {

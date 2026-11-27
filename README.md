@@ -38,12 +38,14 @@ It runs in your own server, never sees card numbers, and starts in **shadow mode
 <br>
 
 <p align="center">
-  <img src="docs/images/playground.png" alt="The ProveTheBuy playground: pick a scenario, verify a signed agent request, and read the receipt of every check" width="900">
+  <img src="docs/images/playground-lab.png" alt="The ProveTheBuy playground: set up a store, send an agent, see the order next to what the shopper approved, and every check the merchant gets" width="900">
 </p>
 
 ## Try it in 60 seconds
 
-You need [Node.js 18.17 or newer](https://nodejs.org). Nothing else: no database, no accounts, no API keys.
+**In the browser:** open the [playground](https://provethebuy.com/playground). Pick a store and an agent, see exactly what the merchant receives, try 13 attacks against the order, then jump 40 days ahead to the chargeback. It runs the same verifier you install, and you can point your own agent at a private sandbox URL.
+
+**On your machine:** you need [Node.js 18.17 or newer](https://nodejs.org). Nothing else: no database, no accounts, no API keys.
 
 ```bash
 git clone https://github.com/noelps-git/provethebuy.git
@@ -52,13 +54,13 @@ npm install
 npm run demo
 ```
 
-Then open **http://localhost:4319**.
+Then open **http://localhost:4319/playground** for the playground, or **http://localhost:4319** for the merchant console.
 
-The playground loads a simulated day of agent traffic for a demo coffee shop and gives you six screens:
+The console loads a simulated day of agent traffic for a demo coffee shop and gives you six screens:
 
 | Screen | What you can do |
 | --- | --- |
-| **Playground** | Pick a situation (valid agent, replay, tampered request, order over the mandate limit…), edit the signed request, and see every check the verifier ran. |
+| **Scenarios** | Pick a situation (valid agent, replay, tampered request, order over the mandate limit…), edit the signed request, and see every check the verifier ran. |
 | **Agent traffic** | See which agents reached the store and what would have been decided. Drop in your own access log to count AI agents in it. |
 | **Requests** | Inspect any request: each check, the raw headers, and its place in the hash-chained ledger. |
 | **Policy** | Edit the YAML policy, dry-run it against everything recorded so far, then apply it. |

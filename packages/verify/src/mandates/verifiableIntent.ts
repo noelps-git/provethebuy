@@ -114,6 +114,7 @@ export async function verifyVerifiableIntent(m: VerifiableIntentMandate, ctx: Ma
 
   return {
     issuerKeyJwk: issuerJwk,
+    principalJwk: userJwk,
     info: {
       type: m.type,
       mode,

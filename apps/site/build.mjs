@@ -217,7 +217,16 @@ await cp(join(HERE, "static"), OUT, { recursive: true });
 // Playground (the same app as `npm run demo`, served with the /api function)
 const PG = join(ROOT, "apps", "playground", "public");
 for (const f of ["app.html", "app.js", "app.css", "theme.css"]) await cp(join(PG, f), join(OUT, f));
-await cp(join(PG, "app.html"), join(OUT, "playground.html")); // cleanUrls serves /playground from playground.html
+for (const f of ["lab.js", "lab.css"]) await cp(join(PG, f), join(OUT, f));
+// The playground lab page: one source (apps/playground/public/lab.html), wrapped in the site layout.
+const labSrc = await readFile(join(PG, "lab.html"), "utf8");
+const labBody = labSrc.slice(labSrc.indexOf("<!--lab:start-->") + 16, labSrc.indexOf("<!--lab:end-->"));
+const writePlayground = () => write("playground.html", layout({
+  path: "/playground", current: "playground",
+  title: "Playground: send an agent shopping, then try to break it",
+  description: "Pick a store, send an AI agent to buy something, see exactly what the merchant gets, try to break it, then jump 40 days ahead to the chargeback. Runs the real open-source verifier.",
+  body: labBody, extraHead: '<link rel="stylesheet" href="/lab.css">',
+}));
 
 const ORG = { "@type": "Organization", name: "ProveTheBuy", url: SITE, logo: `${SITE}/favicon.svg`, sameAs: [REPO, "https://www.npmjs.com/package/@provethebuy/verify"] };
 const CODE = {
@@ -293,6 +302,7 @@ ${DOCS.map((d) => `<h3><a href="/docs/${d.slug}">${esc(d.nav)}</a></h3><p>${esc(
 await write("docs.html", layout({ path: "/docs", current: "docs", title: "Docs", description: "Documentation for ProveTheBuy: quickstart, CLI, protocols, policy, architecture and threat model.", body: docsIndex }));
 
 // 404
+await writePlayground();
 await write("404.html", layout({ path: "/404", title: "Page not found", description: "This page doesn't exist.", body: `<div class="page-hero">${guilloche(320)}<div class="wrap"><h1>This page isn't on file.</h1><p>It may have moved. Try the <a href="/docs" style="color:var(--accent-light)">docs</a> or go back to the <a href="/" style="color:var(--accent-light)">home page</a>.</p></div></div>` }));
 
 // Discovery files

@@ -1,3 +1,4 @@
+import type { AgentIdInfo } from "./agentId.js";
 import type { AgentTag } from "./httpsig.js";
 import type { Jwk } from "./keys.js";
 
@@ -46,6 +47,8 @@ export interface AgentInfo {
   nonce?: string;
   created?: number;
   expires?: number;
+  /** Accountable Agents Framework ID, when one was presented and verified. */
+  agentId?: AgentIdInfo;
 }
 
 export interface MandateInfo {
@@ -69,6 +72,16 @@ export interface VerificationResult {
   rawSha256?: string;
   policyVersion: string;
   receivedAt: string;
+  /**
+   * How strongly the client was identified, weakest to strongest:
+   *   none          no name, no signature: looks like an ordinary browser
+   *   declared      names itself in the User-Agent header only (easy to fake)
+   *   verified      valid agent signature checked against a trusted key directory
+   *   credentialed  verified, plus an Accountable Agents Framework ID tying it to a verified principal
+   */
+  identification?: "none" | "declared" | "verified" | "credentialed";
+  /** Agent name found in the User-Agent header, if any. */
+  declaredAs?: string;
   /** Public key the agent signed with, kept for the evidence record. */
   agentKeyJwk?: Jwk;
   /** Mandate issuer key used (Verifiable Intent layer 1), kept for re-verification. */

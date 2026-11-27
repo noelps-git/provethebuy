@@ -17,6 +17,8 @@ export interface VerificationRecord {
   received_at: string;
   request: { method: string; authority: string; path: string; raw_sha256?: string };
   agent?: AgentInfo;
+  /** none | declared | verified | credentialed */
+  identification?: VerificationResult["identification"];
   checks: Check[];
   mandate?: MandateInfo;
   order?: { order_hash?: string; order_id?: string; amount?: number; currency?: string; payment_intent?: string };
@@ -134,6 +136,7 @@ export class EvidenceLedger {
         received_at: result.receivedAt,
         request: { method: extra.request.method.toUpperCase(), authority: url.host, path: url.pathname, raw_sha256: result.rawSha256 },
         agent: result.agent,
+        identification: result.identification,
         checks: result.checks,
         mandate: result.mandate,
         order: order ? { order_hash: result.orderHash, order_id: extra.orderId ?? order.id, amount: order.total, currency: order.currency, payment_intent: extra.paymentIntent } : undefined,

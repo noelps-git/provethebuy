@@ -143,3 +143,32 @@ export function buildAp2Intent(o: { user: KeyPair; merchants?: string[]; maxAmou
 }
 
 export { signBodyObject };
+
+/** Accountable Agents Framework ID, issued by a directory and bound to the agent's key. */
+export function buildAafPresentation(o: {
+  directory: KeyPair;
+  agent: KeyPair;
+  /** The ID. Defaults to a random pairwise-style identifier. */
+  id?: string;
+  /** Merchant id the ID is issued for. */
+  audience?: string;
+  assurance?: string;
+  spendingLimit?: { amount: number; currency: string };
+  now?: number;
+  expiresInSeconds?: number;
+  seed?: string;
+}): { type: "aaf"; presentation: string } {
+  const now = o.now ?? Math.floor(Date.now() / 1000);
+  const claims: Record<string, unknown> = {
+    iss: "https://directory.example",
+    sub: o.id ?? "aaf_" + randomBytes(10).toString("base64url"),
+    iat: now,
+    exp: now + (o.expiresInSeconds ?? 3600),
+    cnf: { jwk: o.agent.publicJwk },
+  };
+  if (o.audience) claims.aud = o.audience;
+  if (o.assurance) claims.assurance = o.assurance;
+  if (o.spendingLimit) claims.spending_limit = o.spendingLimit;
+  const selective = ["assurance", "spending_limit"].filter((k) => k in claims);
+  return { type: "aaf", presentation: issueSdJwt(claims, selective, o.directory.privateJwk, salt(o.seed && o.seed + "aaf")) };
+}
