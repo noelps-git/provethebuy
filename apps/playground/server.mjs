@@ -102,6 +102,48 @@ async function boot() {
   state.lastValid = null;
   await simulateDay({ ledger: state.ledger, policy: state.policy, replay: state.replay });
   for (const d of openDisputes(state.ledger)) state.disputeState.set(d.dispute_id, d);
+
+  // Seed threat sessions for the Threat Check screen
+  const now = new Date();
+  const ts = (sec) => new Date(now.getTime() - (3600 - sec) * 1000).toISOString();
+  state.threatSessions = [
+    {
+      id: 1, session_key: "c:sess_attack_1", score: 82, decision: "block", event_count: 14,
+      first_seen: ts(0), last_seen: ts(300), accounts_touched: 5,
+      signals: [
+        { rule: "recon_footprint", weight: 18, reason: "4 recon requests (robots.txt, /sitemap.xml, /.well-known/openapi.json +1) before interacting with the site" },
+        { rule: "auth_sweep", weight: 25, reason: "5 accounts touched; 5 auth requests in 18s; 3 failed/invalid token attempts" },
+        { rule: "api_then_browser", weight: 19, reason: "3 failed API calls (401/403) followed by a browser session 4min later on the same identity" },
+        { rule: "model_loop_timing", weight: 15, reason: '6 think-pause gaps (3.8s avg) with 4 bursts and 0 idle periods — consistent with LLM-in-the-loop timing' },
+      ],
+    },
+    {
+      id: 2, session_key: "c:sess_attack_2", score: 52, decision: "step_up", event_count: 12,
+      first_seen: ts(600), last_seen: ts(648), accounts_touched: 1,
+      signals: [
+        { rule: "claim_vs_proof", weight: 25, reason: "User-Agent claims perplexity but 12 requests carry no valid agent signature" },
+        { rule: "model_loop_timing", weight: 17, reason: '10 think-pause gaps (4.0s avg) with 6 bursts and 0 idle periods — consistent with LLM-in-the-loop timing' },
+      ],
+    },
+    {
+      id: 3, session_key: "c:sess_good_agent", score: 0, decision: "allow", event_count: 3,
+      first_seen: ts(900), last_seen: ts(910), accounts_touched: 0,
+      signals: [],
+    },
+    {
+      id: 4, session_key: "c:sess_human_1", score: 0, decision: "allow", event_count: 4,
+      first_seen: ts(1200), last_seen: ts(1380), accounts_touched: 1,
+      signals: [],
+    },
+  ];
+
+  // Seed confirmations for the step-up screen
+  const recs = state.ledger.verifications().filter((r) => r.decision === "allow" && r.order);
+  state.confirmations = [
+    { id: "conf_pg_approved", status: "approved", agent: agentName(recs[0]?.agent?.keyid), amount_display: formatMoney(recs[0]?.order?.amount ?? 3200, "usd"), items: ["House espresso beans, 1 kg"], order_hash: recs[0]?.order?.order_hash ?? "oh_1", decided_at: new Date(Date.now() - 2 * 86400e3).toISOString(), expires_at: new Date(Date.now() + 86400e3).toISOString() },
+    { id: "conf_pg_declined", status: "declined", agent: agentName(recs[1]?.agent?.keyid), amount_display: formatMoney(recs[1]?.order?.amount ?? 8900, "usd"), items: ["Pour-over kettle"], order_hash: recs[1]?.order?.order_hash ?? "oh_2", decided_at: new Date(Date.now() - 86400e3).toISOString(), expires_at: new Date(Date.now() + 86400e3).toISOString() },
+    { id: "conf_pg_pending", status: "pending", agent: agentName(recs[2]?.agent?.keyid), amount_display: formatMoney(recs[2]?.order?.amount ?? 4999, "usd"), items: ["Single-origin Ethiopia, 250 g"], order_hash: recs[2]?.order?.order_hash ?? "oh_3", decided_at: null, expires_at: new Date(Date.now() + 86400e3).toISOString() },
+  ];
 }
 
 const agentName = (keyid) => Object.values(AGENTS).find((a) => a.kid === keyid)?.label ?? keyid;
@@ -330,6 +372,55 @@ async function route(req, res) {
     return json(res, 200, { status });
   }
   if (m === "GET" && p === "/api/agents") return json(res, 200, report().agents);
+  if (m === "GET" && (mm = p.match(/^\/api\/agents\/([\w-]+)$/))) {
+    const agents = report().agents;
+    const agent = agents.find((a) => a.keyid === mm[1]);
+    if (!agent) throw httpError(404, "No agent with that key id.");
+    const recs = state.ledger.verifications().filter((r) => r.agent?.keyid === mm[1]);
+    const disp = disputes().filter((d) => state.ledger.get(d.record_id)?.agent?.keyid === mm[1]);
+    return json(res, 200, {
+      ...agent,
+      stores: [{ store_id: "playground", name: "Playground Store" }],
+      key_log: [
+        { event: "first_seen", protocol: "rfc9421", directory: agent.directory ?? "visa", at: recs[0]?.received_at ?? new Date().toISOString() },
+      ],
+      recent_orders: recs.slice(-10).map(summary),
+      dispute_count: disp.length,
+      dispute_rate: recs.length >= 10 ? disp.length / recs.length : null,
+    });
+  }
+  if (m === "GET" && p === "/api/threats") {
+    return json(res, 200, { sessions: state.threatSessions ?? [] });
+  }
+  if (m === "GET" && p === "/api/threats/summary") {
+    const sessions = state.threatSessions ?? [];
+    return json(res, 200, {
+      total_sessions: sessions.length,
+      blocked: sessions.filter((s) => s.decision === "block").length,
+      stepped_up: sessions.filter((s) => s.decision === "step_up").length,
+      allowed: sessions.filter((s) => s.decision === "allow").length,
+      avg_score: sessions.length ? Math.round(sessions.reduce((s, t) => s + t.score, 0) / sessions.length) : 0,
+      max_score: sessions.length ? Math.max(...sessions.map((s) => s.score)) : 0,
+    });
+  }
+  if (m === "GET" && p === "/api/confirmations") {
+    return json(res, 200, state.confirmations ?? []);
+  }
+  if (m === "GET" && p === "/api/disputes/export") {
+    const format = url.searchParams.get("format") ?? "generic";
+    const disps = disputes();
+    const header = format === "visa" ? "ARN,TC40_Date,Dispute_ID,Amount,Currency,Agent,Reason_Code,Record_ID,Verdict"
+      : format === "mastercard" ? "GCMS_Ref,Date,Dispute_ID,Amount,Currency,Agent,Reason_Code,Record_ID,Verdict"
+      : "dispute_id,amount,currency,agent,reason_code,record_id,status,opened_at,respond_by";
+    const rows = disps.map((d) => {
+      if (format === "visa") return `ARN_${d.dispute_id},${d.opened_at?.slice(0,10)},${d.dispute_id},${d.amount},${d.currency},${d.agent},${d.reason_code},${d.record_id},fight`;
+      if (format === "mastercard") return `GCMS_${d.dispute_id},${d.opened_at?.slice(0,10)},${d.dispute_id},${d.amount},${d.currency},${d.agent},${d.reason_code},${d.record_id},fight`;
+      return `${d.dispute_id},${d.amount},${d.currency},${d.agent},${d.reason_code},${d.record_id},${d.status},${d.opened_at},${d.respond_by}`;
+    });
+    const csv = [header, ...rows].join("\n");
+    res.writeHead(200, { "content-type": "text/csv; charset=utf-8", "content-disposition": `attachment; filename="provethebuy-disputes-${format}.csv"` });
+    return res.end(csv);
+  }
   if (m === "GET" && p === "/api/ledger/verify") return json(res, 200, state.ledger.verifyChain());
   if (m === "POST" && p === "/api/traffic-check") {
     const text = await body(req);

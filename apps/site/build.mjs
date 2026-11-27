@@ -43,7 +43,7 @@ const ICONS = {
 };
 const icon = (n) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n] ?? ""}</svg>`;
 
-const MARK = (stroke = "#EEF1F6") => `<svg viewBox="0 0 56 56" aria-hidden="true"><path d="M14 6h22l12 12v30a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" fill="none" stroke="${stroke}" stroke-width="3.5" stroke-linejoin="round"/><circle cx="36" cy="16" r="3.2" fill="none" stroke="${stroke}" stroke-width="3"/><path d="M20 34l6 6 11-12" fill="none" stroke="#F28C28" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const MARK = () => `<svg viewBox="0 0 36 36" aria-hidden="true"><defs><linearGradient id="sq1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#7C6CF0"/><stop offset="100%" stop-color="#5B8DEF"/></linearGradient><linearGradient id="sq2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4DA0F0"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient><mask id="m1"><rect width="36" height="36" fill="white"/><rect x="14" y="14" width="8" height="8" rx="4" fill="black"/></mask><mask id="m2"><rect width="36" height="36" fill="white"/><rect x="14" y="14" width="8" height="8" rx="4" fill="black"/></mask></defs><rect x="0" y="0" width="22" height="22" rx="6" fill="url(#sq1)" mask="url(#m1)"/><rect x="14" y="14" width="22" height="22" rx="6" fill="url(#sq2)" mask="url(#m2)"/></svg>`;
 
 // Engraved-line background, the "certificate" motif. Used on dark headers only.
 function guilloche(h) {
@@ -109,6 +109,8 @@ ${extraHead}
     <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav">${icon("menu")}</button>
     <nav id="site-nav" aria-label="Main">
       ${navLink("/docs/quickstart", "Docs", "docs")}
+      ${navLink("/agent-identity", "Agent Identity", "agent-identity")}
+      ${navLink("/agent-threat-check", "Threat Check", "agent-threat-check")}
       ${navLink("/playground", "Playground", "playground")}
       ${navLink("/pricing", "Pricing", "pricing")}
       <a class="gh" href="${REPO}">${icon("github")}GitHub</a>
@@ -258,6 +260,20 @@ await write("security.html", layout({
   body: fill(await readFile(join(HERE, "pages", "security.html"), "utf8")),
 }));
 
+// Agent Identity
+await write("agent-identity.html", layout({
+  path: "/agent-identity", current: "agent-identity", title: "Agent Identity: know which AI agent is buying",
+  description: "Identify AI shopping agents like Muse, Instinct, Rufus, Perplexity and ChatGPT at your checkout. Cryptographic signature verification, mandate checking, and dispute evidence — not just bot detection.",
+  body: fill(await readFile(join(HERE, "pages", "agent-identity.html"), "utf8")),
+}));
+
+// Agent Threat Check
+await write("agent-threat-check.html", layout({
+  path: "/agent-threat-check", current: "agent-threat-check", title: "Agent Threat Check: detect malicious agent frameworks",
+  description: "Detect autonomous attack frameworks like ARTEX from server-side request sequences. Session stitching, 7 signal rules, 0-100 scoring — no client-side JavaScript, no device fingerprinting.",
+  body: fill(await readFile(join(HERE, "pages", "agent-threat-check.html"), "utf8")),
+}));
+
 // Docs
 const md = markdown();
 const docsDir = join(ROOT, "docs");
@@ -287,10 +303,10 @@ await write("docs.html", layout({ path: "/docs", current: "docs", title: "Docs",
 
 // 404
 await writePlayground();
-await write("404.html", layout({ path: "/404", title: "Page not found", description: "This page doesn't exist.", body: `<div class="page-hero">${guilloche(320)}<div class="wrap"><h1>This page isn't on file.</h1><p>It may have moved. Try the <a href="/docs" style="color:#F2B36B">docs</a> or go back to the <a href="/" style="color:#F2B36B">home page</a>.</p></div></div>` }));
+await write("404.html", layout({ path: "/404", title: "Page not found", description: "This page doesn't exist.", body: `<div class="page-hero">${guilloche(320)}<div class="wrap"><h1>This page isn't on file.</h1><p>It may have moved. Try the <a href="/docs" style="color:var(--accent-light)">docs</a> or go back to the <a href="/" style="color:var(--accent-light)">home page</a>.</p></div></div>` }));
 
 // Discovery files
-const pages = ["/", "/pricing", "/security", "/playground", "/docs", ...DOCS.map((d) => `/docs/${d.slug}`)];
+const pages = ["/", "/pricing", "/security", "/agent-identity", "/agent-threat-check", "/playground", "/docs", ...DOCS.map((d) => `/docs/${d.slug}`)];
 await write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((p) => `  <url><loc>${SITE}${p}</loc><lastmod>${TODAY}</lastmod></url>`).join("\n")}\n</urlset>\n`);
 await write("robots.txt", `User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${SITE}/sitemap.xml\n`);
 await write(".well-known/security.txt", `Contact: mailto:security@provethebuy.com\nExpires: ${new Date(Date.now() + 365 * 864e5).toISOString()}\nPreferred-Languages: en\nCanonical: ${SITE}/.well-known/security.txt\nPolicy: ${REPO}/blob/main/SECURITY.md\n`);

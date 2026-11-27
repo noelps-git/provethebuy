@@ -1,0 +1,200 @@
+<div class="page-hero">
+  {{guilloche:420}}
+  <div class="wrap">
+    <h1>Spot attack frameworks before they reach checkout.</h1>
+    <p class="lede">Autonomous agents are probing sign-up, login and password-reset flows, then switching to a browser to place fraudulent orders. Agent Threat Check reads the sequence of requests per session, scores it 0&ndash;100 with plain reasons, and feeds it into your existing allow, step-up or block policy.</p>
+    <div class="cta-row">
+      <a class="btn btn-accent" href="/playground">{{icon:play}}Try the playground</a>
+      <a class="btn btn-line" href="https://app.provethebuy.com/login?next=/app%23/billing?trial=1">Start a 14-day Pro trial</a>
+    </div>
+  </div>
+</div>
+
+<section class="on-ink">
+  <div class="wrap">
+    <div class="section-head"><h2>Bot detectors see the device.<br>Threat Check sees what the session <em>did</em>.</h2></div>
+
+    <div class="compare-grid">
+      <div class="compare-col" style="background: var(--ink-deep); border-color: var(--ink-rule); color: var(--on-ink-2)">
+        <h3 style="color: var(--on-ink)">What anti-bot vendors do</h3>
+        <ul class="compare-list" style="color: var(--on-ink-3)">
+          <li>Client-side JavaScript and device fingerprinting</li>
+          <li>Binary signal: bot or human</li>
+          <li>Block or allow &mdash; no middle ground</li>
+          <li>Can't see delegated authority or mandates</li>
+          <li>Sits in front of the site (CDN layer)</li>
+          <li>No evidence for chargebacks</li>
+        </ul>
+      </div>
+      <div class="compare-col highlight" style="background: var(--ink-deep); border-color: var(--orange); box-shadow: 0 0 0 1px var(--orange); color: var(--on-ink-2)">
+        <h3 style="color: var(--on-ink)">What Agent Threat Check does</h3>
+        <ul class="compare-list">
+          <li>{{icon:check}}Server-side only &mdash; no client JS, no fingerprinting</li>
+          <li>{{icon:check}}Reads the full request sequence per session, account and network</li>
+          <li>{{icon:check}}Scores 0&ndash;100 with plain-text reasons for each signal</li>
+          <li>{{icon:check}}Verified agents get their own lane &mdash; never judged by behaviour rules</li>
+          <li>{{icon:check}}Sits at checkout and auth &mdash; sees what the session did and was allowed to do</li>
+          <li>{{icon:check}}Evidence record for every step-up or block, ready for disputes</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head"><h2>Seven signals no single request gives away</h2>
+    <p>Every signal below can be read from what reaches your server, or from headers your CDN already adds. No client-side code required.</p></div>
+
+    <div class="signal-grid">
+      <div class="signal-card">
+        <strong>Hidden routes hit first</strong>
+        <p>Requests to API routes that no served page links to, before any page that would load them. The agent finds routes by reading JavaScript bundles; people find them by clicking.</p>
+      </div>
+      <div class="signal-card">
+        <strong>Auth surface sweep</strong>
+        <p>Sign-up, login, password-reset and OTP endpoints hit in a short burst. Expired, reused or malformed tokens. One session touching many accounts.</p>
+      </div>
+      <div class="signal-card">
+        <strong>API then browser</strong>
+        <p>A run of failed direct API calls (401, 403, 429) followed minutes later by a full browser session on the same account, cookie or network. The fallback to a browser is what makes these frameworks work.</p>
+      </div>
+      <div class="signal-card">
+        <strong>Recon footprint</strong>
+        <p>robots.txt, sitemap, .well-known paths, OpenAPI or GraphQL introspection, error-driven guessing of IDs and paths. Mapping the app has to happen before attacking it.</p>
+      </div>
+      <div class="signal-card">
+        <strong>Model-loop timing</strong>
+        <p>Regular pauses of a few seconds between steps (the model thinking), then bursts. No idle reading time. Changing it slows the attack down.</p>
+      </div>
+      <div class="signal-card">
+        <strong>Claim vs proof</strong>
+        <p>A User-Agent naming a known agent but no cryptographic signature. Or a valid signature whose key then behaves outside its policy. Signatures can't be forged, so the claim is checkable.</p>
+      </div>
+      <div class="signal-card">
+        <strong>Network context</strong>
+        <p>TLS fingerprint (JA4), ASN and residential-proxy flags passed in by the CDN, if you have them. Supporting evidence only &mdash; easy to buy, never decisive alone.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="on-ink">
+  <div class="wrap">
+    <div class="section-head"><h2>How it decides</h2>
+    <p>Arithmetic decides, a language model only explains. The score is repeatable, cheap to run and easy to defend to an auditor.</p></div>
+    <ol class="steps" style="--step-border: var(--ink-rule)">
+      <li style="border-color: var(--ink-rule)">
+        <h3>1. Lane first</h3>
+        <p style="color: var(--on-ink-2)">A request with a valid agent signature (Web Bot Auth, Visa TAP, RFC 9421) goes to the verified lane and is judged on its key's policy and history. Everything else goes to the behaviour lane.</p>
+      </li>
+      <li style="border-color: var(--ink-rule)">
+        <h3>2. Stitch sessions</h3>
+        <p style="color: var(--on-ink-2)">Group requests by cookie, account and network window, so one actor switching from API calls to a browser shows up as one story.</p>
+      </li>
+      <li style="border-color: var(--ink-rule)">
+        <h3>3. Run the rules</h3>
+        <p style="color: var(--on-ink-2)">Each signal is a fixed rule with a weight and a cap, so no single signal can decide on its own. Every rule fires with a reason a person can read.</p>
+      </li>
+      <li style="border-color: var(--ink-rule)">
+        <h3>4. Score 0 to 100</h3>
+        <p style="color: var(--on-ink-2)">The score plus its reasons go into your existing policy: under a threshold, allow; in the middle, step up; above it, block. Shadow mode records the decision without acting.</p>
+      </li>
+      <li style="border-color: var(--ink-rule)">
+        <h3>5. File it</h3>
+        <p style="color: var(--on-ink-2)">Every step-up or block writes an evidence record, like an order does, so you can show why a session was stopped.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head"><h2>Where it runs</h2></div>
+    <div style="overflow-x: auto">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th scope="col">Surface</th>
+            <th scope="col">What it does</th>
+            <th scope="col">Builds on</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>CLI: traffic-check&nbsp;--threats</strong></td>
+            <td>Runs the rules over an access log offline and lists suspect sessions with reasons</td>
+            <td>The existing traffic-check parser</td>
+          </tr>
+          <tr>
+            <td><strong>Middleware, live</strong></td>
+            <td>Scores sessions as requests arrive, using a sliding window per session; shadow mode by default; fails open</td>
+            <td>The existing replay store (Redis or Upstash)</td>
+          </tr>
+          <tr>
+            <td><strong>Cloud dashboard</strong></td>
+            <td>Dashboard view, alerts, and keys or patterns flagged at one merchant shown to others &mdash; sharing patterns, not customer data</td>
+            <td>The Scale plan's shared reputation</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="on-ink">
+  <div class="wrap">
+    <div class="section-head"><h2>How it compares</h2></div>
+    <div style="overflow-x: auto">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th scope="col">Capability</th>
+            <th scope="col">Anti-bot vendors<br><small>Arkose, Cloudflare, DataDome</small></th>
+            <th scope="col">Fraud platforms<br><small>SEON, Sardine, Feedzai</small></th>
+            <th scope="col" class="highlight">ProveTheBuy<br><small>Agent Threat Check</small></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Detect automated traffic</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+          <tr><td>Server-side only (no client JS)</td><td class="no">No</td><td class="partial">Varies</td><td class="yes">Yes</td></tr>
+          <tr><td>Sequence-based detection</td><td class="no">No</td><td class="partial">Limited</td><td class="yes">7 signal rules, session stitching</td></tr>
+          <tr><td>Verified-agent lane</td><td class="no">No</td><td class="no">No</td><td class="yes">Web Bot Auth, Visa TAP, RFC 9421</td></tr>
+          <tr><td>Human-readable reasons</td><td class="no">No</td><td class="partial">Risk score only</td><td class="yes">Plain-text reason per signal</td></tr>
+          <tr><td>Shadow mode</td><td class="partial">Some</td><td class="partial">Some</td><td class="yes">Default &mdash; records without acting</td></tr>
+          <tr><td>Fails open</td><td class="no">Varies</td><td class="no">Varies</td><td class="yes">Always &mdash; never blocks checkout</td></tr>
+          <tr><td>Evidence for disputes</td><td class="no">No</td><td class="partial">Fraud score only</td><td class="yes">Hash-chained evidence record</td></tr>
+          <tr><td>Cross-merchant pattern sharing</td><td class="no">No</td><td class="partial">Transaction risk</td><td class="yes">Scale plan</td></tr>
+          <tr><td>Works alongside anti-bot vendor</td><td>&mdash;</td><td class="yes">Yes</td><td class="yes">Second opinion, not replacement</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head"><h2>What a flagged session looks like</h2></div>
+    <div class="threat-example">
+      <div class="threat-score">Score: <strong>78 / 100</strong> <span class="tag-block">block</span></div>
+      <ul class="threat-reasons">
+        <li><span class="signal-tag">recon_footprint</span> 6 recon requests (robots.txt, /sitemap.xml, /.well-known/openapi.json +3) before interacting with the site</li>
+        <li><span class="signal-tag">auth_sweep</span> 9 accounts touched; 14 auth requests in 240s; 7 failed/invalid token attempts</li>
+        <li><span class="signal-tag">api_then_browser</span> 5 failed API calls (401/403) followed by a browser session 3min later on the same identity</li>
+        <li><span class="signal-tag">model_loop_timing</span> 8 think-pause gaps (3.2s avg) with 12 bursts and 1 idle period</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="wrap" style="text-align: center; max-width: 640px">
+    <h2>Start detecting attack frameworks today</h2>
+    <p>Agent Threat Check is included in the Pro plan ($49/mo) and Scale plan ($199/mo). The CLI threat scanner is free and open source.</p>
+    <div class="cta-row" style="justify-content: center">
+      <a class="btn btn-accent" href="/pricing">See pricing</a>
+      <a class="btn btn-line" href="/docs/quickstart">Read the quickstart</a>
+    </div>
+    <p class="trial-note">Or <a href="https://app.provethebuy.com/login?next=/app%23/billing?trial=1">start a 14-day Pro trial</a> &mdash; no card required.</p>
+  </div>
+</section>
