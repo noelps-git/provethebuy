@@ -11,10 +11,16 @@
   <link rel="stylesheet" href="/app.css"><link rel="stylesheet" href="/theme.css">
 </head>
 <body>
+  <div class="gradient-mesh" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
   <div class="shell">
     <aside class="rail" aria-label="Main">
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Toggle navigation" aria-expanded="false">
+        <svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 5h14M3 10h14M3 15h14"/></svg>
+      </button>
       <a class="brand" href="/" aria-label="ProveTheBuy home">
-        <svg class="mark" viewBox="0 0 56 56" aria-hidden="true"><path d="M14 6h22l12 12v30a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/><circle cx="36" cy="16" r="3.2" fill="none" stroke="currentColor" stroke-width="3"/><path d="M20 34l6 6 11-12" fill="none" stroke="#F28C28" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg class="mark" viewBox="0 0 36 36" width="30" height="30" aria-hidden="true"><defs><linearGradient id="pg-s1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#7C6CF0"/><stop offset="100%" stop-color="#5B8DEF"/></linearGradient><linearGradient id="pg-s2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4DA0F0"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient><mask id="pg-m1"><rect width="36" height="36" fill="white"/><rect x="14" y="14" width="8" height="8" rx="4" fill="black"/></mask><mask id="pg-m2"><rect width="36" height="36" fill="white"/><rect x="14" y="14" width="8" height="8" rx="4" fill="black"/></mask></defs><rect x="0" y="0" width="22" height="22" rx="6" fill="url(#pg-s1)" mask="url(#pg-m1)"/><rect x="14" y="14" width="22" height="22" rx="6" fill="url(#pg-s2)" mask="url(#pg-m2)"/></svg>
         <span><strong>ProveTheBuy</strong><small>Local playground</small></span>
       </a>
       <nav>
@@ -24,6 +30,8 @@
         <a href="#/policy" data-route="policy"><svg viewBox="0 0 20 20"><path d="M6 3h8l3 3v11H6zM14 3v3h3M9 10h5M9 13h5"/></svg>Policy</a>
         <a href="#/disputes" data-route="disputes"><svg viewBox="0 0 20 20"><path d="M10 3l7 3v4c0 4-3 6.5-7 7.5C6 16.5 3 14 3 10V6z"/></svg>Disputes <span class="count" id="nav-disputes" hidden></span></a>
         <a href="#/agents" data-route="agents"><svg viewBox="0 0 20 20"><circle cx="10" cy="7" r="3.2"/><path d="M4 17c.8-3 3.2-4.5 6-4.5s5.2 1.5 6 4.5"/></svg>Agents</a>
+        <a href="#/threats" data-route="threats"><svg viewBox="0 0 20 20"><path d="M10 2l8 14H2z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 8v3M10 13.5v.5"/></svg>Threat Check</a>
+        <a href="#/confirmations" data-route="confirmations"><svg viewBox="0 0 20 20"><path d="M6 10l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="3" width="16" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Confirmations</a>
       </nav>
       <div class="rail-foot">
         <div class="merchant" id="merchant"></div>
@@ -33,6 +41,7 @@
         <a class="link" href="https://provethebuy.com/pricing" style="margin-top:4px">View plans</a>
       </div>
     </aside>
+    <div class="nav-scrim" id="navScrim" hidden></div>
     <main id="view" tabindex="-1"></main>
   </div>
   <div class="drawer" id="drawer" hidden>
